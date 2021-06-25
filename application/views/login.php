@@ -63,7 +63,7 @@
          <div class="card-body">
             <div class="row">
                <div class="col-md-4">
-                  <h6 class="text-muted text-center">SHOPDAY E.R.L</h6>                  
+                  <h6 class="text-muted text-center">M.P. San Román</h6>                  
                   <hr style="margin: 3px;">
                   <h6 class="text-muted text-center">Arix&reg; Minimal ERP Edition</h6>
                   <div class="row">
