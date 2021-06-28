@@ -95,7 +95,8 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 $db['pdoarixdatabase'] = array(
-	'dsn'	=> 'pgsql:host=localhost;port=5432;dbname=arixsanroman',
+	//'dsn'	=> 'pgsql:host=localhost;port=5432;dbname=arixsanroman',
+	'dsn'	=> 'pgsql:host=34.95.166.228;port=5432;dbname=arixsanroman',
 	'hostname' => '',
 	//'username' => 'arixmee',
 	//'password' => 'b38a333e5537119af65501d33abf69d6',

@@ -42,7 +42,7 @@ class Serv_administracion_usuarios {
         if(!empty($correo)){
             if (password_verify($pass,$correo->pass)){
                 $correo = array(
-                    'sesion' => "Ciy12Kjs2gyAvfrZMgqS2vm4uCuHHMN8tqKaKwumWEUvnWOeCQEx5Fxe2Ax",
+                    'sesion' => "Ciy12Kjs2gyAvfrZMgqS2vm4uCuHHMN8tqKaKwumWEUvnWOeCQEx5Fxeb5214004bb84dda238ea2de1b3812Ax",
                     'usuario' => $correo->cuenta,
                     'sucursal' => 0,//$pass[0]->sucursal_id,
                     'app'=> 0
@@ -62,7 +62,7 @@ class Serv_administracion_usuarios {
         return true;
     }    
     public function use_probar_session(){
-        if ($this->ci->session->userdata('sesion')=='Ciy12Kjs2gyAvfrZMgqS2vm4uCuHHMN8tqKaKwumWEUvnWOeCQEx5Fxe2Ax'){
+        if ($this->ci->session->userdata('sesion')=='Ciy12Kjs2gyAvfrZMgqS2vm4uCuHHMN8tqKaKwumWEUvnWOeCQEx5Fxeb5214004bb84dda238ea2de1b3812Ax'){
             return true;
         }else{
             return false;
