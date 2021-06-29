@@ -260,7 +260,7 @@ function arixshell_cargar_llave_local(one = 0){
         return li;
     }
 }
-function arixshell_cargar_botones_menu(botones='btn-actualizar'){
+function arixshell_cargar_botones_menu(botones='btn-refrescar'){
     botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
     if (botones != false) {
         for (var i = 0; i < botones.length; i++) {           
