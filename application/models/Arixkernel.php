@@ -9,6 +9,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	5- select_all_content_where_order($tupla,$tabla, $condicion [array], $order [array], $cant_registros = 100)
 */
 
+/*
+	Funciones del sistemas
+	entrada == accesos
+	15 === 8,4,2,1
+	14 === 8,4,2
+	12 === 8,4
+	10 === 8,2
+	08 === 8
+	-----------------
+	select = 8 (permiso)
+	insert = 4 (permiso)
+	update = 2 (permiso)
+	delete = 1 (permiso)
+*/
+
 class Arixkernel extends CI_Model{	
 	function __construct(){
 		parent::__construct();

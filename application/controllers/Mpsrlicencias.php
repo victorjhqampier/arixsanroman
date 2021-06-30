@@ -14,6 +14,6 @@ class Mpsrlicencias extends CI_Controller {
 		$this->load->view('app_mprslicencias/resumen');
     }
     public function compania(){
-		$this->load->view('app_mprslicencias/resumen');
+		$this->load->view('app_mprslicencias/empresas');
 	}
 }

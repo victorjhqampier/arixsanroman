@@ -116,20 +116,26 @@
                 </footer>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/js/jquery-3.4.1.min.js');?>" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/js/all.min.js');?>" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/js/bootstrap.bundle.min.js');?>" crossorigin="anonymous"></script>
+        <!--<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>-->
         <script src="<?php echo base_url('public/resources/js/scripts.js');?>"></script>
         <!--<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>-->
-        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/JSZip-2.5.0/jszip.min.js');?>"></script>
+        
+        <!--<script type="text/javascript" src="<?php echo base_url('public/resources/dtables/JSZip-2.5.0/jszip.min.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/pdfmake-0.1.36/pdfmake.min.js');?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/pdfmake-0.1.36/vfs_fonts.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/pdfmake-0.1.36/vfs_fonts.js');?>"></script>-->
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/DataTables-1.10.23/js/jquery.dataTables.min.js');?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/js/dataTables.autoFill.min.js');?>"></script>
+        
+        <!--<script type="text/javascript" src="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/js/dataTables.autoFill.min.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/dataTables.buttons.min.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/buttons.html5.min.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/buttons.print.min.js');?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/KeyTable-2.5.3/js/dataTables.keyTable.min.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/KeyTable-2.5.3/js/dataTables.keyTable.min.js');?>"></script>-->
+
         <script src="<?php echo base_url('public/resources/js/arixshell.js');?>"></script>        
         <?php if($js!=null){for($i=0;$i<count($js);$i++){echo '<script src="'.str_replace('base_url();',base_url(),$js[$i]).'" crossorigin="anonymous"></script>'."\n";}}else{return false;}//para cragar JS al sistema ?>
     </body>

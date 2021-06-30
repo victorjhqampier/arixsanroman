@@ -105,7 +105,7 @@ function arixshell_agregar_subtitulo(title,position = 4){
 }
 function arixshell_cargar_titulo_page(){
     title = $("#navbarNav li.active" ).text();
-    $('title').text(title+" - Arix Shell v1.0");
+    $('title').text(title+" - Arix Corporation");
 }
 function arixshell_activeshadow_app(a,b){return b==a?"active":""}//dessaroolando su mejora
 function arixshell_desactivehref_app(r,a){return r==a?("javascript:;"):r}//para desactivar url
@@ -246,11 +246,11 @@ function arixshell_cargar_contenido(url,titulo = 'Sin Subtitulo', position = 4){
 function arixshell_iniciar_llaves_locales(id1="#btn_error", id2="#con_error"){
     var id1 = id1.replace(" ", "");
         id1 = id1.replace("#", "");
-    var id2 = id2.replace(" ", "");
-        id2 = id2.replace("#", "");
+        //var id2 = id2.replace(" ", "");
+        //    id2 = id2.replace("#", "");
     //$('#nav-idont-know ul:last').attr('id', id1);
     $('#nav-item-input-botones').html('<div class="btn-group btn-group-sm" id="'+id1+'"></div>');
-    $('#use-container-secondary').html('<div class="row" id="'+id2+'"></div>');
+        //$('#use-container-secondary').html('<div class="row" id="'+id2+'"></div>');
 }
 function arixshell_cargar_llave_local(one = 0){
     li = ['#'+$('#nav-item-input-botones div:first').attr('id'), '#'+$('#use-container-secondary div:first').attr('id')];
@@ -260,8 +260,30 @@ function arixshell_cargar_llave_local(one = 0){
         return li;
     }
 }
-function arixshell_cargar_botones_menu(botones='btn-refrescar'){
-    botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
+let tbtns;
+function arixshell_cargar_botones_auto(){
+    var apps = arixshell_download_datos('arixapi/arixapi_cargar_botones');
+    if (apps !== null) {
+        tbtns = apps;
+    }else{
+        console.log('arixshell_cargar_botones_auto -- error!');
+    }
+}
+function arix_search_btns(btns){
+    btns = btns.replace(/ /g, "");
+    btns = btns.split(",");
+    let temp = [];
+    for (var i = 0; i < btns.length; i++) {
+        let name = tbtns.find(data => data.boton == btns[i]);
+        if (name !== null){
+            temp.push(name); 
+        }
+    }
+    return temp;
+}
+//trabajando en los botones locales
+function arixshell_cargar_botones_menu(botones='btn-refrescar, btn-borrar'){
+    botones = arix_search_btns(botones);
     if (botones != false) {
         for (var i = 0; i < botones.length; i++) {           
             $(arixshell_cargar_llave_local(0)).append('<button type="button" class="btn btn-secondary '+botones[i]['boton']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"><i class="'+botones[i]['icono']+'"></i></button>');//agregas al final
@@ -320,12 +342,15 @@ function arixshell_cargar_boton_buscar(placeholder = 'Buscar ...'){
     buscar = '<div class="input-group input-group-sm mb-1" style="padding-right: 5px;"><input type="text" class="form-control" placeholder="'+placeholder+'" aria-label="Buscar ..." aria-describedby="button-addon2"><div class="input-group-append"><button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2"><i class="fas fa-search"></i></button></div></div>';
     $(elocation).append(buscar);
 }
+//cerrar sessiom
 $('nav #dropdown-item-u3').click(function(){
     dato = arixshell_download_datos('arixapi/arixapi_cerrar_sesion');
     if (dato.status == true) {
-        window.location.replace('../arixmeebetagit');
+        //window.location.replace('../arixmeebetagit');
+        window.location.replace(window.location.href);
     }else{
-        return;
+        location.reload();
+        //return;
     }
 });
 //Cuando haces click en algundo de los menus 
@@ -402,3 +427,4 @@ arixshell_cargar_auto_subtitulos();
 arixshell_cargar_menu();
 arixshell_cargar_usuario();
 arixshell_cargar_sucursal_lista();
+arixshell_cargar_botones_auto();

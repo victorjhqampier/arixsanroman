@@ -78,7 +78,8 @@ class Serv_ejecucion_app {
         return 0;
     }
     # FUNCIONES DISPONIBLES PARA EL USUARIO
-    public function exe_obtener_botones($usuario_permiso, $botones){//ejecutar con el los permisos del usuario
+    //funcion descartada
+    /*public function exe_obtener_botones($usuario_permiso, $botones){//ejecutar con el los permisos del usuario
         $permisos_botones = ['1000','0100','0010','0001'];//LECTURA, ESCRITURA, ACTUALIZACION, BORRADO, un boton pertenese a un grupo
         $botones = preg_replace('([^A-Za-z0-9\,._-])', '', $botones);
         $botones = explode(",", $botones);
@@ -94,7 +95,21 @@ class Serv_ejecucion_app {
             }   
         }
         return $btns_autorizados;
+    }*/
+    //entrega lista de bonones autizados aparatir del permiso
+    public function exe_obtener_botones($usuario_permiso= 1){//ejecutar con el los permisos del usuario desde ñla session
+        $usuario_permiso = decbin($usuario_permiso);
+        $temp = array();
+        for ($i=1; $i <= strlen($usuario_permiso); $i++) {
+            if(substr($usuario_permiso, -$i,1)=='1'){
+				$binario = substr($usuario_permiso, -$i,1)."".str_repeat("0", $i-1);
+                $temp2 = $this->ci->serv_cifrado->cod_object_to_array($this->ci->arixkernel->arixkernel_obtener_simple_data('boton, icono, titulo','config.botones', false, array('permiso'=>bindec($binario))));
+                $temp = array_merge($temp, $temp2);
+            }            
+        }
+        return $temp;        
     }
+
     public function exe_contruir_consulta($array_tabla_tupla, $array_runlebel = array(1,0,0,0,0,0)){// CORREGIR con TABLAS HASH
         $table = array_keys ($array_tabla_tupla); //captura el nombre de la tabla
         $tupla = array_values ($array_tabla_tupla); //Captura las tuplas de la tabla
@@ -124,6 +139,7 @@ class Serv_ejecucion_app {
         $array_tabla_tupla = array();
         array_push($array_tabla_tupla, $tupla, $table, $array_table);
         return $array_tabla_tupla;
+        //ejjemplo de contruir una consulta...
         /*$array_tabla_tupla = $this->exe_contruir_consulta(array(
             'config.sucursales'=>'*',
             'config.subcategorias'=>'subcategoria',

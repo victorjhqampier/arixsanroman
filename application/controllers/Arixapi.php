@@ -94,7 +94,8 @@ class Arixapi extends CI_Controller {
 		$new = $this->input->post('data');
 		echo json_encode($this->serv_administracion_usuarios->cambiar_sucursal($new));
 	}
-	public function arixapi_cargar_botones($botones = 'btn-detalles, btn-guardar, btn-actualizar, btn-borrar'){
+	//funcion descartada
+	/*public function arixapi_cargar_botones($botones = 'btn-detalles, btn-guardar, btn-actualizar, btn-borrar'){
 		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request() && $this->input->post('data')){
 			$botones = $this->input->post('data');
 			$usuario_permiso = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
@@ -103,6 +104,17 @@ class Arixapi extends CI_Controller {
 		}
 		else{
 			echo json_encode(array('status' => 403));
+		}
+	}*/
+	public function arixapi_cargar_botones(){
+		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request()){
+			$usuario_permiso = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
+			$usuario_permiso = $usuario_permiso->permiso;
+			echo json_encode($this->serv_ejecucion_app->exe_obtener_botones($usuario_permiso));
+		}
+		else{
+			//echo json_encode(array('status' => 403));
+			show_404();
 		}
 	}
 	public function arixapi_cargar_lista_card(){
