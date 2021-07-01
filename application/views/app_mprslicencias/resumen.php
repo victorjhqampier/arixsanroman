@@ -9,7 +9,7 @@
          </button>
       </div>
       <div class="toast-body">
-         Ésta es la versión Alfa, el desarrolo de la aplicacion es echa por peticion de la gerencia de transporte y seguridad vial - Juliaca.
+         MARON, ESTA EL LA VERSION ALÑFA, el desarrolo de la aplicacion es echa por peticion de la gerencia de transporte y seguridad vial - Juliaca.
          <code>Avance estimado ... 14%</code>
          <hr>
          <div class="progress">
