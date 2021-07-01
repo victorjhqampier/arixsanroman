@@ -22,7 +22,7 @@
                             <th scope="col">RUC</th>                            
                             <th scope="col">Resolución</th>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Razon social</th>                                                       
+                            <th scope="col">Razon social</th>                                
                             <th scope="col">F. Vencimiento</th>
                             <th scope="col">Modalidad</th>
                             <th scope="col">Acciones</th>
