@@ -68,7 +68,7 @@
                   <h6 class="text-muted text-center">Arix&reg; Minimal ERP Edition</h6>
                   <div class="row">
                         <div class="col-xs-6 col-sm-12 col-md-12 text-center">                          
-                          <img class="img-thumbnail" src="public/images/images.jpeg" width="105px">
+                          <img class="img-thumbnail" src="public/images/images.jpg" width="105px">
                         </div>
                   </div>
                   <hr>
