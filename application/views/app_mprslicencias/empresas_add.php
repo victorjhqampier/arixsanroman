@@ -33,28 +33,34 @@
                                 <input type="text" class="form-control" id="aut-nresolucion" name="txtnresolucion" placeholder="Número de resolución"> </div>
                             <div class="form-group col-md-6">
                                 <label for="aut-cresolucion">Clase de Resolución</label>
-                                <input type="text" class="form-control" id="aut-cresolucion" name="txtcresolucion" placeholder="Clase de resolución"> </div>
+                                <select id="aut-cresolucion" name="txtcresolucion" class="form-control">
+                                    <option value="Resolucion de tipo -R1" selected>Resolucion de tipo -R1</option>
+                                    <option value="Resolucion de tipo -R2" >Resolucion de tipo -R2</option>
+                                    <option value="Resolucion de tipo -R3" >Resolucion de tipo -R3</option>
+                                    <option value="Resolucion de tipo -R4" >Resolucion de tipo -R4</option>
+                                    <option value="Resolucion de tipo -R5" >Resolucion de tipo -R5</option>
+                                    <option value="Resolucion de tipo -R6" >Resolucion de tipo -R6</option>
+                                    <option value="Resolucion de tipo -R7" >Resolucion de tipo -R7</option>
+                               </select>
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="aut-modalidad">Modalidad se servicio</label>
                                 <select id="aut-modalidad" name="txtmodalidad" class="form-control form-control-sm">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
+                                    <option selected>Cargarndo...</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="aut-categoria">Categoria de Unidad</label>
                                 <select id="aut-categoria" name="txtcategoria" class="form-control form-control-sm">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
+                                    <option selected>Cargarndo...</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="aut-tunidad">Tipo de Unidad</label>
                                 <select id="aut-tunidad" name="txtunidad" class="form-control form-control-sm">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
+                                    <option selected>Cargarndo...</option>
                                 </select>
                             </div>
                         </div>
@@ -76,7 +82,7 @@
                             <div class="form-group col-md-6">
                                 <label for="aut-ffinal">Fecha de vencimiento</label>
                                 <select id="aut-ffinal" name="txtffinal" class="form-control form-control-sm">
-                                    <option selected>Choose...</option>
+                                    <option selected>Cargarndo...</option>
                                     <option>...</option>
                                 </select>
                             </div>
@@ -98,7 +104,7 @@
         </div>
         <div class="col-xl-12 col-md-12 mt-2">
             <div class="alert alert-dark text-center" role="alert">
-                <button class="btn btn-success btn-sm" id="btn-enviar-empadd">Guargar</button>
+                <button class="btn btn-success" id="btn-enviar-empadd">Guardar</button>
             </div>
         </div>
 	</div>
@@ -115,7 +121,13 @@ $(document).ready(function(){
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-cerrar", function() {
         arixshell_hacer_pagina_atras();
         //arixshell_hacer_pagina_reiniciar();
-    }); 
+    });    
+    mpsr_cargar_opciones('#form-empr-new-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad');
+    mpsr_cargar_opciones('#form-empr-new-add #aut-categoria','mpsrlicencias/mpsr_get_categoria', '<option selected>Escoja...</option>');
+    $('#form-empr-new-add #aut-categoria').change(function(){
+        var r = $(this).val();
+        mpsr_subir_opciones('#form-empr-new-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad', 'txtdata='+r+'&');
+    });    
     $("#form-empr-new-add").validate({
         errorClass: "text-danger",
         rules: {
@@ -131,78 +143,68 @@ $(document).ready(function(){
             },
             txtnombre: {
                 required: true,
-                maxlength: 32,
+                maxlength: 150,
                 minlength: 7
             },
             txtdireccion: {
                 required: true,
-                maxlength: 32,
+                maxlength: 150,
                 minlength: 7
             },
             txttelefonos: {
                 required: true,
-                maxlength: 32,
+                maxlength: 150,
                 minlength: 7
             },
             txtnresolucion: {
                 required: true,
-                maxlength: 32,
-                minlength: 7
+                maxlength: 80,
+                minlength: 5
             },
             txtcresolucion: {
-                required: true,
-                maxlength: 32,
-                minlength: 7
+                required: true
             },
             txtmodalidad: {
-                required: true,
-                maxlength: 32,
-                minlength: 7
+                required: true,                
             },
             txtcategoria: {
                 required: true,
-                maxlength: 32,
-                minlength: 7
             },
             txtunidad: {
                 required: true,
-                maxlength: 32,
-                minlength: 7
             },
             txthorarios: {
                 required: true,
-                maxlength: 32,
+                maxlength: 80,
                 minlength: 7
             },
             txtfrecuencia: {
                 required: true,
-                maxlength: 32,
+                maxlength: 80,
                 minlength: 7
             },
             txtflota: {
                 required: true,
-                maxlength: 32,
-                minlength: 7
+                maxlength: 3,
+                minlength: 1
             },
             txtfinicio: {
                 required: true,
-                maxlength: 32,
-                minlength: 7
+                maxlength: 10,
+                minlength: 8
             },
             txtffinal: {
                 required: true,
-                maxlength: 32,
-                minlength: 7
+                maxlength: 10,
+                minlength: 8
             },
             txtrinicio: {
                 required: true,
-                maxlength: 32,
-                minlength: 7
+                minlength: 5
             },
             txtrfinal: {
                 required: true,
-                maxlength: 32,
-                minlength: 7
+                minlength: 5
             }
         }
     })

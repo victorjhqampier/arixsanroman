@@ -24,12 +24,45 @@ class Mpsrlicencias extends CI_Controller {
 	//FUNCIONES DE DATOS
 	public function mpsr_get_activeemp(){
 		if ($this->input->is_ajax_request()){
-			$this->load->library('serv_ejecucion_app');
+			//$this->load->library('serv_ejecucion_app');
 			$this->load->library('serv_cifrado');
 			$this->load->model('arixkernel');
 			//consulta construida por la funcion exe_construir_consultas
 			$consulta=array(Array('aut.nresolucion,aut.aufin','emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial','ser.descripcion'),Array('public.autorizaciones aut','public.empresas emp','public.servicios ser'),Array('NULL','aut.empresa_id = emp.empresa_id','aut.servicio_id = ser.servicio_id'));	
 			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado='=>true, 'aut.estado='=>true));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
+	public function mpsr_get_modalidad(){
+		$this->load->library('serv_cifrado');
+		$this->load->model('arixkernel');
+		$consulta = $this->arixkernel->arixkernel_obtener_simple_data('servicio_id axuidemp, descripcion ','servicios');
+		for ($i=0; $i < count($consulta); $i++) { 
+			$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
+		}
+		echo json_encode($consulta);
+	}
+	public function mpsr_get_categoria(){
+		$this->load->library('serv_cifrado');
+		$this->load->model('arixkernel');
+		$consulta = $this->arixkernel->arixkernel_obtener_simple_data("categoria_id axuidemp, concat (code,' ',descripcion) descripcion",'categorias');
+		for ($i=0; $i < count($consulta); $i++) { 
+			$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
+		}
+		echo json_encode($consulta);
+	}
+	public function mpsr_get_tipounidad(){//requiere si o si una peticion post
+		if($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$this->load->library('serv_cifrado');
+			$this->load->model('arixkernel');
+			$data = $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata'));
+			//$data = $this->serv_cifrado->cod_decifrar_cadena('5B956F5E2B3CCVzlyUmtpMWYwRWl5cDJ4OE10bWNPdz09');
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("clasificacion_id axuidemp, concat (code,' | ',substring(descripcion,0,16)) descripcion",'clasificaciones',0,array('categoria_id'=>$data));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
 			}
