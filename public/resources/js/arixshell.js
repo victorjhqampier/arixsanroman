@@ -158,7 +158,7 @@ function arixshell_cargar_sucursal(){
     var sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursal_actual');
     if (sucursal != null && !$.isNumeric(sucursal.nombre)) {
         $("nav").find('#sucursal-db small').text(sucursal.nombre.substring(0,20)+"...");
-        $('nav #sucursal-db-list').html('<a class="dropdown-item active" href="javascript:;" id="0xFF">Tienda '+sucursal.numero+', '+sucursal.nombre+'</a>');
+        $('nav #sucursal-db-list').html('<a class="dropdown-item active" href="javascript:;" id="0xFF">N-'+sucursal.numero+', '+sucursal.nombre+'</a>');
     }else{
         console.log('arixshell_cargar_usuario -> error');
     }
@@ -169,7 +169,7 @@ function arixshell_cargar_sucursal_lista(){
     if (sucursal != null && sucursal != 403) {
         //$(ubicacion).html('');//limias todo
         for (var i = 0; i < sucursal.length; i++) {
-           $(ubicacion).append('<a class="dropdown-item" href="javascript:;" id="'+sucursal[i].serial+'">Tienda '+sucursal[i].numero+', '+sucursal[i].nombre+'</a>');//agregas al final 
+           $(ubicacion).append('<a class="dropdown-item" href="javascript:;" id="'+sucursal[i].serial+'">N-'+sucursal[i].numero+', '+sucursal[i].nombre+'</a>');//agregas al final 
         }
     }else{
         console.log('arixshell_cargar_sucursal_lista-> error');
@@ -292,7 +292,7 @@ function arixshell_cargar_botones_menu(botones='btn-refrescar, btn-borrar'){
         console.log('arixshell_cargar_botones_menu -> error');
     }
 }
-function arixshell_cargar_boton_simple(botones='btn-detalles,btn-borrar'){//devuelve botones en bormato html
+/*function arixshell_cargar_boton_simple(botones='btn-detalles,btn-borrar'){//devuelve botones en bormato html
     botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
     if (botones != false) {
         var list = '';
@@ -303,8 +303,28 @@ function arixshell_cargar_boton_simple(botones='btn-detalles,btn-borrar'){//devu
     }else{
         console.log('arixshell_cargar_boton_simple -> error');
     }
+}*/
+
+function arixshell_cargar_botones(botones='btn-detalles,btn-borrar', attr=""){//devuelve botones en bormato html
+    //botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
+    botones = arix_search_btns(botones);
+    attr = attr.split(',');
+    if (botones != false) {
+        var list = '<div class="btn-group btn-group-sm">';
+        for (var i = 0; i < botones.length; i++) {
+            if(typeof(attr[i]) != "undefined"){
+                list+='<button type="button" '+attr[i]+' class="btn btn-secondary '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
+            }else{
+                list+='<button type="button" class="btn btn-secondary '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
+            }
+        }
+        return list+'</div>';
+    }else{
+        console.log('arixshell_cargar_boton_simple -> error');
+    }
 }
-function arixshell_cargar_botones_tabla(botones='btn-detalles,btn-borrar'){//devuelve botones en bormato html
+
+/*function arixshell_cargar_botones_tabla(botones='btn-detalles,btn-borrar'){//devuelve botones en bormato html
     botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
     if (botones != false) {
         var list = '<div class="btn-group btn-group-sm">';
@@ -315,7 +335,7 @@ function arixshell_cargar_botones_tabla(botones='btn-detalles,btn-borrar'){//dev
     }else{
         console.log('arixshell_cargar_boton_simple -> error');
     }
-}
+}*/
 function arixshell_cargar_idcontenedor_en_secondary(id){
     var id = id.replace(" ", "");
         id = id.replace("#", "");

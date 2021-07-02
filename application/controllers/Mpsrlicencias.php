@@ -17,6 +17,9 @@ class Mpsrlicencias extends CI_Controller {
     public function compania(){
 		$this->load->view('app_mprslicencias/empresas');
 	}
+	public function compania_add(){
+		$this->load->view('app_mprslicencias/empresas_add');
+	}
 
 	//FUNCIONES DE DATOS
 	public function mpsr_get_activeemp(){
@@ -25,7 +28,7 @@ class Mpsrlicencias extends CI_Controller {
 			$this->load->library('serv_cifrado');
 			$this->load->model('arixkernel');
 			//consulta construida por la funcion exe_construir_consultas
-			$consulta=array(Array('aut.nresolucion,aut.aufin','emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial','ser.descripcion'),Array('public.autorizaciones aut','public.empresas emp','public.servicios ser'),Array('NULL','aut.empresa_id = emp.empresa_id','emp.servicio_id = ser.servicio_id'));	
+			$consulta=array(Array('aut.nresolucion,aut.aufin','emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial','ser.descripcion'),Array('public.autorizaciones aut','public.empresas emp','public.servicios ser'),Array('NULL','aut.empresa_id = emp.empresa_id','aut.servicio_id = ser.servicio_id'));	
 			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado='=>true, 'aut.estado='=>true));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);

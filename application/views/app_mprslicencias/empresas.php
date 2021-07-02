@@ -89,12 +89,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
     arixshell_iniciar_llaves_locales("#btn_id_empresas","#con_id_empresas");//esta ultima se carga en el DOM secundario
-    arixshell_cargar_botones_menu('btn-buscar, btn-agregar');
+    arixshell_cargar_botones_menu('btn-agregar');
 
-    $(arixshell_cargar_llave_local(0)).on("click", ".btn-agregar", function() {// 0 = #btn_id_empleados_1; 1 = #con_id_empleados
-        //arixshell_cargar_contenido(window.location.href+'/sucursales_sub1');
-        console.log('Quiero garchar en otro lado');
+    $(arixshell_cargar_llave_local(0)).on("click", ".btn-agregar", function() {
+        arixshell_cargar_contenido(window.location.href+'/compania_add','Agregar Nueva Empresa');
     });
+    
     $('#use-container-primary').on("click", "#profile-tab", function() {// 0 = #btn_id_empleados_1; 1 = #con_id_empleados
         //arixshell_cargar_contenido(window.location.href+'/sucursales_sub1');
         arix_search_btns('btn-borrar, btn-guardar');
@@ -103,7 +103,7 @@ $(document).ready(function(){
     $('a #profile-tab').click(function() {
         alert( "Handler for .click() called." );
     });
-    btnss = arixshell_cargar_botones_tabla('btn-detalles, btn-imprimir');
+    btnss = arixshell_cargar_botones('btn-detalles, btn-imprimir');
     //caso = arixshell_download_datos("mpsrlicencias/mpsr_get_activeemp");
     //console.log(caso);
     $('#dataTable_emp_activos').DataTable({
@@ -129,10 +129,6 @@ $(document).ready(function(){
                 "targets": [ 0 ],
                 "visible": false,
                 "searchable": false
-            },
-            {
-                "targets": [ 8 ],
-                "visible": false
             }
         ]
     });
