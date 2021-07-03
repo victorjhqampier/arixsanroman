@@ -71,4 +71,27 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	public function mpsr_post_activeemp(){
+		$tabla1 = array(
+			'arry' => $this->input->post('txtruc'),
+			'arry' => $this->input->post('txtrsocial'),
+			'arry' => $this->input->post('txtnombre'),
+			'arry' => $this->input->post('txtdireccion'),
+			'arry' => $this->input->post('txttelefonos')
+		);
+		$tabla2 = array(
+			'arry' => $this->input->post('txtnresolucion'),
+			'arry' => $this->input->post('txtcresolucion'),
+			'arry' => $this->input->post('txtmodalidad'),
+			'arry' => $this->input->post('txtcategoria'),
+			'arry' => $this->input->post('txtunidad'),
+			'arry' => $this->input->post('txthorarios'),
+			'arry' => $this->input->post('txtfrecuencia'),
+			'arry' => $this->input->post('txtflota'),
+			'arry' => $this->input->post('txtfinicio'),
+			'arry' => $this->input->post('txtffinal'),
+			'arry' => $this->input->post('txtrinicio'),
+			'arry' => $this->input->post('txtrfinal')
+		);
+	}
 }

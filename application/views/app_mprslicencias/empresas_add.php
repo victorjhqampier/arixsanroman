@@ -73,12 +73,12 @@
                                 <input type="text" class="form-control form-control-sm" id="aut-frecuencia" name="txtfrecuencia" placeholder="Frecuencia"> </div>
                             <div class="form-group col-md-2">
                                 <label for="aut-flota">Flota</label>
-                                <input type="number" class="form-control form-control-sm" id="aut-flota" name="txtflota" placeholder="Flota"> </div>
+                                <input type="number" class="form-control form-control-sm" id="aut-flota" name="txtflota" placeholder="Flota" value="10"> </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="aut-finicio">Fecha de inicio de vigencia</label>
-                                <input type="text" class="form-control form-control-sm" id="aut-finicio" name="txtfinicio" placeholder="Cantidad"> </div>
+                                <input type="text" class="form-control form-control-sm" id="aut-finicio" name="txtfinicio" placeholder="Fecha de inicio de vigencia"> </div>
                             <div class="form-group col-md-6">
                                 <label for="aut-ffinal">Fecha de vencimiento</label>
                                 <select id="aut-ffinal" name="txtffinal" class="form-control form-control-sm">
@@ -121,9 +121,13 @@ $(document).ready(function(){
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-cerrar", function() {
         arixshell_hacer_pagina_atras();
         //arixshell_hacer_pagina_reiniciar();
-    });    
-    mpsr_cargar_opciones('#form-empr-new-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad');
+    });
+    //const hoy = new Date();
+    //console.log(formatoFecha(hoy, 'dd/mm/yy'));
+    mpsr_cargar_opciones('#form-empr-new-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad');    
     mpsr_cargar_opciones('#form-empr-new-add #aut-categoria','mpsrlicencias/mpsr_get_categoria', '<option selected>Escoja...</option>');
+    mpsr_subir_fechas('#form-empr-new-add #aut-finicio',true);
+    mpsr_subir_fechas('#form-empr-new-add #aut-ffinal',6);
     $('#form-empr-new-add #aut-categoria').change(function(){
         var r = $(this).val();
         mpsr_subir_opciones('#form-empr-new-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad', 'txtdata='+r+'&');
@@ -191,12 +195,10 @@ $(document).ready(function(){
             txtfinicio: {
                 required: true,
                 maxlength: 10,
-                minlength: 8
+                minlength: 6
             },
             txtffinal: {
                 required: true,
-                maxlength: 10,
-                minlength: 8
             },
             txtrinicio: {
                 required: true,
@@ -214,8 +216,8 @@ $(document).ready(function(){
         }
         else{
             console.log($("#form-empr-new-add").valid());
+            return;
         }
-
     });
     /*$('#form-empr-new-add').on("click", "#btn-enviar-empadd", function(){
         if($("#form-empr-new-add").valid()){
