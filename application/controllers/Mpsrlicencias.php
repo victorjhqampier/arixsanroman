@@ -2,7 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Mpsrlicencias extends CI_Controller {
 	function __construct(){
-		parent::__construct();		
+		parent::__construct();
+		date_default_timezone_set("America/Lima");	
 		$controlador=explode("/",$_SERVER['PHP_SELF']);$this->load->library('serv_administracion_usuarios');if(!$this->serv_administracion_usuarios->use_cargar_app_session($controlador[3])){show_404();}
 	}
 	
@@ -93,5 +94,16 @@ class Mpsrlicencias extends CI_Controller {
 			'arry' => $this->input->post('txtrinicio'),
 			'arry' => $this->input->post('txtrfinal')
 		);
+	}
+	public function mpsr_pruebas(){
+		//$data = array('nombre' => 'My title 47');
+		//echo $this->arixkernel->arixkernel_guargar_simple_data($data,'pruebas');
+		$datas = array(
+			array('nombre'=>'prueba_a 1'),
+			array('nombre'=>'prueba_b 2'),
+			array('nombre'=>'prueba_b 3')
+		);		
+		$tables = array('pruebas','bpruebas','cpruebas');
+		print_r($this->arixkernel->arixkernel_guargar_sequencial_data($datas,$tables));
 	}
 }

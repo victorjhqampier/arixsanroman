@@ -46,8 +46,8 @@ class Arixkernel extends CI_Model{
         $k = strlen($k);
         $plural = substr($plural, 0, $j-$k);
         return ($k==3)?$plural."z":$plural;
-    }
-
+	}
+	
 	private function probar_permiso_user($dato = 'select'){// evalua si da permiso o no al usuario; resive como parametros CRUD
 		$this->load->library('session');
 		$this->db->select('binario');
@@ -151,5 +151,44 @@ class Arixkernel extends CI_Model{
         else{
         	return $this->db->get()->result();
         }        
-    }
+	}
+	//FUNCION DE ROLLBACK
+	//FUNCION DE INSERT
+	//data = array(=>);
+	public function arixkernel_guargar_simple_data($data, $table){		
+		if($this->db->insert($table, $data)){
+			return $this->db->insert_id();
+		}else{
+			return false;
+		}
+	}
+	public function arixkernel_guargar_sequencial_data($datas, $tables){
+		$insert = array();
+		$this->db->trans_start();
+		if($this->db->insert($tables[0], $datas[0])){
+			$ids = $this->db->insert_id();
+			array_push($insert,$ids);
+			for ($i=1; $i < count($tables); $i++) {
+				$datas[$i][$this->arixkernel_table_to_id($tables[$i-1]).'_id'] = $ids;				
+				try{
+					$this->db->insert($tables[$i], $datas[$i]);
+					$ids = $this->db->insert_id();
+					array_push($insert,$ids);
+				}catch (PDOException $e){
+					$this->db->rollback();
+				}
+			}
+			$this->db->trans_complete();
+			if($this->db->trans_status()!==FALSE){
+				return array('status'=>true, 'ids'=>$insert);
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}	
+	}
+	public function arixkernel_guargar_parallel_data($data, $table){
+		return;
+	}
 }
