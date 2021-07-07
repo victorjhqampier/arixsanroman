@@ -162,6 +162,7 @@ class Arixkernel extends CI_Model{
 			return false;
 		}
 	}
+	
 	public function arixkernel_guargar_sequencial_data($datas, $tables){
 		$insert = array();
 		$this->db->trans_start();

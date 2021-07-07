@@ -39,6 +39,7 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	
 	public function mpsr_get_modalidad(){
 		$this->load->library('serv_cifrado');
 		$this->load->model('arixkernel');
@@ -72,28 +73,82 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	public function mpsr_post_activeemp(){
-		$tabla1 = array(
-			'arry' => $this->input->post('txtruc'),
-			'arry' => $this->input->post('txtrsocial'),
-			'arry' => $this->input->post('txtnombre'),
-			'arry' => $this->input->post('txtdireccion'),
-			'arry' => $this->input->post('txttelefonos')
-		);
-		$tabla2 = array(
-			'arry' => $this->input->post('txtnresolucion'),
-			'arry' => $this->input->post('txtcresolucion'),
-			'arry' => $this->input->post('txtmodalidad'),
-			'arry' => $this->input->post('txtcategoria'),
-			'arry' => $this->input->post('txtunidad'),
-			'arry' => $this->input->post('txthorarios'),
-			'arry' => $this->input->post('txtfrecuencia'),
-			'arry' => $this->input->post('txtflota'),
-			'arry' => $this->input->post('txtfinicio'),
-			'arry' => $this->input->post('txtffinal'),
-			'arry' => $this->input->post('txtrinicio'),
-			'arry' => $this->input->post('txtrfinal')
-		);
+	public function mpsr_post_emprmpsr(){
+		if($this->input->is_ajax_request() && $this->input->post('txtruc')){
+			$datos = array(
+				array(
+					'ruc' => $this->input->post('txtruc'),
+					'rsocial' => $this->input->post('txtrsocial'),
+					'nombre' => $this->input->post('txtnombre'),
+					'direccion' => $this->input->post('txtdireccion'),
+					'telefono' => $this->input->post('txttelefonos')
+				),array(
+					//'empresa_id' => _Automaticamente_ creado y ejecutado por Arixkernel,
+					'nresolucion' => $this->input->post('txtnresolucion'),
+					'cautorizacion' => $this->input->post('txtcresolucion'),
+					'servicio_id' => $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtmodalidad')),//decifrar
+					'clasificacion_id' => $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtunidad')),//
+					'horario' => $this->input->post('txthorarios'),
+					'frecuencia' => $this->input->post('txtfrecuencia'),
+					'nvehiculos' => $this->input->post('txtflota'),
+					'auinicio' => $this->input->post('txtfinicio'),//formatear YY/mm/dd
+					'aufin' => $this->input->post('txtffinal'),
+					'rutaini' => $this->input->post('txtrinicio'),
+					'rutafin' => $this->input->post('txtrfinal')
+				)
+			);
+			/*$datos = array(
+				array(
+					'ruc' => '48521065985',
+					'rsocial' => 'ARIX TRERRA BUS SAC',
+					'nombre' => 'ARIX INTERNACIONAL TRANSPORTE',
+					'direccion' => 'Jr amazonasm123 Puno',
+					'telefono' => '968991714'
+				),array(
+					//'empresa_id' => _Automaticamente_ creado y ejecutado por Arixkernel,
+					'nresolucion' => '9856-MPSR/HGKRND',
+					'cautorizacion' => 'Resolucion de tipo -R2',
+					'servicio_id' => $this->serv_cifrado->cod_decifrar_cadena('248558E9F6C41L1VrTWRsdXBvRllQaFFNSG5EWWMzZz09'),//decifrar
+					'clasificacion_id' => $this->serv_cifrado->cod_decifrar_cadena('DD2506F2D783FZGRvN2JmTjJpallUa0ZGcG9DVjlnQT09'),//
+					'horario' => 'DESDE 5 HASTA LAS 20 HORAS',
+					'frecuencia' => 'ENTRE 5-4 MINUTOS',
+					'nvehiculos' => 15,
+					'auinicio' => '6/7/21',//formatear YY/mm/dd
+					'aufin' => '2021/12/31',
+					'rutaini' => 'DESDE AQUI 1',
+					'rutafin' => 'HASTA AQUI 2'
+				)
+			);*/
+			$tables = array('empresas','autorizaciones');
+			$tables = $this->arixkernel->arixkernel_guargar_sequencial_data($datos,$tables);
+			echo json_encode(array('status'=>$tables['status']));
+		}else{
+			show_404();
+		}			
+	}
+	public function mpsr_post_duplicateru(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('ruc', 'empresas', false, array('ruc'=>$this->input->post('txtdata')));
+			if(!is_null($consulta)){
+				echo json_encode(array('status'=>true));
+			}else{
+				echo json_encode(array('status'=>false));
+			}
+		}else{
+			show_404();
+		}
+	}
+	public function mpsr_post_duplicateres(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('nresolucion', 'autorizaciones', false, array('nresolucion'=>$this->input->post('txtdata')));
+			if(!is_null($consulta)){
+				echo json_encode(array('status'=>true));
+			}else{
+				echo json_encode(array('status'=>false));
+			}
+		}else{
+			show_404();
+		}
 	}
 	public function mpsr_pruebas(){
 		//$data = array('nombre' => 'My title 47');

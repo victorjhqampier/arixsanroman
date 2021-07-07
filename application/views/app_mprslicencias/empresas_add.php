@@ -142,7 +142,7 @@ $(document).ready(function(){
             },
             txtrsocial: {
                 required: true,
-                maxlength: 32,
+                maxlength: 150,
                 minlength: 7
             },
             txtnombre: {
@@ -210,15 +210,48 @@ $(document).ready(function(){
             }
         }
     })
-    $("#btn-enviar-empadd").click(function () {
+    $("#btn-enviar-empadd").click(function () {     
         if($("#form-empr-new-add").valid()){
-            console.log($('form').serialize());
+            var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('form').serialize());
+            if(request['status']===true){//el servidor siempre responde con un obejeto
+                arixshell_hacer_pagina_atras();
+            }
+            else{
+                alert('Lo sentimos, los datos no fueron guardados ...!');
+                arixshell_hacer_pagina_atras();
+            }
         }
         else{
-            console.log($("#form-empr-new-add").valid());
             return;
         }
     });
+    $("#form-empr-new-add #emp-ruc").blur(function(){
+        var request = $(this).val();
+        request.length == 11 ? request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateru', 'txtdata='+request+'&') : request['status']=true;        
+        if(request['status']==false){
+            $("#form-empr-new-add #emp-ruc").addClass('is-valid');
+        }else{
+            $("#form-empr-new-add #emp-ruc").val("");
+            $("#form-empr-new-add #emp-ruc").removeClass('is-valid');            
+        }
+    });
+    $("#form-empr-new-add #aut-nresolucion").blur(function(){
+        var request = $(this).val();
+        request.length > 11 ? request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateres', 'txtdata='+request+'&') : request['status']=true;
+        //request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateres', 'txtdata='+request+'&');
+        //console.log(request);
+        if(request['status']==false){
+            $("#form-empr-new-add #aut-nresolucion").addClass('is-valid');
+        }else{
+            $("#form-empr-new-add #aut-nresolucion").val("");
+            $("#form-empr-new-add #aut-nresolucion").removeClass('is-valid');            
+        }
+    });
+    /*$("#emp-ruc").blur(function(){
+        var c=$(this).val();
+        (c=checkReciboCard(c))||
+        $("#carecibo").val("")
+    });*/
     /*$('#form-empr-new-add').on("click", "#btn-enviar-empadd", function(){
         if($("#form-empr-new-add").valid()){
             console.log($('form').serialize());
