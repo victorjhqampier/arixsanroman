@@ -9,7 +9,7 @@ class Mpsrlicencias extends CI_Controller {
 	
 	public function index(){
 		$this->load->library('serv_ejecucion_app');
-		$js = $this->serv_ejecucion_app->exe_cargar_js('mpsr-arixjs');
+		$js = $this->serv_ejecucion_app->exe_cargar_js('mpsr-arixjs, Chart');
 		$this->load->view('arixshellbase',compact('js'));
 	}
 	public function mpsrdashboard(){
@@ -21,6 +21,13 @@ class Mpsrlicencias extends CI_Controller {
 	public function compania_add(){
 		$this->load->view('app_mprslicencias/empresas_add');
 	}
+	public function compania_view(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/empresas_view');
+		}else{
+			show_404();
+		}
+	}
 
 	//FUNCIONES DE DATOS
 	public function mpsr_get_activeemp(){
@@ -29,7 +36,7 @@ class Mpsrlicencias extends CI_Controller {
 			$this->load->library('serv_cifrado');
 			$this->load->model('arixkernel');
 			//consulta construida por la funcion exe_construir_consultas
-			$consulta=array(Array('aut.nresolucion,aut.aufin','emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial','ser.descripcion'),Array('public.autorizaciones aut','public.empresas emp','public.servicios ser'),Array('NULL','aut.empresa_id = emp.empresa_id','aut.servicio_id = ser.servicio_id'));	
+			$consulta=array(Array('aut.nresolucion,aut.aufin,aut.factualizacion fecha','emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial','ser.descripcion'),Array('public.autorizaciones aut','public.empresas emp','public.servicios ser'),Array('NULL','aut.empresa_id = emp.empresa_id','aut.servicio_id = ser.servicio_id'));	
 			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado='=>true, 'aut.estado='=>true));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);

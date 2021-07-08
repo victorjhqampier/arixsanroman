@@ -19,6 +19,7 @@
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
+                            <th scope="col">fecha</th>
                             <th scope="col">RUC</th>                            
                             <th scope="col">Resolución</th>
                             <th scope="col">Nombre</th>
@@ -113,6 +114,7 @@ $(document).ready(function(){
         },
         "columns":[
             {"data": 'axuidemp'},
+            {"data": 'fecha'},
             {"data": 'ruc'},            
             {"data": 'nresolucion'},
             {"data": 'nombre'},
@@ -122,15 +124,33 @@ $(document).ready(function(){
             {"data": null, render: function ( data, type, row ) {return btnss;}}
         ],
         "order": [
-            [ 1, "asc" ]
+            [ 1, "desc" ]
         ],
         "columnDefs": [
             {
-                "targets": [ 0 ],
+                "targets": [0],
+                "visible": false,
+                "searchable": true
+            },
+            {
+                "targets": [1],
                 "visible": false,
                 "searchable": false
             }
-        ]
+        ],
+        /*createdRow: function( row, data, dataIndex ) {
+            // Set the data-status attribute, and add a class
+            $(row).find('td:eq(3)').attr('odd', row.axuidemp);
+        }*/
+        "createdRow": function( row, data, dataIndex ) {
+            $(row).attr('odd', data.axuidemp);         
+        }
     });
+    $('#dataTable_emp_activos tbody').on( 'click', '.btn-detalles', function () {
+        var fila = $(this).closest("tr"), uid = fila.attr('odd');
+        //toda la lista
+        //fila = fila.find("td").text();
+        arixshell_cargar_contenido(window.location.href+'/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(3)').text());
+   } );
 });
 </script>

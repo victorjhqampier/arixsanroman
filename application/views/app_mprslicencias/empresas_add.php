@@ -148,7 +148,7 @@ $(document).ready(function(){
             txtnombre: {
                 required: true,
                 maxlength: 150,
-                minlength: 7
+                minlength: 4
             },
             txtdireccion: {
                 required: true,
