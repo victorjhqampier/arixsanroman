@@ -65,6 +65,7 @@ function mpsr_subir_fechas(location, year){
         $(location).val(formatoFecha(hoy, 'dd/mm/yy'));
     }
 }
+
 Swal.fire({
     title: 'Error!',
     text: 'Do you want to continue',

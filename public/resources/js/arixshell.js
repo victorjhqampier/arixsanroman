@@ -1,7 +1,7 @@
 function arixshell_download_datos(urls){//Solicita datos a un determinado servidor
 	//var a= null;
     $.ajax({
-     	type: 'POST',
+     	type: 'GET',
         url: urls,
         async: !1,
         dataType: 'json',

@@ -7,8 +7,9 @@
                     <div class="card-header text-center"><strong>Datos de la Empresa de Transportes</strong></div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="emp-ruc">R.U.C.</label>
-                            <input type="text" class="form-control col-sm-6" id="emp-ruc" name="txtruc" placeholder="RUC de la empresa"> </div>
+                            <label for="emp-ruc">R.U.C.</label>                           
+                            <input type="text" class="form-control col-sm-6" id="emp-ruc" name="txtruc" placeholder="RUC de la empresa">                        
+                        </div>
                         <div class="form-group">
                             <label for="emp-rsocial">Razon Social</label>
                             <input type="text" class="form-control form-control-sm" id="emp-rsocial" name="txtrsocial" placeholder="Razon social de la empresa"> </div>
@@ -122,6 +123,16 @@ $(document).ready(function(){
         arixshell_hacer_pagina_atras();
         //arixshell_hacer_pagina_reiniciar();
     });
+    function mpsradd_get_emp(ruc){
+        request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/ruc/'+ruc+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
+        if (request['ruc']== ruc){
+            $("#form-empr-new-add #emp-rsocial").val(request.razonSocial);
+            $("#form-empr-new-add #emp-nombre").val(request.nombreComercial);
+            $("#form-empr-new-add #emp-direccion").val(request.direccion+' '+request.distrito+' '+request.provincia+' '+request.departamento);
+        }else{
+            return;
+        }
+    }
     //const hoy = new Date();
     //console.log(formatoFecha(hoy, 'dd/mm/yy'));
     mpsr_cargar_opciones('#form-empr-new-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad');    
@@ -226,9 +237,10 @@ $(document).ready(function(){
         }
     });
     $("#form-empr-new-add #emp-ruc").blur(function(){
-        var request = $(this).val();
+        var data = request = $(this).val();
         request.length == 11 ? request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateru', 'txtdata='+request+'&') : request['status']=true;        
         if(request['status']==false){
+            mpsradd_get_emp(data);
             $("#form-empr-new-add #emp-ruc").addClass('is-valid');
         }else{
             $("#form-empr-new-add #emp-ruc").val("");
