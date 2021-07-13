@@ -133,6 +133,9 @@ class Serv_administracion_usuarios {
         $usuario = $this->ci->arixkernel->select_one_content('documento, nombres, paterno, materno','config.v_persona_empleado_cuenta', array('cuenta_id' => $cuenta));
         return $usuario;
     }
+    public function use_obtener_sucursal_id_actual(){//solo recupera de la sesion
+        return $this->ci->session->userdata('sucursal');//sucursal_id sid
+    }
     public function use_obtener_sucursal_actual(){//solo recupera de la sesion
         $sucursal_actual = $this->ci->session->userdata('sucursal');//sucursal_id sid
         $usuario = $this->ci->arixkernel->select_one_content('numero, nombre','config.sucursales', array('sucursal_id' => $sucursal_actual));

@@ -22,6 +22,13 @@
                         <div class="form-group">
                             <label for="emp-telefonos">Teléfonos</label>
                             <input type="text" class="form-control form-control-sm" id="emp-telefonos" name="txttelefonos" placeholder="Teléfonos de la empresa"> </div>
+                        <div class="form-group">
+                            <label for="emp-telefonos">Administrador</label>
+                            <input type="text" class="form-control form-control-sm" id="emp-mamanger" name="txtmanager" placeholder="Teléfonos de la empresa"> 
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control form-control-sm" name="txtadminkey" >
+                        </div>
                     </div>
                     <div class="card-footer"> <small class="text-muted">El ruc se comprobará para evitar duplicidad</small> </div>
                 </div>
@@ -224,12 +231,13 @@ $(document).ready(function(){
     $("#btn-enviar-empadd").click(function () {     
         if($("#form-empr-new-add").valid()){
             var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('form').serialize());
+            console.log(request);
             if(request['status']===true){//el servidor siempre responde con un obejeto
-                arixshell_hacer_pagina_atras();
+                //arixshell_hacer_pagina_atras();
             }
             else{
                 alert('Lo sentimos, los datos no fueron guardados ...!');
-                arixshell_hacer_pagina_atras();
+                //arixshell_hacer_pagina_atras();
             }
         }
         else{

@@ -28,16 +28,57 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	public function mayores(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/mayores');
+		}else{
+			show_404();
+		}
+	}
+	public function mayores_add(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/mayores_add');
+		}else{
+			show_404();
+		}
+	}
 
 	//FUNCIONES DE DATOS
 	public function mpsr_get_activeemp(){
 		if ($this->input->is_ajax_request()){
 			//$this->load->library('serv_ejecucion_app');
 			$this->load->library('serv_cifrado');
+			$this->load->library('serv_administracion_usuarios');		 
 			$this->load->model('arixkernel');
 			//consulta construida por la funcion exe_construir_consultas
-			$consulta=array(Array('aut.nresolucion,aut.aufin,aut.factualizacion fecha','emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial','ser.descripcion'),Array('public.autorizaciones aut','public.empresas emp','public.servicios ser'),Array('NULL','aut.empresa_id = emp.empresa_id','aut.servicio_id = ser.servicio_id'));	
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado='=>true, 'aut.estado='=>true));
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			/*$consulta=array(
+				Array(
+					'aut.nresolucion,aut.aufin,aut.factualizacion fecha',
+					'emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial',
+					'ser.descripcion'),
+				Array(
+					'public.autorizaciones aut','public.empresas emp','public.servicios ser'),
+				Array(
+					'NULL','aut.empresa_id = emp.empresa_id','aut.servicio_id = ser.servicio_id'));*/
+			$consulta = array(
+				Array (
+					'aut.nresolucion,aut.aufin,aut.factualizacion fecha, aut.nvehiculos numv',
+					'emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial',
+					'cla.code'
+				),
+				Array (
+					'public.autorizaciones aut',
+					'public.empresas emp',
+					'public.clasificaciones cla'
+				),
+				Array (
+					'NULL',
+					'aut.empresa_id = emp.empresa_id',
+					'aut.clasificacion_id = cla.clasificacion_id'
+				)
+			);
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado='=>true, 'aut.estadosan='=>false, 'aut.estado='=>true, 'cla.sucursal_id'=>$sucu));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
 			}
@@ -160,12 +201,23 @@ class Mpsrlicencias extends CI_Controller {
 	public function mpsr_pruebas(){
 		//$data = array('nombre' => 'My title 47');
 		//echo $this->arixkernel->arixkernel_guargar_simple_data($data,'pruebas');
-		$datas = array(
+		/*$datas = array(
 			array('nombre'=>'prueba_a 1'),
 			array('nombre'=>'prueba_b 2'),
 			array('nombre'=>'prueba_b 3')
 		);		
 		$tables = array('pruebas','bpruebas','cpruebas');
-		print_r($this->arixkernel->arixkernel_guargar_sequencial_data($datas,$tables));
+		print_r($this->arixkernel->arixkernel_guargar_sequencial_data($datas,$tables));*/
+		
+		/*$this->load->library('serv_administracion_usuarios');
+		echo $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();*/
+		$this->load->library('serv_ejecucion_app');
+		$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(
+            'public.autorizaciones'=>'nresolucion,nvehiculos,aufin,factualizacion',
+            'public.empresas'=>'empresa_id,ruc,nombre,rsocial',
+            'public.clasificaciones'=>'code'
+		), array(1,0,1));
+		//$array_tabla_tupla  = $this->arixkernel->arixkernel_obtener_complex_data($array_tabla_tupla,0,array('emp.estado='=>true, 'aut.estado='=>true));
+		print_r($array_tabla_tupla);
 	}
 }
