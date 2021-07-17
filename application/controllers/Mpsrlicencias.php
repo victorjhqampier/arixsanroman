@@ -42,6 +42,20 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	public function actvehiculos(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('templates/person_add');
+		}else{
+			show_404();
+		}
+	}
+	public function acthehiculos(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('gen_user_new');
+		}else{
+			show_404();
+		}
+	}
 
 	//FUNCIONES DE DATOS
 	public function mpsr_get_activeemp(){
@@ -107,12 +121,14 @@ class Mpsrlicencias extends CI_Controller {
 		echo json_encode($consulta);
 	}
 	public function mpsr_get_tipounidad(){//requiere si o si una peticion post
-		if($this->input->is_ajax_request() && $this->input->post('txtdata')){
+		if($this->input->is_ajax_request()){
 			$this->load->library('serv_cifrado');
 			$this->load->model('arixkernel');
-			$data = $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata'));
+			$this->load->library('serv_administracion_usuarios');
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			//$data = $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata'));
 			//$data = $this->serv_cifrado->cod_decifrar_cadena('5B956F5E2B3CCVzlyUmtpMWYwRWl5cDJ4OE10bWNPdz09');
-			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("clasificacion_id axuidemp, concat (code,' | ',substring(descripcion,0,16)) descripcion",'clasificaciones',0,array('categoria_id'=>$data));
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("clasificacion_id axuidemp, concat (code,' | ',substring(descripcion,0,16)) descripcion",'clasificaciones',0,array('sucursal_id'=>$sucu));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
 			}
@@ -211,13 +227,16 @@ class Mpsrlicencias extends CI_Controller {
 		
 		/*$this->load->library('serv_administracion_usuarios');
 		echo $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();*/
-		$this->load->library('serv_ejecucion_app');
+		/*$this->load->library('serv_ejecucion_app');
 		$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(
             'public.autorizaciones'=>'nresolucion,nvehiculos,aufin,factualizacion',
             'public.empresas'=>'empresa_id,ruc,nombre,rsocial',
             'public.clasificaciones'=>'code'
-		), array(1,0,1));
+		), array(1,0,1));*/
 		//$array_tabla_tupla  = $this->arixkernel->arixkernel_obtener_complex_data($array_tabla_tupla,0,array('emp.estado='=>true, 'aut.estado='=>true));
-		print_r($array_tabla_tupla);
+		//print_r($array_tabla_tupla);
+		$this->load->library('serv_cifrado');		
+		//print_r ($this->serv_cifrado->cod_cifrar_cadena('mi pene es grande'));
+		print_r ($this->serv_cifrado->cod_decifrar_cadena('CDC84DE2700EEOW5IOGdmUk5vTlY3WW9WVGZ2NjhJdkZHU08xa3ZWNG43YVc0WHhGWkJmND0='));
 	}
 }

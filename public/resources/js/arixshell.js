@@ -432,8 +432,30 @@ function arixshell_cargar_lista_cards(tabla,btns='btn-detalles,btn-borrar',cant)
         console.log('arixshell_cargar_lista_cards -> error');
     }
 }
-function arixshell_cargar_datatables(id_table, data_source, bottoms){
-    return 0;
+function arixshell_cargar_opciones(location, url, html=''){
+    var data = arixshell_download_datos(url),keys=[];
+    if(typeof(data)==='object'){
+        $(location).html(html);
+        for (var key in data[0]) {keys.push(key);}
+        for(var i =0; i<data.length; i++){
+            $(location).append('<option value="'+data[i][keys[0]]+'" >'+data[i][keys[1]]+'</option>');
+        }
+    }else{
+        console.log('mpsr_cargar_servicios -- Error');
+    }
+}
+
+function arixshell_subir_opciones(location,url,data,html=''){
+    var data = arixshell_upload_datos(url, data), keys=[];
+    if(typeof(data)==='object'){
+        $(location).html(html);
+        for (var key in data[0]) {keys.push(key);}
+        for(var i =0; i<data.length; i++){
+            $(location).append('<option value="'+data[i][keys[0]]+'" >'+data[i][keys[1]]+'</option>');
+        }
+    }else{
+        console.log('mpsr_subir_opciones -- Error');
+    }
 }
 /*----------------REDESARROLLAR MODULO DE TITULOS---------*/
 

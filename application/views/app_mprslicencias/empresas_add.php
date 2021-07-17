@@ -6,26 +6,40 @@
                 <div class="card">
                     <div class="card-header text-center"><strong>Datos de la Empresa de Transportes</strong></div>
                     <div class="card-body">
-                        <div class="form-group">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="emp-ruc">R.U.C.</label>                          
+                                <input type="text" class="form-control" id="emp-ruc" name="txtruc" placeholder="RUC de la empresa">                                
+                            </div>
+                            <div class="form-group col-md-8">
+                                <!--label for="emp-telefonos">Administrador</label>
+                                <input type="text" class="form-control" id="emp-mamanger" name="txtmanager" placeholder="DNI del administrador"-->
+                                <label for="emp-telefonos">Administrador</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="DNI del administrador" aria-label="Recipient's username" aria-describedby="basic-addon2" id="emp-mamanger" name="txtmanager">
+                                    <div class="input-group-append">
+                                        <!--a href="javascript:;" class="btn btn-outline-secondary" type="button" id="btn-search-people"><i class="fa fa-search"></i></a-->
+                                        <button class="btn btn-outline-secondary" type="button" id="btn-search-people"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--div class="form-group">
                             <label for="emp-ruc">R.U.C.</label>                           
                             <input type="text" class="form-control col-sm-6" id="emp-ruc" name="txtruc" placeholder="RUC de la empresa">                        
-                        </div>
-                        <div class="form-group">
+                        </div-->
+                        <div class="form-group input-group-sm">
                             <label for="emp-rsocial">Razon Social</label>
-                            <input type="text" class="form-control form-control-sm" id="emp-rsocial" name="txtrsocial" placeholder="Razon social de la empresa"> </div>
-                        <div class="form-group">
+                            <input type="text" class="form-control" id="emp-rsocial" name="txtrsocial" placeholder="Razon social de la empresa"> </div>
+                        <div class="form-group input-group-sm">
                             <label for="emp-nombre">Nombre Comercial</label>
-                            <input type="text" class="form-control form-control-sm" id="emp-nombre" name="txtnombre" placeholder="Nombre comercial de la empresa"> </div>
-                        <div class="form-group">
+                            <input type="text" class="form-control" id="emp-nombre" name="txtnombre" placeholder="Nombre comercial de la empresa"> </div>
+                        <div class="form-group input-group-sm">
                             <label for="emp-direccion">Dirección Fiscal</label>
-                            <input type="text" class="form-control form-control-sm" id="emp-direccion" name="txtdireccion" placeholder="Dirección fiscal de la empresa"> </div>
+                            <input type="text" class="form-control" id="emp-direccion" name="txtdireccion" placeholder="Dirección fiscal de la empresa"> </div>
                         <div class="form-group">
                             <label for="emp-telefonos">Teléfonos</label>
                             <input type="text" class="form-control form-control-sm" id="emp-telefonos" name="txttelefonos" placeholder="Teléfonos de la empresa"> </div>
-                        <div class="form-group">
-                            <label for="emp-telefonos">Administrador</label>
-                            <input type="text" class="form-control form-control-sm" id="emp-mamanger" name="txtmanager" placeholder="Teléfonos de la empresa"> 
-                        </div>
                         <div class="form-group">
                             <input type="text" class="form-control form-control-sm" name="txtadminkey" >
                         </div>
@@ -53,19 +67,13 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label for="aut-modalidad">Modalidad se servicio</label>
                                 <select id="aut-modalidad" name="txtmodalidad" class="form-control form-control-sm">
                                     <option selected>Cargarndo...</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="aut-categoria">Categoria de Unidad</label>
-                                <select id="aut-categoria" name="txtcategoria" class="form-control form-control-sm">
-                                    <option selected>Cargarndo...</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label for="aut-tunidad">Tipo de Unidad</label>
                                 <select id="aut-tunidad" name="txtunidad" class="form-control form-control-sm">
                                     <option selected>Cargarndo...</option>
@@ -142,14 +150,15 @@ $(document).ready(function(){
     }
     //const hoy = new Date();
     //console.log(formatoFecha(hoy, 'dd/mm/yy'));
-    mpsr_cargar_opciones('#form-empr-new-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad');    
-    mpsr_cargar_opciones('#form-empr-new-add #aut-categoria','mpsrlicencias/mpsr_get_categoria', '<option selected>Escoja...</option>');
+    arixshell_cargar_opciones('#form-empr-new-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad');    
+    //mpsr_cargar_opciones('#form-empr-new-add #aut-categoria','mpsrlicencias/mpsr_get_categoria', '<option selected>Escoja...</option>');
     mpsr_subir_fechas('#form-empr-new-add #aut-finicio',true);
     mpsr_subir_fechas('#form-empr-new-add #aut-ffinal',6);
-    $('#form-empr-new-add #aut-categoria').change(function(){
+    arixshell_cargar_opciones('#form-empr-new-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad');
+    /*$('#form-empr-new-add #aut-categoria').change(function(){
         var r = $(this).val();
         mpsr_subir_opciones('#form-empr-new-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad', 'txtdata='+r+'&');
-    });    
+    });*/
     $("#form-empr-new-add").validate({
         errorClass: "text-danger",
         rules: {
@@ -244,6 +253,12 @@ $(document).ready(function(){
             return;
         }
     });
+    
+    $("#form-empr-new-add #btn-search-people").click(function () {
+
+        alert('nepe');
+    });
+
     $("#form-empr-new-add #emp-ruc").blur(function(){
         var data = request = $(this).val();
         request.length == 11 ? request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateru', 'txtdata='+request+'&') : request['status']=true;        

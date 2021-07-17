@@ -130,6 +130,50 @@ class Arixapi extends CI_Controller {
 			echo json_encode(array('status' => 403));
 		}
 	}
+	public function arixapi_save_person(){
+		return;
+	}
+	public function arixapi_get_departamentos(){//get
+		if ($this->input->is_ajax_request()){
+			$this->load->library('serv_cifrado');
+			$this->load->model('arixkernel');
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('departamento_id axuidob, departamento','private.departamentos');
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidob= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidob);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
+	public function arixapi_get_provincias(){//post
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$this->load->library('serv_cifrado');
+			$this->load->model('arixkernel');
+			$sucu = $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata'));
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('provincia_id axuidob, provincia','private.provincias',0,array('departamento_id'=>$sucu));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidob= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidob);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
+	public function arixapi_get_distritos(){//post
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$this->load->library('serv_cifrado');
+			$this->load->model('arixkernel');
+			$sucu = $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata'));
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('distrito_id axuidob, distrito','private.distritos',0,array('provincia_id'=>$sucu));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidob= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidob);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
 	public function probar_arixapi(){
 		$data = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
 		print_r($data);
