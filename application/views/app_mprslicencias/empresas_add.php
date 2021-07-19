@@ -41,7 +41,7 @@
                             <label for="emp-telefonos">Teléfonos</label>
                             <input type="text" class="form-control form-control-sm" id="emp-telefonos" name="txttelefonos" placeholder="Teléfonos de la empresa"> </div>
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-sm" name="txtadminkey" >
+                            <input type="hidden" class="d-none" id="emp-adminname" name="txtadminkey">
                         </div>
                     </div>
                     <div class="card-footer"> <small class="text-muted">El ruc se comprobará para evitar duplicidad</small> </div>
@@ -253,10 +253,26 @@ $(document).ready(function(){
             return;
         }
     });
-    
+    //boton para buscar administrador
     $("#form-empr-new-add #btn-search-people").click(function () {
-
-        alert('nepe');
+        var temp = $("#form-empr-new-add #emp-mamanger").val();
+        if(temp.length==8){
+            //el ultimo representa el id del boton
+            arixshell_abrir_modalbase('Nuevo Usuario','arixapi/arixapi_get_form_person','btn-cerrar-modalNewUser');
+        }else{
+            return;
+        }        
+    });
+    //ojo en el boton que hace click
+    $(document).on('click', '#btn-cerrar-modalNewUser', function(){
+        var infor = arixshell_read_cache_serial('e0x005477arixNewUser');//otorgado por eldesarrollador del formulario anterior
+        if(infor!==null){
+            $('#form-empr-new-add #emp-mamanger').val(infor['data']);
+            $('#form-empr-new-add #emp-adminname').val(infor['id']);
+            arixshell_cerrar_modalbase();    
+        }else{
+            arixshell_cerrar_modalbase();
+        }
     });
 
     $("#form-empr-new-add #emp-ruc").blur(function(){
@@ -282,19 +298,11 @@ $(document).ready(function(){
             $("#form-empr-new-add #aut-nresolucion").removeClass('is-valid');            
         }
     });
-    /*$("#emp-ruc").blur(function(){
-        var c=$(this).val();
-        (c=checkReciboCard(c))||
-        $("#carecibo").val("")
+    //si ago click en el modal y el nombre que aparece
+    /*$('#arixgeneralmodal tbody').on("click", "tr", function() {
+        var fila = $(this).closest("tr"), uid = fila.attr('odd');
+        //alert($(this).attr('odd'));
+        alert('carajo');
     });*/
-    /*$('#form-empr-new-add').on("click", "#btn-enviar-empadd", function(){
-        if($("#form-empr-new-add").valid()){
-            console.log($('form').serialize());
-        }
-        else{
-            console.log($("#form-empr-new-add").valid());
-            //return;
-        }
-    });*/
-}); 
+});
 </script>

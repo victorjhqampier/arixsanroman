@@ -62,12 +62,12 @@ function arixshell_add_cache_page(location, url){
         return;
     }
 }
-function arixshell_write_cache_serial(serial){
-    sessionStorage.setItem('last_serial', serial);
+function arixshell_write_cache_serial(serial,dataOne, dataTwo = ''){
+    sessionStorage.setItem('axtemp'+serial, '{ "id":"'+dataOne+'", "data": "'+dataTwo+'"}');
 }
-function arixshell_read_cache_serial(){
-    var temp = sessionStorage.getItem("last_serial");
-    sessionStorage.setItem('last_serial', null);
+function arixshell_read_cache_serial(serial){
+    var temp=JSON.parse(sessionStorage.getItem('axtemp'+serial));
+    sessionStorage.setItem('axtemp'+serial, null);
     return temp;
 }
 function arixshell_cargar_auto_subtitulos(){
@@ -456,6 +456,21 @@ function arixshell_subir_opciones(location,url,data,html=''){
     }else{
         console.log('mpsr_subir_opciones -- Error');
     }
+}
+function arixshell_abrir_modalbase(titulo,loadurl,btnkey){    
+    $('#arixgeneralmodal .modal-title').text(titulo);
+    arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal .modal-body');
+    $('.modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Cerrar</button>');
+    $('#arixgeneralmodal').modal({
+        keyboard: false,
+        backdrop: "static",
+        show:true
+    });
+}
+function arixshell_cerrar_modalbase(){
+    $('#arixgeneralmodal .modal-footer').html('');
+    $('#arixgeneralmodal .modal-body').html('');
+    $('#arixgeneralmodal').modal('hide');
 }
 /*----------------REDESARROLLAR MODULO DE TITULOS---------*/
 

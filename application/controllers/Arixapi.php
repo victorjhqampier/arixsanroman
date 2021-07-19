@@ -174,11 +174,37 @@ class Arixapi extends CI_Controller {
 			show_404();
 		}
 	}
+	public function arixapi_get_form_person(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('templates/person_add');
+		}else{
+			show_404();
+		}
+	}
+	public function arixapi_post_personas(){//post
+		if($this->input->is_ajax_request() && $this->input->post('txtperdni')){
+			$data = array(
+				'documento'=>$this->input->post('txtperdni'),
+				'nombres'=>$this->input->post('txtpername'),
+				'paterno'=>$this->input->post('txtperlasname'),
+				'materno'=>$this->input->post('txtfirstname'),
+				'nacimiento'=>$this->input->post('txtborndate'),
+				'sexo'=>$this->input->post('txtpersexe'),
+				'direccion'=>$this->input->post('txtperaddress'),
+				'distrito_id'=>$this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtperdistrite')),
+				'correo'=>$this->input->post('txtperemail'),
+				'telefono'=>$this->input->post('txtperphone'),
+				'fotografia'=>'public/images/users/tu39hnri84fhe2.png'
+			);
+			$data = $this->arixkernel->arixkernel_guargar_simple_data($data, 'private.personas');
+			$data['id']=$this->serv_cifrado->cod_cifrar_cadena($data['id']);
+			echo json_encode($data);
+		}else{
+			show_404();
+		}
+	}
 	public function probar_arixapi(){
 		$data = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
 		print_r($data);
-	}
-	public function index(){
-		echo 'estoy aqui';
 	}
 }

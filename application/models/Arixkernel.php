@@ -155,11 +155,15 @@ class Arixkernel extends CI_Model{
 	//FUNCION DE ROLLBACK
 	//FUNCION DE INSERT
 	//data = array(=>);
-	public function arixkernel_guargar_simple_data($data, $table){		
-		if($this->db->insert($table, $data)){
-			return $this->db->insert_id();
+	public function arixkernel_guargar_simple_data($data, $table){
+		$this->db->trans_start();
+			$this->db->insert($table, $data);
+			$id = $this->db->insert_id();
+		$this->db->trans_complete();
+		if($this->db->trans_status()!==FALSE){
+			return array('status'=>true, 'id'=>$id);
 		}else{
-			return false;
+			return array('status'=>false);
 		}
 	}
 	
