@@ -181,6 +181,20 @@ class Arixapi extends CI_Controller {
 			show_404();
 		}
 	}
+	public function arixapi_check_duplicate_person(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$this->load->library('serv_cifrado');
+			$this->load->model('arixkernel');
+		$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('persona_id axuid, documento, nombres, paterno, materno', 'private.personas', false, array('documento'=>$this->input->post('txtdata')));
+			if(!is_null($consulta)){
+				echo json_encode(array('status'=>true,'id'=>$this->serv_cifrado->cod_cifrar_cadena($consulta->axuid),'data'=>$consulta->documento.' - '.$consulta->nombres.', '.$consulta->paterno.' '.$consulta->materno));
+			}else{
+				echo json_encode(array('status'=>false));
+			}
+		}else{
+			show_404();
+		}
+	}
 	public function arixapi_post_personas(){//post
 		if($this->input->is_ajax_request() && $this->input->post('txtperdni')){
 			$data = array(
@@ -188,7 +202,7 @@ class Arixapi extends CI_Controller {
 				'nombres'=>$this->input->post('txtpername'),
 				'paterno'=>$this->input->post('txtperlasname'),
 				'materno'=>$this->input->post('txtfirstname'),
-				'nacimiento'=>$this->input->post('txtborndate'),
+				'nacimiento'=>date("Y-m-d", strtotime(str_replace('/', '-',$this->input->post('txtborndate')))),
 				'sexo'=>$this->input->post('txtpersexe'),
 				'direccion'=>$this->input->post('txtperaddress'),
 				'distrito_id'=>$this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtperdistrite')),

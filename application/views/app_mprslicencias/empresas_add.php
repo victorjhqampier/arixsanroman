@@ -41,7 +41,7 @@
                             <label for="emp-telefonos">Teléfonos</label>
                             <input type="text" class="form-control form-control-sm" id="emp-telefonos" name="txttelefonos" placeholder="Teléfonos de la empresa"> </div>
                         <div class="form-group">
-                            <input type="hidden" class="d-none" id="emp-adminname" name="txtadminkey">
+                            <input type="text" class="form-control" id="emp-adminname" name="txtadminkey">
                         </div>
                     </div>
                     <div class="card-footer"> <small class="text-muted">El ruc se comprobará para evitar duplicidad</small> </div>
@@ -128,7 +128,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
     arixshell_iniciar_llaves_locales("#btn_id_empresas_nuevo");
-    arixshell_cargar_botones_menu('btn-cerrar');
+    arixshell_cargar_botones_menu('btn-cerrar');    
+    $('#form-empr-new-add #emp-ruc').mask('99999999999');
+    $('#form-empr-new-add #aut-finicio').mask('00/00/0000');
+    $('#form-empr-new-add #emp-ruc').focus();
     //$('#form-usuario-sucursal #select-permiso').selectpicker();//inicializa la multiple seleccion
     $(arixshell_cargar_llave_local(1)+' .card').on("click", "button", function() {//click unico en la página
         var a = $(this).closest('div').attr('id');
@@ -138,6 +141,7 @@ $(document).ready(function(){
         arixshell_hacer_pagina_atras();
         //arixshell_hacer_pagina_reiniciar();
     });
+
     function mpsradd_get_emp(ruc){
         request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/ruc/'+ruc+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
         if (request['ruc']== ruc){
@@ -234,15 +238,26 @@ $(document).ready(function(){
             txtrfinal: {
                 required: true,
                 minlength: 5
+            },
+            txtmanager: {
+                required: true,
+                minlength: 8
+            },
+            txtadminkey: {
+                required: true,
+                minlength: 14
             }
         }
     })
+    
     $("#btn-enviar-empadd").click(function () {     
         if($("#form-empr-new-add").valid()){
-            var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('form').serialize());
-            console.log(request);
+            //console.log($('#form-empr-new-add').serialize());
+            var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('#form-empr-new-add').serialize());
+
             if(request['status']===true){//el servidor siempre responde con un obejeto
                 //arixshell_hacer_pagina_atras();
+                alert('correecto ...!');
             }
             else{
                 alert('Lo sentimos, los datos no fueron guardados ...!');
@@ -253,12 +268,22 @@ $(document).ready(function(){
             return;
         }
     });
+    $('#form-empr-new-add #emp-mamanger').keypress(function (a) {
+        13 == a.which && $("#form-empr-new-add #btn-search-people").click()
+    });
     //boton para buscar administrador
     $("#form-empr-new-add #btn-search-people").click(function () {
         var temp = $("#form-empr-new-add #emp-mamanger").val();
-        if(temp.length==8){
-            //el ultimo representa el id del boton
-            arixshell_abrir_modalbase('Nuevo Usuario','arixapi/arixapi_get_form_person','btn-cerrar-modalNewUser');
+        if(temp.length==8){//si es falso, entonces no hay duplicidad
+        var request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+temp+'&');//true or false
+            if(request['status']==true){//ya existe en la base de datos
+                $('#form-empr-new-add #emp-mamanger').val(request['data']);
+                $('#form-empr-new-add #emp-adminname').val(request['id']);
+            }else{
+                arixshell_write_cache_serial('e0x005477arixNewUser',temp);
+                arixshell_abrir_modalbase('Nuevo Usuario','arixapi/arixapi_get_form_person','btn-cerrar-modalNewUser');
+                //return;
+            }
         }else{
             return;
         }        

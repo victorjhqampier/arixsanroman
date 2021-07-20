@@ -9,6 +9,8 @@ class Mpsrlicencias extends CI_Controller {
 	
 	public function index(){
 		$this->load->library('serv_ejecucion_app');
+		$this->load->library('serv_cifrado');
+		$this->load->model('arixkernel');
 		$js = $this->serv_ejecucion_app->exe_cargar_js('mpsr-arixjs, Chart');
 		$this->load->view('arixshellbase',compact('js'));
 	}
@@ -138,49 +140,52 @@ class Mpsrlicencias extends CI_Controller {
 		}
 	}
 	public function mpsr_post_emprmpsr(){
-		if($this->input->is_ajax_request() && $this->input->post('txtruc')){
+		if($this->input->is_ajax_request() && $this->input->post('txtruc')){			
 			$datos = array(
-				array(
+				array(//tabla empresa
 					'ruc' => $this->input->post('txtruc'),
+					'administrador_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtadminkey'))),
 					'rsocial' => $this->input->post('txtrsocial'),
 					'nombre' => $this->input->post('txtnombre'),
 					'direccion' => $this->input->post('txtdireccion'),
 					'telefono' => $this->input->post('txttelefonos')
-				),array(
+				),array(//tabla autorizaciones
 					//'empresa_id' => _Automaticamente_ creado y ejecutado por Arixkernel,
 					'nresolucion' => $this->input->post('txtnresolucion'),
 					'cautorizacion' => $this->input->post('txtcresolucion'),
-					'servicio_id' => $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtmodalidad')),//decifrar
-					'clasificacion_id' => $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtunidad')),//
+					'servicio_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtmodalidad'))),//decifrar
+					'clasificacion_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtunidad'))),//
 					'horario' => $this->input->post('txthorarios'),
 					'frecuencia' => $this->input->post('txtfrecuencia'),
-					'nvehiculos' => $this->input->post('txtflota'),
-					'auinicio' => $this->input->post('txtfinicio'),//formatear YY/mm/dd
+					'nvehiculos' => intval($this->input->post('txtflota')),
+					'auinicio' => date("Y-m-d", strtotime(str_replace('/', '-',$this->input->post('txtfinicio')))),//formatear YY/mm/dd
 					'aufin' => $this->input->post('txtffinal'),
 					'rutaini' => $this->input->post('txtrinicio'),
 					'rutafin' => $this->input->post('txtrfinal')
 				)
 			);
+			
 			/*$datos = array(
 				array(
-					'ruc' => '48521065985',
-					'rsocial' => 'ARIX TRERRA BUS SAC',
-					'nombre' => 'ARIX INTERNACIONAL TRANSPORTE',
-					'direccion' => 'Jr amazonasm123 Puno',
-					'telefono' => '968991714'
+					'ruc' => '20100070970',
+					'administrador_id' => $this->serv_cifrado->cod_decifrar_cadena('50A8E49532917cWJ3SC82aVYrcGFqNHBtUzlhck1qQT09'),
+					'rsocial' => "SUPERMERCADOS PERUANOS SOCIEDAD ANONIMA 'O' S.P.S.A.",//VER ESTO
+					'nombre' => 'MI CASA',
+					'direccion' => 'CAL. MORELLI NRO. 181 INT. P-2 LIMA LIMA SAN BORJA SAN BORJA LIMA LIMA',
+					'telefono' => '48207109'
 				),array(
 					//'empresa_id' => _Automaticamente_ creado y ejecutado por Arixkernel,
-					'nresolucion' => '9856-MPSR/HGKRND',
-					'cautorizacion' => 'Resolucion de tipo -R2',
-					'servicio_id' => $this->serv_cifrado->cod_decifrar_cadena('248558E9F6C41L1VrTWRsdXBvRllQaFFNSG5EWWMzZz09'),//decifrar
-					'clasificacion_id' => $this->serv_cifrado->cod_decifrar_cadena('DD2506F2D783FZGRvN2JmTjJpallUa0ZGcG9DVjlnQT09'),//
-					'horario' => 'DESDE 5 HASTA LAS 20 HORAS',
-					'frecuencia' => 'ENTRE 5-4 MINUTOS',
-					'nvehiculos' => 15,
-					'auinicio' => '6/7/21',//formatear YY/mm/dd
+					'nresolucion' => '855-2021-IROJF',
+					'cautorizacion' => 'Resolucion de tipo -R1',
+					'servicio_id' => intval($this->serv_cifrado->cod_decifrar_cadena('6ACA79F493CEEL1pkb1FBRHltbnFJclpFQjNGR2E1QT09')),//decifrar
+					'clasificacion_id' => intval($this->serv_cifrado->cod_decifrar_cadena('78A8A91824B27TU5TVjVTOXBTMTZkLzZsSXlYRXhEUT09')),//
+					'horario' => 'DESDE AQUI',
+					'frecuencia' => 'HAST AQUI',
+					'nvehiculos' => '10',
+					'auinicio' => '2021/7/19',//formatear YY/mm/dd
 					'aufin' => '2021/12/31',
-					'rutaini' => 'DESDE AQUI 1',
-					'rutafin' => 'HASTA AQUI 2'
+					'rutaini' => 'DESDE AQUI',
+					'rutafin' => 'HAST AQUI'
 				)
 			);*/
 			$tables = array('empresas','autorizaciones');
@@ -188,7 +193,7 @@ class Mpsrlicencias extends CI_Controller {
 			echo json_encode(array('status'=>$tables['status']));
 		}else{
 			show_404();
-		}			
+		}	
 	}
 	public function mpsr_post_duplicateru(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
@@ -237,6 +242,8 @@ class Mpsrlicencias extends CI_Controller {
 		//print_r($array_tabla_tupla);
 		$this->load->library('serv_cifrado');		
 		//print_r ($this->serv_cifrado->cod_cifrar_cadena('mi pene es grande'));
-		print_r ($this->serv_cifrado->cod_decifrar_cadena('CDC84DE2700EEOW5IOGdmUk5vTlY3WW9WVGZ2NjhJdkZHU08xa3ZWNG43YVc0WHhGWkJmND0='));
+		//print_r ($this->serv_cifrado->cod_decifrar_cadena('CDC84DE2700EEOW5IOGdmUk5vTlY3WW9WVGZ2NjhJdkZHU08xa3ZWNG43YVc0WHhGWkJmND0='));
+
+		echo (date("Y-m-d", strtotime(str_replace('/', '-','19/7/2021'))));
 	}
 }

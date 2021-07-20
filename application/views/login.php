@@ -151,7 +151,7 @@ $(document).ready(function () {
 $(document).keypress(function (a) {
   13 == a.which && $("#btnformuserloginarixmee").click()
 });
-
+$('#formuserloginarixmee #inputUsernameEmail').focus();
 $("#btnformuserloginarixmee").click(function () {
   return !!$("#formuserloginarixmee").valid() && void $.ajax({
     type: "POST",

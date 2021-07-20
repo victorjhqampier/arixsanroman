@@ -157,9 +157,10 @@
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/DataTables-1.10.23/js/jquery.dataTables.min.js');?>"></script>
         <script src="public/resources/js/jquery.validate.min.js"></script>
         <script src="public/resources/js/localization/messages_es_PE.js"></script>
-        <script src="public/resources/js/jquery.cryptojs.min.js"></script>
+        <!--script src="public/resources/js/jquery.cryptojs.min.js"></script-->
+        <script src="public/resources/js/jquery.mask.min.js"></script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        
+                
         <!--<script type="text/javascript" src="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/js/dataTables.autoFill.min.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/dataTables.buttons.min.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/buttons.html5.min.js');?>"></script>

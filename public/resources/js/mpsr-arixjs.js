@@ -10,26 +10,26 @@ function formatoFecha(fecha, formato) {
     return formato.replace(/dd|mm|yy|yyy/gi, matched => map[matched])
 }
 
-function mpsr_subir_fechax(location, year){
+/*function mpsr_subir_fechax(location, years){
     //https://www.freecodecamp.org/espanol/news/javascript-date-now-como-obtener-la-fecha-actual-con-javascript/
     //const fecha = new Date('12/12/2021');
     //const aafecha = fecha.getFullYear();
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);    
-    if(typeof(year)=='number'){   
+    if(typeof(years)=='number'){   
         var anio = hoy.toLocaleDateString();     
         const fecha = new Date(anio);   
         anio = fecha.getFullYear();    
         $(location).html('');
-        for(var i =0; i<year; i++){
+        for(var i =0; i<years; i++){
             $(location).append('<option value="'+(anio+i)+'/12/31">31/12/'+(anio+i)+'</option>');
         }
     }else{        
         $(location).val(formatoFecha(anio, 'dd/mm/yy'));
     }
-}
+}*/
 
-function mpsr_subir_fechas(location, year){
+function mpsr_subir_fechas(location, year){//years == años que se ejetutaran
     const hoy = new Date();
     if(typeof(year)==='number'){   
         anio = hoy.getFullYear();    
@@ -38,7 +38,7 @@ function mpsr_subir_fechas(location, year){
             $(location).append('<option value="'+(anio+i)+'/12/31">31/12/'+(anio+i)+'</option>');
         }
     }else{        
-        $(location).val(formatoFecha(hoy, 'dd/mm/yy'));
+        $(location).val(hoy.getDate() + "/" + (hoy.getMonth() +1) + "/" + hoy.getFullYear());
     }
 }
 

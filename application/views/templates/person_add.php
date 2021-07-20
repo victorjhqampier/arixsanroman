@@ -38,14 +38,14 @@
                     <div class="form-row">
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-borndate">Fecha de Nacimiento</label>
-                            <input type="text" class="form-control" id="per-borndate" name="txtborndate" placeholder="Fecha de Nacimiento">
+                            <input type="text" class="form-control" id="per-borndate" name="txtborndate" placeholder="Día/Mes/Año">
                         </div>
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-sexe">Género/sexo</label>
-                            <select id="per-sexe" name="txtpersexe" class="form-control">
-                                <option value="1" selected>No definido</option>
-                                <option value="2">Masculino</option>
-                                <option value="3">Femenino</option>
+                            <select id="per-sexe" name="txtpersexe" class="form-control">                                
+                                <option value="1">Masculino</option>
+                                <option value="2">Femenino</option>
+                                <option value="3" selected>No definido</option>
                             </select>
                         </div>
                     </div>
@@ -98,6 +98,25 @@
     </div>    
 </div>
 <script type="text/javascript">
+    function mpsr_form_auto_start(){
+        var infor = arixshell_read_cache_serial('e0x005477arixNewUser');       
+            if(infor!=null){
+                infor=infor['id'];
+                if(infor.length==8){
+                    $('#per-form-base #per-dni').val(infor);
+                    $('#per-form-base #per-dni').attr('readonly',true);
+                }else{
+                    return;
+                }
+        }else{
+            return;
+        }
+    }
+    mpsr_form_auto_start();
+    $('#per-form-base #per-dni').mask('99999999');
+    $('#per-form-base #per-borndate').mask('00/00/0000');
+    $('#per-form-base #per-dni').focus();
+
     arixshell_cargar_opciones('#per-form-base #per-departament', 'arixapi/arixapi_get_departamentos');
     var dep = $("#per-departament option:eq(20)").attr("selected", "selected").val();arixshell_subir_opciones('#per-form-base #per-province','arixapi/arixapi_get_provincias', 'txtdata='+dep+'&');
     dep = $("#per-province option:eq(10)").attr("selected", "selected").val();arixshell_subir_opciones('#per-form-base #per-distrite','arixapi/arixapi_get_distritos', 'txtdata='+dep+'&');
@@ -110,6 +129,7 @@
         var r = $(this).val();
         arixshell_subir_opciones('#per-form-base #per-distrite','arixapi/arixapi_get_distritos', 'txtdata='+r+'&');
     });
+
     $("#per-form-base").validate({
         errorClass: "text-danger",
         rules: {
@@ -164,12 +184,12 @@
                 minlength: 9
             }
         }
-    });
+    });    
 	$("#btn-enviar-peradd").click(function () {
         if($("#per-form-base").valid()){
             var request = arixshell_upload_datos('arixapi/arixapi_post_personas', $('#per-form-base').serialize());
             if(request['status']===true){
-                var data = $('#per-form-base #per-dni').val()+' - '+$('#per-form-base #per-names').val()+' '+$('#per-form-base #per-firstname').val()+' '+$('#per-form-base #per-lastname').val();
+                var data = $('#per-form-base #per-dni').val()+' - '+$('#per-form-base #per-names').val()+', '+$('#per-form-base #per-lastname').val()+' '+$('#per-form-base #per-firstname').val();
                 $('#per-form-base-result tbody').html('<tr><td>'+data+'</td></tr>');
                 arixshell_write_cache_serial("e0x005477arixNewUser",request['id'],data);//Pide 1= nombre clave de identificacion 2: (id)= alguna informacion y 3:(data) alguna descripcion       
                 $('#per-form-base').addClass('d-none');
@@ -184,5 +204,39 @@
         else{
             return;
         }
+    });
+    function mpsradd_get_pers(dni){
+        request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/dni/'+dni+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
+        if (request['dni']== dni){
+            $("#per-form-base #per-names").val(request.nombres);
+            $("#per-form-base #per-lastname").val(request.apellidoPaterno);
+            $("#per-form-base #per-firstname").val(request.apellidoMaterno);
+        }else{
+            return;
+        }
+    }
+    $("#per-form-base #per-dni").blur(function(){
+        var dni = request = $(this).val();
+        //var entero = parseInt(request).toString();
+        if(request.length == 8){           
+            request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+request+'&');
+            if(request['status']==false){
+                $("#per-form-base #per-dni").addClass('is-valid');
+                mpsradd_get_pers(dni);//PARA CARGAR AUTOMATICAMENTE LOS DATOS de PERSONAS
+            }else{
+                $("#per-form-base #per-dni").val("");
+                $("#per-form-base #per-dni").removeClass('is-valid');            
+            }
+        }else{
+            $("#per-form-base #per-dni").val("");
+        }
+        /*request.length == 8 ? request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+request+'&') : request['status']=true;
+        if(request['status']==false){
+            $("#per-form-base #per-dni").addClass('is-valid');
+            //mpsradd_get_pers(dni);
+        }else{
+            $("#per-form-base #per-dni").val("");
+            $("#per-form-base #per-dni").removeClass('is-valid');            
+        }*/
     });
 </script>
