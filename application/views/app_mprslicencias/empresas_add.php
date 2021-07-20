@@ -41,7 +41,7 @@
                             <label for="emp-telefonos">Teléfonos</label>
                             <input type="text" class="form-control form-control-sm" id="emp-telefonos" name="txttelefonos" placeholder="Teléfonos de la empresa"> </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="emp-adminname" name="txtadminkey">
+                            <input type="hidden" class="d-none" id="emp-adminname" name="txtadminkey">
                         </div>
                     </div>
                     <div class="card-footer"> <small class="text-muted">El ruc se comprobará para evitar duplicidad</small> </div>
@@ -256,12 +256,12 @@ $(document).ready(function(){
             var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('#form-empr-new-add').serialize());
 
             if(request['status']===true){//el servidor siempre responde con un obejeto
-                //arixshell_hacer_pagina_atras();
-                alert('correecto ...!');
+                arixshell_hacer_pagina_atras();
+                //alert('correecto ...!');
             }
             else{
                 alert('Lo sentimos, los datos no fueron guardados ...!');
-                //arixshell_hacer_pagina_atras();
+                arixshell_hacer_pagina_atras();
             }
         }
         else{
