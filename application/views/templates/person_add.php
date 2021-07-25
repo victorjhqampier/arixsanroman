@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="row" id="per-form-first">
     <div class="col-md-10">
         <div class="card mb-1">
@@ -222,7 +223,7 @@
             request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+request+'&');
             if(request['status']==false){
                 $("#per-form-base #per-dni").addClass('is-valid');
-                mpsradd_get_pers(dni);//PARA CARGAR AUTOMATICAMENTE LOS DATOS de PERSONAS
+                //mpsradd_get_pers(dni);//PARA CARGAR AUTOMATICAMENTE LOS DATOS de PERSONAS
             }else{
                 $("#per-form-base #per-dni").val("");
                 $("#per-form-base #per-dni").removeClass('is-valid');            

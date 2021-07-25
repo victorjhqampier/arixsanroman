@@ -11,82 +11,83 @@
     </li>
 </ul>
 <div class="tab-content">
-    <div class="tab-pane fade show active" id="empactibes" role="tabpanel" aria-labelledby="home-tab">
-        <div class="table-responsive-md">
-            <div class="row">
-                <div class="col-xl-12 col-md-12 mt-2">
-                <table class="table table-sm" id="dataTable_emp_activos">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">fecha</th>
-                            <th scope="col">RUC</th>                            
-                            <th scope="col">Resolución</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Razon social</th>                                
-                            <th scope="col">F. Vencimiento</th>
-                            <th scope="col">Flota</th>
-                            <th scope="col">Categoría</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    </table>             
-                    <!--table class="table table-striped table-hover" id="dataTable_activos">
-                      <thead class="thead-dark">
-                        <tr>                  
-                          <th scope="col">RUC</th>
-                          <th scope="col">RAZON SOCIAL</th>
-                          <th scope="col">Empleado</th>
-                          <th scope="col">Puesto</th>
-                          <th scope="col">Tienda</th>
-                          <th scope="col">Vencimiento</th>
-                          <th scope="col">Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table-->
-                </div>
+   <div class="tab-pane fade show active" id="empactibes" role="tabpanel" aria-labelledby="home-tab">
+      <div class="row">
+         <div class="col-xl-12 col-md-12 mt-2">
+            <div class="table-responsive-md">
+               <table class="table table-sm" id="dataTable_emp_activos">
+                  <thead>
+                     <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">fecha</th>
+                        <th scope="col">RUC</th>
+                        <th scope="col">Resolución</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Razon social</th>
+                        <th scope="col">F. Vencimiento</th>
+                        <th scope="col">Flota</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Acciones</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+               </table>
+               <!--table class="table table-striped table-hover" id="dataTable_activos">
+                  <thead class="thead-dark">
+                    <tr>                  
+                      <th scope="col">RUC</th>
+                      <th scope="col">RAZON SOCIAL</th>
+                      <th scope="col">Empleado</th>
+                      <th scope="col">Puesto</th>
+                      <th scope="col">Tienda</th>
+                      <th scope="col">Vencimiento</th>
+                      <th scope="col">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                  </table-->
             </div>
-        </div>
-    </div>
-    <div class="tab-pane fade" id="emphistorial" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="table-responsive-md">
-            <div class="row">
-                <div class="col-xl-12 col-md-12 mt-2">               
-                    <table class="table table-striped table-hover" id="dataTable_inactivos"><!-- table-sm  table-dark-->
-                      <thead class="thead-dark">
-                        <tr>                  
-                          <th scope="col">N. Contrato</th>
-                          <th scope="col">DNI</th>
-                          <th scope="col">Empleado</th>
-                          <th scope="col">Puesto</th>
-                          <th scope="col">Tienda</th>
-                          <th scope="col">Fechas</th>
-                          <th scope="col">Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="tab-pane fade" id="empbusqueda" role="tabpanel" aria-labelledby="contact-tab">
-        <div class="row">
+         </div>
+      </div>
+   </div>
+   <div class="tab-pane fade" id="emphistorial" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="table-responsive-md">
+         <div class="row">
             <div class="col-xl-12 col-md-12 mt-2">
-                <div class="input-group input-group-sm mb-3">
-                  <input type="text" class="form-control" placeholder="Documento del empleado" aria-label="Recipient's username" aria-describedby="button-addon2">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
-                  </div>
-                </div>                
+               <table class="table table-striped table-hover" id="dataTable_inactivos">
+                  <!-- table-sm  table-dark-->
+                  <thead class="thead-dark">
+                     <tr>
+                        <th scope="col">N. Contrato</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Empleado</th>
+                        <th scope="col">Puesto</th>
+                        <th scope="col">Tienda</th>
+                        <th scope="col">Fechas</th>
+                        <th scope="col">Acciones</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+               </table>
             </div>
-        </div>         
-    </div>
+         </div>
+      </div>
+   </div>
+   <div class="tab-pane fade" id="empbusqueda" role="tabpanel" aria-labelledby="contact-tab">
+      <div class="row">
+         <div class="col-xl-12 col-md-12 mt-2">
+            <div class="input-group input-group-sm mb-3">
+               <input type="text" class="form-control" placeholder="Documento del empleado" aria-label="Recipient's username" aria-describedby="button-addon2">
+               <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -152,7 +153,7 @@ $(document).ready(function(){
         var fila = $(this).closest("tr"), uid = fila.attr('odd');
         //toda la lista
         //fila = fila.find("td").text();
-        arixshell_cargar_contenido(window.location.href+'/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(3)').text());
+        arixshell_cargar_contenido(window.location.href+'/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(2)').text());
    } );
 });
 </script>

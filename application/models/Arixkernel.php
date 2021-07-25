@@ -112,7 +112,7 @@ class Arixkernel extends CI_Model{
 		$this->db->select($tupla);
 		$this->db->group_by($array_groupby);
 		$this->db->order_by($array_orderby[0],$array_orderby[1]);
-		return $this->db->get_where($tabla, $array_condition, 100, $offset)->result();
+		return $this->db->get_where($tabla, $array_condition, 150, $offset)->result();
 	}
 
 	//public function arixkernel_obtener_id_dato($tupla, $tabla, $array_condicion){
@@ -139,7 +139,7 @@ class Arixkernel extends CI_Model{
             $this->db->join($array_tabla_tupla[1][$i], $array_tabla_tupla[2][$i],'inner');
         }
         $this->db->order_by($array_orderby[0], $array_orderby[1]);
-        $this->db->limit(100, $offset);
+        $this->db->limit(150, $offset);
         if($array_condition!=null){
         	$clave = array_keys ($array_condition);
         	$valor = array_values ($array_condition);

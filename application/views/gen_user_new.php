@@ -254,3 +254,59 @@
                   </div>
                 </div>
               </div>
+              <div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="col-xl-5 col-md-12">
+                <div class="card user-activity-card">
+                    <div class="card-header">
+                        <h5>User Activity</h5>
+                    </div>
+                    <div class="card-block">
+                        <div class="row m-b-25">
+                            <div class="col-auto p-r-0">
+                                <div class="u-img"> <img src=" https://i.imgur.com/UIhwGhr.jpg" alt="user image" class="img-radius cover-img"> <img src="https://img.icons8.com/ultraviolet/40/000000/active-state.png" alt="user image" class="img-radius profile-img"> </div>
+                            </div>
+                            <div class="col">
+                                <h6 class="m-b-5">Timothy Husai</h6>
+                                <p class="text-muted m-b-0">For what reason would it be advisable.</p>
+                                <p class="text-muted m-b-0"><i class="mdi mdi-timer feather icon-clock m-r-10"></i>24 min ago</p>
+                            </div>
+                        </div>
+                        <div class="row m-b-25">
+                            <div class="col-auto p-r-0">
+                                <div class="u-img"> <img src="https://i.imgur.com/rAInTHU.jpg" alt="user image" class="img-radius cover-img"> <img src="https://img.icons8.com/office/16/000000/active-state.png" alt="user image" class="img-radius profile-img"> </div>
+                            </div>
+                            <div class="col">
+                                <h6 class="m-b-5">Simkil Ahleu</h6>
+                                <p class="text-muted m-b-0">That might be little bit risky to have crew</p>
+                                <p class="text-muted m-b-0"><i class="mdi mdi-timer feather icon-clock m-r-10"></i>12 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="row m-b-25">
+                            <div class="col-auto p-r-0">
+                                <div class="u-img"> <img src="https://i.imgur.com/rAInTHU.jpg" alt="user image" class="img-radius cover-img"> <img src="https://img.icons8.com/office/16/000000/active-state.png" alt="user image" class="img-radius profile-img"> </div>
+                            </div>
+                            <div class="col">
+                                <h6 class="m-b-5">John Deo</h6>
+                                <p class="text-muted m-b-0">For what reason would it be advisable</p>
+                                <p class="text-muted m-b-0"><i class="mdi mdi-timer feather icon-clock m-r-10"></i>2 min ago</p>
+                            </div>
+                        </div>
+                        <div class="row m-b-25">
+                            <div class="col-auto p-r-0">
+                                <div class="u-img"> <img src=" https://i.imgur.com/UIhwGhr.jpg" alt="user image" class="img-radius cover-img"> <img src="https://img.icons8.com/ultraviolet/40/000000/active-state.png" alt="user image" class="img-radius profile-img"> </div>
+                            </div>
+                            <div class="col">
+                                <h6 class="m-b-5">John Deo</h6>
+                                <p class="text-muted m-b-0">member like them. For what reason.</p>
+                                <p class="text-muted m-b-0"><i class="mdi mdi-timer feather icon-clock m-r-10"></i>12 min ago</p>
+                            </div>
+                        </div>
+                        <div class="text-center"> <a href="#!" class="b-b-primary text-primary" data-abc="true">View all Projects</a> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -130,7 +130,6 @@
                     <h5 class="modal-title">Modal title</h5>
                     <!--button type="button" class="close" data-dismiss="modal" aria-label="Close"-->
                     <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
                     <p>Modal body text goes here.</p>
@@ -138,6 +137,19 @@
                 <div class="modal-footer">
                     <!--button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button-->
                 </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="arixgeneralmodal2"  tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5> <span aria-hidden="true">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer"></div>
                 </div>
             </div>
         </div>
