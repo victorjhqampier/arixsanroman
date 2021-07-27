@@ -13,16 +13,6 @@
                             <label for="vehi-matpre">Placa Anterior (!)</label>
                             <input type="text" class="form-control" id="vehi-matpre" name="txtvehipre" placeholder="Placa Anterior">
                         </div>
-                        <!--div class="form-group col-md-6">
-                            <label for="vehi-ownerdescribe">Propietario 2</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="vehi-ownerdescribe" name="txtvehiownerdescribe" readonly>
-                                <div class="input-group-append">                                        
-                                    <button class="btn btn-outline-secondary" type="button" id="btn-restart-vehicle"><i class="fa fa-times"></i></button>                                    
-                                </div>
-                                <input type="text" class="form-control" id="vehi-ownerid" name="txtvehiownerid" readonly>
-                            </div>                             
-                        </div-->
                         <div class="form-group col-md-6">                                
                                 <label for="vehi-ownerdoc">Propietario</label>
                                 <div class="input-group">
@@ -232,6 +222,7 @@
         $(thisForm+"#btn-search-vehicle").removeClass('d-none');
         $(thisForm+"#vehi-ownerdoc").removeClass('d-none').val("").focus();
     });
+    //(1) PARA EL MODAL AGREGAR PROPIETARIO
     $(thisForm+"#btn-search-vehicle").click(function () {
         var temp = $(thisForm+"#vehi-ownerdoc").val();
         if(temp.length==8){
@@ -244,13 +235,13 @@
                 $(this).addClass('d-none');
             }else{
                 arixshell_write_cache_serial('e0x005477arixNewUser',temp);//clave y dato
-                arixshell_abrir_modalbase('Nuevo Usuario','arixapi/arixapi_get_form_person','btn-modalNewUser-forVehicles');
+                arixshell_abrir_modalbase('AGREGAR NUEVO PROPIETARIO','arixapi/arixapi_get_form_person','btn-modalNewUser-forVehicles');
             }
         }else{
             return;
         } 
     });
-    //PARA EL MODAL
+    //(2)PARA EL MODAL DE AGREGAR PROPIETARIO
     $(document).on('click', '#btn-modalNewUser-forVehicles', function(){
         var request = arixshell_read_cache_serial('e0x005477arixNewUser');
         if(request!==null){
@@ -264,29 +255,20 @@
             arixshell_cerrar_modalbase();
         }
     });
-    //antes de guardar de prueba la duplicidad   
-     $("#per-form-base #per-dni").blur(function(){
-        var dni = request = $(this).val();
-        //var entero = parseInt(request).toString();
-        if(request.length == 8){           
-            request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+request+'&');
+    //antes de guardar, prueba la duplicidad
+    //esto puede actuar cunadose hace clic en el boton guardar  
+     $(thisForm+"#vehi-matreal").blur(function(){
+        var placa = request = $(this).val();
+        if(request.length == 6){           
+            request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicatevehi', 'txtdata='+request+'&');
             if(request['status']==false){
-                $("#per-form-base #per-dni").addClass('is-valid');
-                mpsradd_get_pers(dni);//PARA CARGAR AUTOMATICAMENTE LOS DATOS de PERSONAS
+                $(thisForm+"#vehi-matreal").addClass('is-valid').attr('readonly',true);
+                //vehicle_autoLoad_data();//PARA CARGAR AUTOMATICAMENTE LOS DATOS de PERSONAS
             }else{
-               $("#per-form-base #per-dni").val("");
-                $("#per-form-base #per-dni").removeClass('is-valid');            
+               $(thisForm+"#vehi-matreal").val("").removeClass('is-valid').removeAttr('readonly');           
             }
         }else{
-            $("#per-form-base #per-dni").val("");
+            return;
         }
-       /*request.length == 8 ? request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+request+'&') : request['status']=true;
-        if(request['status']==false){
-            $("#per-form-base #per-dni").addClass('is-valid');
-            //mpsradd_get_pers(dni);
-       }else{
-            $("#per-form-base #per-dni").val("");
-            $("#per-form-base #per-dni").removeClass('is-valid');            
-        }*/
     });
 </script>

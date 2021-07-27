@@ -15,15 +15,32 @@ class Mpsrlicencias extends CI_Controller {
 		$js = $this->serv_ejecucion_app->exe_cargar_js('mpsr-arixjs, Chart');
 		$this->load->view('arixshellbase',compact('js'));
 	}
+
+	//---------------------*****LOAD PAGE SECTION****************-----------------
 	public function mpsrdashboard(){
 		$this->load->view('app_mprslicencias/resumen');
     }
     public function compania(){
 		$this->load->view('app_mprslicencias/empresas');
 	}
+	public function vehicles(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/vehiculos');
+		}else{
+			show_404();
+		}
+	}
+	public function responsability(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/responsabilidad');
+		}else{
+			show_404();
+		}
+	}
 	public function compania_add(){
 		$this->load->view('app_mprslicencias/empresas_add');
 	}
+	
 	public function compania_view(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_mprslicencias/empresas_view');
@@ -47,7 +64,6 @@ class Mpsrlicencias extends CI_Controller {
 	}
 	public function actvehiculos(){
 		if ($this->input->is_ajax_request()) {
-			//$this->load->view('templates/person_add');
 			$this->load->view('app_mprslicencias/templates/vehicle_add');
 		}else{
 			show_404();
@@ -60,15 +76,16 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	public function responsability(){
+	public function vehicles_add(){
 		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_mprslicencias/responsability');
+			$this->load->view('app_mprslicencias/vehiculos_add');
 		}else{
 			show_404();
 		}
 	}
+	
+	//---------------------*****GET - SELECT* SECTION****************-----------------
 
-	//FUNCIONES DE DATOS
 	public function mpsr_get_activeemp(){
 		if ($this->input->is_ajax_request()){
 			//$this->load->library('serv_ejecucion_app');
@@ -111,8 +128,7 @@ class Mpsrlicencias extends CI_Controller {
 		}else{
 			show_404();
 		}
-	}
-	
+	}	
 	public function mpsr_get_modalidad(){
 		$this->load->library('serv_cifrado');
 		$this->load->model('arixkernel');
@@ -133,12 +149,7 @@ class Mpsrlicencias extends CI_Controller {
 	}
 	public function mpsr_get_tipounidad(){//requiere si o si una peticion post
 		if($this->input->is_ajax_request()){
-			// $this->load->library('serv_cifrado');
-			// $this->load->model('arixkernel');
-			// $this->load->library('serv_administracion_usuarios');
 			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
-			//$data = $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata'));
-			//$data = $this->serv_cifrado->cod_decifrar_cadena('5B956F5E2B3CCVzlyUmtpMWYwRWl5cDJ4OE10bWNPdz09');
 			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("clasificacion_id axuidemp, concat (code,' | ',substring(descripcion,0,25)) descripcion",'clasificaciones',0,array('sucursal_id'=>$sucu));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
@@ -148,7 +159,19 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	public function mpsr_get_hbrands(){//requiere si o si una peticion post
+	public function mpsr_get_class_licencia(){
+		if($this->input->is_ajax_request()){
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("lclasecategoria_id axuidemp, concat (lclasecategoria,' | (',substring(descripcion,0,55),'...)') descripcion",'lclasecategorias',0,array('sucursal_id'=>$sucu));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
+	public function mpsr_get_hbrands(){
 		if($this->input->is_ajax_request()){
 			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("hmarca_id axuidemp, hmarca",'private.hmarcas');
 			for ($i=0; $i < count($consulta); $i++) { 
@@ -159,6 +182,59 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	//---------------------*****POST - DUPLICATE_CHECK SECTION****************-----------------
+
+	public function mpsr_post_duplicateru(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('ruc', 'empresas', false, array('ruc'=>$this->input->post('txtdata')));
+			if(!is_null($consulta)){
+				echo json_encode(array('status'=>true));
+			}else{
+				echo json_encode(array('status'=>false));
+			}
+		}else{
+			show_404();
+		}
+	}
+	public function mpsr_post_duplicateres(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('nresolucion', 'autorizaciones', false, array('nresolucion'=>$this->input->post('txtdata')));
+			if(!is_null($consulta)){
+				echo json_encode(array('status'=>true));
+			}else{
+				echo json_encode(array('status'=>false));
+			}
+		}else{
+			show_404();
+		}
+	}
+	public function mpsr_post_duplicatevehi(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('vehiculo_id', 'vehiculos', false, array('placa'=>$this->input->post('txtdata')));
+			if(!is_null($consulta)){
+				echo json_encode(array('status'=>true));
+			}else{
+				echo json_encode(array('status'=>false));
+			}
+		}else{
+			show_404();
+		}
+	}
+	public function mpsr_post_duplicatedriver(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('conductor_id', 'conductores', false, array('nlicencia'=>$this->input->post('txtdata')));
+			if(!is_null($consulta)){
+				echo json_encode(array('status'=>true));
+			}else{
+				echo json_encode(array('status'=>false));
+			}
+		}else{
+			show_404();
+		}
+	}
+
+
+	//---------------------*****POST - SAVE SECTION****************-----------------
 	public function mpsr_post_emprmpsr(){
 		if($this->input->is_ajax_request() && $this->input->post('txtruc')){			
 			$datos = array(
@@ -216,54 +292,52 @@ class Mpsrlicencias extends CI_Controller {
 		}	
 	}
 	public function mpsr_post_vehicleadd(){
-		$datos = array(
-			array(
-				'placa' => $this->input->post('txtvehireal'),
-				'antplaca' => $this->input->post('txtvehipre'),				
-				'serie' => $this->input->post('txtvehiserial'),
-				'nmotor' => $this->input->post('txtvehiengine'),
-				'hmarca_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtvehibrand'))),
-				'modelo' => $this->input->post('txtvehimodel'),
-				'color' => $this->input->post('txtvehicolor'),
-				'fanio' => intval($this->input->post('txtvehiyear')),
-				'peso' => intval($this->input->post('txtvehiweigth')),
-				'nasientos' => intval($this->input->post('txtvehiseats')),
-				'clasificacion_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtvehiclass'))),
-				'clase' => $this->input->post('txtvehidescript')
-			),
-			array(
-				//'vehiculo_id' => $this->input->post('txtvehiownerid') -- EL KERNEL LO SOBRE ENTIENDE Y LO DEDUCE DEL PRIMER ARRAY
-				'persona_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtvehiownerid')))
-			)			
-		);
-		$tables = array('vehiculos','x_propietarios');
-		$tables = $this->arixkernel->arixkernel_guargar_sequencial_data($datos,$tables);
-		echo json_encode(array('status'=>$tables['status'],'id'=>$this->serv_cifrado->cod_cifrar_cadena($tables['ids'][0])));
-	}
-	public function mpsr_post_duplicateru(){
-		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
-			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('ruc', 'empresas', false, array('ruc'=>$this->input->post('txtdata')));
-			if(!is_null($consulta)){
-				echo json_encode(array('status'=>true));
-			}else{
-				echo json_encode(array('status'=>false));
-			}
+		if($this->input->is_ajax_request() && $this->input->post('txtvehireal')){
+			$datos = array(
+				array(
+					'placa' => $this->input->post('txtvehireal'),
+					'antplaca' => $this->input->post('txtvehipre'),				
+					'serie' => $this->input->post('txtvehiserial'),
+					'nmotor' => $this->input->post('txtvehiengine'),
+					'hmarca_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtvehibrand'))),
+					'modelo' => $this->input->post('txtvehimodel'),
+					'color' => $this->input->post('txtvehicolor'),
+					'fanio' => intval($this->input->post('txtvehiyear')),
+					'peso' => intval($this->input->post('txtvehiweigth')),
+					'nasientos' => intval($this->input->post('txtvehiseats')),
+					'clasificacion_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtvehiclass'))),
+					'clase' => $this->input->post('txtvehidescript')
+				),
+				array(
+					//'vehiculo_id' => $this->input->post('txtvehiownerid') -- EL KERNEL LO SOBRE ENTIENDE Y LO DEDUCE DEL PRIMER ARRAY
+					'persona_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtvehiownerid')))
+				)			
+			);
+			$tables = array('vehiculos','x_propietarios');
+			$tables = $this->arixkernel->arixkernel_guargar_sequencial_data($datos,$tables);
+			echo json_encode(array('status'=>$tables['status'],'id'=>$this->serv_cifrado->cod_cifrar_cadena($tables['ids'][0])));
 		}else{
 			show_404();
 		}
 	}
-	public function mpsr_post_duplicateres(){
-		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
-			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('nresolucion', 'autorizaciones', false, array('nresolucion'=>$this->input->post('txtdata')));
-			if(!is_null($consulta)){
-				echo json_encode(array('status'=>true));
-			}else{
-				echo json_encode(array('status'=>false));
-			}
+
+	public function mpsr_post_driveradd(){
+		if($this->input->is_ajax_request() && $this->input->post('txtdriverownerid')){
+			$data = array(
+				'nlicencia' => $this->input->post('txtdriverlicense'),
+				'persona_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdriverownerid'))),
+				'lclasecategoria_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdrivercatclass'))),
+				'vigentefin' => date("Y-m-d", strtotime(str_replace('/', '-',$this->input->post('txtdrivervigencia'))))
+			);
+			$data = $this->arixkernel->arixkernel_guargar_simple_data($data, 'conductores');
+			$data['id']=$this->serv_cifrado->cod_cifrar_cadena($data['id']);
+			echo json_encode($data);
 		}else{
 			show_404();
 		}
 	}
+	
+	//---------------------*****TEST SECTION****************-----------------
 	public function mpsr_pruebas(){
 		//$data = array('nombre' => 'My title 47');
 		//echo $this->arixkernel->arixkernel_guargar_simple_data($data,'pruebas');

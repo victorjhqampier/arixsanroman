@@ -1,13 +1,13 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<ul class="nav nav-tabs" id="myTabEmp" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="empresa_activa" data-toggle="tab" href="#empactibes" role="tab" aria-controls="home" aria-selected="true">Autorizados</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="empresa_desactiva" data-toggle="tab" href="#emphistorial" role="tab" aria-controls="profile" aria-selected="false">Sin Autorización</a>
+        <a class="nav-link" id="empresa_desactiva" data-toggle="tab" href="#emphistorial" role="tab" aria-controls="profile" aria-selected="false">Caducos</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="empresa_buscar" data-toggle="tab" href="#empbusqueda" role="tab" aria-controls="contact" aria-selected="false">Historiales</a>
+        <a class="nav-link" id="empresa_buscar" data-toggle="tab" href="#empbusqueda" role="tab" aria-controls="contact" aria-selected="false">Busqueda Específica</a>
     </li>
 </ul>
 <div class="tab-content">
@@ -24,7 +24,7 @@
                         <th scope="col">Resolución</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Razon social</th>
-                        <th scope="col">F. Vencimiento</th>
+                        <th scope="col">Vigente hasta</th>
                         <th scope="col">Flota</th>
                         <th scope="col">Categoría</th>
                         <th scope="col">Acciones</th>
