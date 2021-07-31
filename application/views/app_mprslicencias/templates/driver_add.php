@@ -18,7 +18,7 @@
                                         <button class="btn btn-outline-secondary" type="button" id="btn-search-driver"><i class="fa fa-search"></i></button>
                                         <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-driver"><i class="fa fa-times"></i></button>
                                     </div>
-                                    <input type="texthidden" class="d-none" id="driver-ownerid" name="txtdriverownerid" readonly>
+                                    <input type="hidden" class="d-none" id="driver-ownerid" name="txtdriverownerid" readonly>
                                 </div>
                         </div>
                     </div>

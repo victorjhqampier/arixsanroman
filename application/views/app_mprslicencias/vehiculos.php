@@ -10,6 +10,9 @@
         <a class="nav-link" id="third-tab-vehicle" data-toggle="tab" href="#third-href-vehicle" role="tab" aria-controls="contact" aria-selected="false">Registro Unitario</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link" id="change-tab-vehicle" data-toggle="tab" href="#change-href-vehicle" role="tab" aria-controls="contact" aria-selected="false">Cambiar Propietario</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" id="fourth-tab-vehicle" data-toggle="tab" href="#fourth-href-vehicle" role="tab" aria-controls="temp" aria-selected="false">Migrar datos (temporal)</a>
     </li>
 </ul>
@@ -63,6 +66,20 @@
         <div class="row">
             <div class="col-xl-12 col-md-12 mt-2">
                 <h2>PENE todos los pasos para obtener la licencia</h2>
+                <h5>con este paso se termina todo el proceso, y sistematiza los documentos existentes</h5>
+                <div class="input-group input-group-sm mb-3">
+                    <input type="text" class="form-control" placeholder="Documento del empleado" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="change-href-vehicle" role="tabpanel" aria-labelledby="change-tab-vehicle">
+        <div class="row">
+            <div class="col-xl-12 col-md-12 mt-2">
+                <h2>Cambiar propietario</h2>
                 <h5>con este paso se termina todo el proceso, y sistematiza los documentos existentes</h5>
                 <div class="input-group input-group-sm mb-3">
                     <input type="text" class="form-control" placeholder="Documento del empleado" aria-label="Recipient's username" aria-describedby="button-addon2" />

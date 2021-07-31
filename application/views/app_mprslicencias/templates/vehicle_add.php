@@ -22,7 +22,7 @@
                                         <button class="btn btn-outline-secondary" type="button" id="btn-search-vehicle"><i class="fa fa-search"></i></button>
                                         <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-vehicle"><i class="fa fa-times"></i></button>
                                     </div>
-                                    <input type="texthidden" class="d-none" id="vehi-ownerid" name="txtvehiownerid" readonly>
+                                    <input type="hidden" class="d-none" id="vehi-ownerid" name="txtvehiownerid" readonly>
                                 </div>
                         </div>
                     </div>

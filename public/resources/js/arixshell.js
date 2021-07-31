@@ -460,7 +460,7 @@ function arixshell_subir_opciones(location,url,data,html=''){
 function arixshell_abrir_modalbase(titulo,loadurl,btnkey){    
     $('#arixgeneralmodal .modal-title').text(titulo);
     arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal .modal-body');
-    $('#arixgeneralmodal .modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Cerrar</button>');
+    $('#arixgeneralmodal .modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Aceptar</button>');
     $('#arixgeneralmodal').modal({
         keyboard: false,
         backdrop: "static",
@@ -470,7 +470,7 @@ function arixshell_abrir_modalbase(titulo,loadurl,btnkey){
 function arixshell_abrir_secondModal(titulo,loadurl,btnkey){    
     $('#arixgeneralmodal2 .modal-title').text(titulo);
     arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal2 .modal-body');
-    $('#arixgeneralmodal2 .modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Cerrar</button>');
+    $('#arixgeneralmodal2 .modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Aceptar</button>');
     $('#arixgeneralmodal2').modal({
         keyboard: false,
         backdrop: "static",
