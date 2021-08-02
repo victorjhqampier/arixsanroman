@@ -14,6 +14,8 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/css/autoFill.dataTables.css');?>"/>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/css/buttons.dataTables.min.css');?>"/>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/KeyTable-2.5.3/css/keyTable.dataTables.min.css');?>"/>
+        <!--link rel="stylesheet" type="text/css" href="public/resources/css/bootstrap-datepicker.standalone.min.css"/-->
+        <link rel="stylesheet" type="text/css" href="public/resources/css/jquery.datetimepicker.min.css"/>
    </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">   
@@ -116,14 +118,20 @@
                 </footer>
             </div>
         </div>
-        <!--div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="arixgeneralmodal" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+        <div class="modal" id="arixgeneralmodal2"  tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                ...
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5> <span aria-hidden="true">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer"></div>
                 </div>
             </div>
-        </div-->
-        <div class="modal" id="arixgeneralmodal"  tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+        </div>
+          <div class="modal" id="arixgeneralmodal"  tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -137,19 +145,6 @@
                 <div class="modal-footer">
                     <!--button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button-->
                 </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal" id="arixgeneralmodal2"  tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5> <span aria-hidden="true">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <p>Modal body text goes here.</p>
-                </div>
-                <div class="modal-footer"></div>
                 </div>
             </div>
         </div>
@@ -171,6 +166,9 @@
         <script src="public/resources/js/localization/messages_es_PE.js"></script>
         <!--script src="public/resources/js/jquery.cryptojs.min.js"></script-->
         <script src="public/resources/js/jquery.mask.min.js"></script>
+        <!--script src="public/resources/js/bootstrap-datepicker.min.js"></script--><!--necesario para datetimepiker-->
+        <!--script src="public/resources/js/bootstrap-datepicker.es.min.js"></script-->
+        <script src="public/resources/js/jquery.datetimepicker.full.min.js"></script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 
         <!--<script type="text/javascript" src="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/js/dataTables.autoFill.min.js');?>"></script>
@@ -180,6 +178,13 @@
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/KeyTable-2.5.3/js/dataTables.keyTable.min.js');?>"></script>-->
 
         <script src="<?php echo base_url('public/resources/js/arixshell.js');?>"></script>        
-        <?php if($js!=null){for($i=0;$i<count($js);$i++){echo '<script src="'.str_replace('base_url();',base_url(),$js[$i]).'" crossorigin="anonymous"></script>'."\n";}}else{return false;}//para cragar JS al sistema ?>
+        <?php 
+        if($js!=null){
+            for($i=0;$i<count($js);$i++){
+                echo '<script src="'.str_replace('base_url();',base_url(),$js[$i]).'" crossorigin="anonymous"></script>'."\n";
+            }
+        }else{
+            return false;
+        }//para cragar JS al sistema ?>
     </body>
 </html>

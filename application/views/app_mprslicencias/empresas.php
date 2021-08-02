@@ -110,6 +110,13 @@ $(document).ready(function(){
     //caso = arixshell_download_datos("mpsrlicencias/mpsr_get_activeemp");
     //console.log(caso);
     $('#dataTable_emp_activos').DataTable({
+      "language": {
+             "lengthMenu": "Mostrar _MENU_ registros por página",
+             "zeroRecords": "No se ha encontrado nada, lo siento",
+             "info": "Mostrando página _PAGE_ de _PAGES_",
+             "infoEmpty": "No hay registros disponibles",
+             "infoFiltered": "(filtrado de _MAX_ registros totales)"
+         },
         "ajax": {
             "url" : "mpsrlicencias/mpsr_get_activeemp",
             "dataSrc":""

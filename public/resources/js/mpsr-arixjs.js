@@ -1,4 +1,5 @@
 console.log('estoy en San roman');
+jQuery.datetimepicker.setLocale('es');
 
 function formatoFecha(fecha, formato) {
     const map = {

@@ -1,72 +1,51 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#empactibes" role="tab" aria-controls="home" aria-selected="true">Contratos Activos</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#emphistorial" role="tab" aria-controls="profile" aria-selected="false">Contratos Archivados</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#empbusqueda" role="tab" aria-controls="contact" aria-selected="false">Buscar empleado</a>
-    </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="empactibes" role="tabpanel" aria-labelledby="home-tab">
-        <div class="table-responsive-md">
-            <div class="row">
-                <div class="col-xl-12 col-md-12 mt-2">               
-                    <table class="table table-striped table-hover" id="dataTable_activos"><!-- table-sm  table-dark-->
-                      <thead class="thead-dark">
-                        <tr>                  
-                          <th scope="col">N. Contrato</th>
-                          <th scope="col">DNI</th>
-                          <th scope="col">Empleado</th>
-                          <th scope="col">Puesto</th>
-                          <th scope="col">Tienda</th>
-                          <th scope="col">Vencimiento</th>
-                          <th scope="col">Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
+<!--style>
+  .modal:nth-of-type(even) {
+    z-index: 1052 !important;
+  }
+  .modal-backdrop.show:nth-of-type(even) {
+      z-index: 1051 !important;
+  }
+ data-toggle="modal" href="#myModal"
+</style-->
+<a class="btn btn-primary" id="firstmodla">Launch modal</a>
+
+        <div class="modal" id="arixgeneralmodal2"  tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5> <span aria-hidden="true">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer"></div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="emphistorial" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="table-responsive-md">
-            <div class="row">
-                <div class="col-xl-12 col-md-12 mt-2">               
-                    <table class="table table-striped table-hover" id="dataTable_inactivos"><!-- table-sm  table-dark-->
-                      <thead class="thead-dark">
-                        <tr>                  
-                          <th scope="col">N. Contrato</th>
-                          <th scope="col">DNI</th>
-                          <th scope="col">Empleado</th>
-                          <th scope="col">Puesto</th>
-                          <th scope="col">Tienda</th>
-                          <th scope="col">Fechas</th>
-                          <th scope="col">Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
+          <div class="modal" id="arixgeneralmodal"  tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <!--button type="button" class="close" data-dismiss="modal" aria-label="Close"-->
+                    <span aria-hidden="true">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <!--button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button-->
+                </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="empbusqueda" role="tabpanel" aria-labelledby="contact-tab">
-        <div class="row">
-            <div class="col-xl-12 col-md-12 mt-2">
-                <div class="input-group input-group-sm mb-3">
-                  <input type="text" class="form-control" placeholder="Documento del empleado" aria-label="Recipient's username" aria-describedby="button-addon2">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
-                  </div>
-                </div>                
-            </div>
-        </div>         
-    </div>
-</div>
+
+<script>
+$('#firstmodla').click(function(){
+	$('#myModal').modal({show:true});
+})
+$('#openBtn').click(function(){
+	$('#myModal2').modal({show:true});
+})
+</script>

@@ -467,17 +467,17 @@ function arixshell_abrir_modalbase(titulo,loadurl,btnkey){
         show:true
     });
 }
-function arixshell_abrir_secondModal(titulo,loadurl,btnkey){    
+function arixshell_abrir_mainModal(titulo,loadurl,btnkey){    
     $('#arixgeneralmodal2 .modal-title').text(titulo);
     arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal2 .modal-body');
-    $('#arixgeneralmodal2 .modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Aceptar</button>');
+    $('#arixgeneralmodal2 .modal-footer').html('<button type="button" class="btn btn-secondary btn-sm" id="'+btnkey+'">Aceptar</button>');
     $('#arixgeneralmodal2').modal({
         keyboard: false,
         backdrop: "static",
         show:true
     });
 }
-function arixshell_cerrar_secondModal(){
+function arixshell_cerrar_mainModal(){
     $('#arixgeneralmodal2 .modal-footer').html('');
     $('#arixgeneralmodal2 .modal-body').html('');
     $('#arixgeneralmodal2').modal('hide');

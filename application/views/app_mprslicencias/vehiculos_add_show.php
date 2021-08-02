@@ -27,15 +27,21 @@
             return;
         }        
     }
+    function mpsr_message_color(cert){
+        if(cert == true){
+            return '<span class="badge badge-success">Activo</span>';
+        }else{
+            return '<span class="badge badge-warning">Pendiente</span>';
+        }
+    }
     function mpsr_autoload_datatable(){
-        $('#dataTable_emp_activos tbody').html('');
+        $('#dataTable_emp_activos tbody').html("");
         var request = arixshell_upload_datos('mpsrlicencias/mpsr_get_vehicle_byemp', 'txtdata='+mpsr_vehiadd_basevar[0]+'&');//esta variable se encuanta el el padre
-        //console.log(request);        
         if(typeof(request)==='object'){
             if(request.length>=1){ 
                 mpsr_autoload_btnadd(request.length);                       
                 for(var i = 0; i<request.length; i++){
-                    $('#dataTable_emp_activos tbody').append('<tr odd="'+request[i]['axuidemp']+'"><td>'+request[i]['placa']+'</td><td>'+request[i]['hmarca']+'</td><td>'+request[i]['modelo']+'</td><td>'+request[i]['descripcion']+'</td><td>'+request[i]['driv_data']+' ('+request[i]['driv_licen']+')</td><td><span class="badge badge-success">'+request[i]['cert_status']+'</span></td><td>Acciones</td></tr>');
+                    $('#dataTable_emp_activos tbody').append('<tr odd="'+request[i]['axuidemp']+'"><td>'+request[i]['placa']+'</td><td>'+request[i]['hmarca']+'</td><td>'+request[i]['modelo']+'</td><td>'+request[i]['descripcion']+'</td><td>'+request[i]['driv_data']+' ('+request[i]['driv_licen']+')</td><td>'+mpsr_message_color(request[i]['cert_status'])+'</td><td>Acciones</td></tr>');
                 }
             }else{
                 mpsr_autoload_btnadd(0);

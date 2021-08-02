@@ -131,7 +131,7 @@
                 $(this).addClass('d-none');
             }else{
                 arixshell_write_cache_serial('e0x005477arixNewUser',temp);//clave y dato
-                arixshell_abrir_modalbase('AGREGAR NUEVO CONDUCTOR','arixapi/arixapi_get_form_person','btn-modalNewUser-forDriver');
+                arixshell_abrir_modalbase('AGREGAR NUEVO PERSONA','arixapi/arixapi_get_form_person','btn-modalNewUser-forDriver');
             }
         }else{
             return;
