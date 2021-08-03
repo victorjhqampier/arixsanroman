@@ -487,6 +487,53 @@ function arixshell_cerrar_modalbase(){
     $('#arixgeneralmodal .modal-body').html('');
     $('#arixgeneralmodal').modal('hide');
 }
+function arixshell_confirm_alert(url,data,btnClickExit,titl='Error',message='pene',btntext='Anular',icono='error'){
+    Swal.fire({
+        title: titl,
+        text: message,
+        icon: icono,
+        showCancelButton: true,
+        confirmButtonText: btntext,
+        cancelButtonText:'Cerrar',
+        allowOutsideClick:false,
+        customClass:{
+            confirmButton:'btn btn-info btn-sm',
+            cancelButton:'btn btn-secondary btn-sm'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var request = arixshell_upload_datos(url,data);
+            if(request['status']===true){
+                $(btnClickExit).click();
+                Swal.fire(
+                    'Correcto...!',
+                    'La petición fue realizada correctamente',
+                    'success'
+                )
+            }else{
+                Swal.fire(
+                    'Error...!',
+                    'La petición no fue realizada correctamente',
+                    'error'
+                )
+            }                
+        }
+    })
+}
+function arixshell_notification_alert(icone,message){
+    Swal.fire({
+        title: message,
+        icon: icone,
+        padding:'1rem',
+        width:'500px',
+        timer:5000,
+        showCancelButton: false,
+        showConfirmButton:false,
+        stopKeydownPropagation:false,
+        position:'bottom-end',
+        toast:true
+    })
+}
 /*----------------REDESARROLLAR MODULO DE TITULOS---------*/
 
 /*--------------------------MAIN----------------*/

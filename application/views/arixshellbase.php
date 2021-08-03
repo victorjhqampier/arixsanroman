@@ -11,11 +11,11 @@
         <link href="<?php echo base_url('public/resources/css/styles.css');?>" rel="stylesheet"/>
         <link href="<?php echo base_url('public/resources/css/material-icons.css');?>" rel="stylesheet"/>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/DataTables-1.10.23/css/jquery.dataTables.min.css');?>"/>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/css/autoFill.dataTables.css');?>"/>
+        <!--link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/css/autoFill.dataTables.css');?>"/>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/css/buttons.dataTables.min.css');?>"/>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/KeyTable-2.5.3/css/keyTable.dataTables.min.css');?>"/>
-        <!--link rel="stylesheet" type="text/css" href="public/resources/css/bootstrap-datepicker.standalone.min.css"/-->
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/KeyTable-2.5.3/css/keyTable.dataTables.min.css');?>"/-->
         <link rel="stylesheet" type="text/css" href="public/resources/css/jquery.datetimepicker.min.css"/>
+        <link rel="stylesheet" type="text/css" href="public/resources/js/dist/sweetalert2.min.css"/>
    </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">   
@@ -136,14 +136,12 @@
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Modal title</h5>
-                    <!--button type="button" class="close" data-dismiss="modal" aria-label="Close"-->
                     <span aria-hidden="true">&times;</span>
                 </div>
                 <div class="modal-body">
                     <p>Modal body text goes here.</p>
                 </div>
                 <div class="modal-footer">
-                    <!--button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button-->
                 </div>
                 </div>
             </div>
@@ -169,7 +167,7 @@
         <!--script src="public/resources/js/bootstrap-datepicker.min.js"></script--><!--necesario para datetimepiker-->
         <!--script src="public/resources/js/bootstrap-datepicker.es.min.js"></script-->
         <script src="public/resources/js/jquery.datetimepicker.full.min.js"></script>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="public/resources/js/dist/sweetalert2.min.js"></script>
                 
         <!--<script type="text/javascript" src="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/js/dataTables.autoFill.min.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/dataTables.buttons.min.js');?>"></script>

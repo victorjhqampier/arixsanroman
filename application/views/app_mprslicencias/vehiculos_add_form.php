@@ -55,7 +55,7 @@
     </form>
 </div>
 <div class="col-xl-12 col-md-12">
-    <div class="alert alert-info text-right" role="alert">
+    <div class="alert alert-info text-right" role="alert">    
         <button class="btn btn-secondary" id="btn-cancel-veh2certif">Cancelar</button>
         <button class="btn btn-success" id="btn-add-veh2certif">Guardar</button>
     </div>
@@ -91,9 +91,12 @@
             var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_certificado_add', $('#form-vehicertif-newadd').serialize());
              if(request['status']===true){
                 $('#btn-cancel-veh2certif').click();
+                arixshell_notification_alert('success','Guardado correctamente...');                
              }else{
-                alert('No pudimos guardar, Error!');
-                console.log('certif_add_vehi -> NO GUARDAR');}
+                //alert('No pudimos guardar, Error!');
+                console.log('certif_add_vehi -> NO GUARDAR');
+                arixshell_notification_alert('error','Algo salió mal, no guardamos los datos');
+            }
         }else{
             return;
         }
@@ -127,7 +130,7 @@
                 arixshell_abrir_mainModal('AGREGAR NUEVO VEHÍCULO','mpsrlicencias/temp_vehicleadd','btn-modalNewUser-forcertif');
              }else{
                 $("#form-vehicertif-newadd #certif-vehiplacadoc").val('');
-                alert('El vehículo ya se encuentra asociado a una empresa');
+                arixshell_notification_alert('error',request['data']);
              }
         }else{
              return;
@@ -180,4 +183,11 @@
             arixshell_cerrar_mainModal();
         }
     });
+
+    //---------------------examples-----------------------
+    //<button class="btn btn-outline-secondary" type="button" id="button-probe">eliminar</button>
+    $('#button-probe').click(function(){
+        //arixshell_confirm_alert('mpsrlicencias/mpsr_pruebas','txtdata=txtexample&','#btn-cancel-veh2certif','¿Desea anular el registro?','Registro 123',btntext='Si, Anular',icono='warning')
+        //mpsr_notification_alert();
+    });    
 </script>

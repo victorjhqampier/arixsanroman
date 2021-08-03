@@ -113,7 +113,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -122,6 +122,5 @@ $(document).ready(function(){
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-agregar", function() {
         arixshell_cargar_contenido('mpsrlicencias/vehicles_add','Agregar Vehículos');
     });
-    
 });
 </script>

@@ -42,9 +42,3 @@ function mpsr_subir_fechas(location, year){//years == años que se ejetutaran
         $(location).val(hoy.getDate() + "/" + (hoy.getMonth() +1) + "/" + hoy.getFullYear());
     }
 }
-Swal.fire({
-    title: 'Error!',
-    text: 'Do you want to continue',
-    icon: 'error',
-    confirmButtonText: 'Cool'
-  });

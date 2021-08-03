@@ -379,7 +379,7 @@ class Mpsrlicencias extends CI_Controller {
 					echo json_encode(array('status'=>false));//disponible para registrarlo
 				}
 			}else{
-				echo json_encode(array('status'=>null,'data'=>'Se encuentra asociado a una empresa actualmente.'));
+				echo json_encode(array('status'=>null,'data'=>'El vehiculo se encuentra asociado a una empresa actualmente...'));
 			}			
 		}else{
 			show_404();
@@ -561,9 +561,7 @@ class Mpsrlicencias extends CI_Controller {
 		//print_r ($this->serv_cifrado->cod_cifrar_cadena('mi CASA es grande'));
 		//echo ($this->serv_cifrado->cod_decifrar_cadena('10EC7A2B9686EZnJmaU10L3AwZnBqRzVDMDJDWHp1dz09'));
 		//echo(strtoupper(uniqid('ABC')));
-		for($i =0; $i<20; $i++){
-			echo("<br>");
-		}
+		echo json_encode(array('status'=>true));
 		//echo(substr('123abc',-3).substr(uniqid(), 1)); // devuelve "de"
 		
 		//echo (date("Y-m-d", strtotime(str_replace('/', '-','19/7/2021'))));
