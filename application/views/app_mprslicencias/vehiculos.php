@@ -1,16 +1,19 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <ul class="nav nav-tabs" id="myTabVehicles" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="first-tab-vehicle" data-toggle="tab" href="#first-href-vehicle" role="tab" aria-controls="home" aria-selected="true">Vehículos Agregados</a>
+        <a class="nav-link active" id="first-tab-vehicle" data-toggle="tab" href="#first-href-vehicle" role="tab" aria-controls="home" aria-selected="true">Buscar Vehiculo</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="second-tab-vehicle" data-toggle="tab" href="#second-href-vehicle" role="tab" aria-controls="profile" aria-selected="false">Busqueda Específica</a>
+        <a class="nav-link" id="sec2-tab-vehicle" data-toggle="tab" href="#sec2-href-vehicle" role="tab" aria-controls="profile" aria-selected="false">Cambiar Conductor</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="third-tab-vehicle" data-toggle="tab" href="#third-href-vehicle" role="tab" aria-controls="contact" aria-selected="false">Registro Unitario</a>
+        <a class="nav-link" id="second-tab-vehicle" data-toggle="tab" href="#second-href-vehicle" role="tab" aria-controls="profile" aria-selected="false">Cambiar Propietario</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="change-tab-vehicle" data-toggle="tab" href="#change-href-vehicle" role="tab" aria-controls="contact" aria-selected="false">Cambiar Propietario</a>
+        <a class="nav-link" id="third-tab-vehicle" data-toggle="tab" href="#third-href-vehicle" role="tab" aria-controls="contact" aria-selected="false">Dar de Baja</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="change-tab-vehicle" data-toggle="tab" href="#change-href-vehicle" role="tab" aria-controls="contact" aria-selected="false">Registro Unitario</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="fourth-tab-vehicle" data-toggle="tab" href="#fourth-href-vehicle" role="tab" aria-controls="temp" aria-selected="false">Migrar datos (temporal)</a>
@@ -68,6 +71,15 @@
                         </thead>
                         <tbody></tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="sec2-href-vehicle" role="tabpanel" aria-labelledby="sec2-tab-vehicle">
+        <div class="table-responsive-md">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 mt-2">
+                    <h2>cambiar conductor</h2>
                 </div>
             </div>
         </div>

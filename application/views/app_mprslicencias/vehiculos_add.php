@@ -85,22 +85,28 @@
     $('#main-content-vehiadd #ruc-search').focus();
 
     $('#main-content-vehiadd').on('click', '#btn-search-empruc', function(){
-        var request = arixshell_upload_datos('mpsrlicencias/mpsr_get_activeemp_byruc', 'txtdataruc='+$('#main-content-vehiadd #ruc-search').val()+'&');
-        if(request!=false){            
-            $("#sub-table-emp").find('td:eq(0)').text(request['ruc']);
-            $("#sub-table-emp").find('td:eq(1)').text(request['nombre']);
-            $("#sub-table-emp").find('td:eq(2)').text(request['rsocial']);
-            $("#sub-table-emp").find('td:eq(3)').text('('+request['telefono']+') - '+request['direccion']);
-            mpsr_vehiadd_basevar=[request['axuidemp'],request['aufin'],request['code'],request['numv'],request['direccion']];
-            $("#sub-table-resol").find('td:eq(0)').text(request['nresolucion']);
-            $("#sub-table-resol").find('td:eq(1)').text(request['aufin']);
-            $("#sub-table-resol").find('td:eq(2)').text(request['code']+' '+request['servicio']);
-            $("#sub-table-resol").find('td:eq(3)').text(request['numv']);
-            $('#main-content-vehiadd').children().removeClass('d-none');
-            $('#main-content-vehiadd').children().first().addClass('d-none').val("");//ESONDE EL FORMURARIO
-            arixshell_cargar_subpaginas("mpsrlicencias/vehicles_add_show","#main-content-vehiadd #second-content-vehiadd");
+        var request = $('#main-content-vehiadd #ruc-search').val();
+        if(request.length==11){
+            request = arixshell_upload_datos('mpsrlicencias/mpsr_get_activeemp_byruc', 'txtdataruc='+verifyMpsr(request)+'&');
+            if(request!=false){            
+                $("#sub-table-emp").find('td:eq(0)').text(request['ruc']);
+                $("#sub-table-emp").find('td:eq(1)').text(request['nombre']);
+                $("#sub-table-emp").find('td:eq(2)').text(request['rsocial']);
+                $("#sub-table-emp").find('td:eq(3)').text('('+request['telefono']+') - '+request['direccion']);
+                mpsr_vehiadd_basevar=[request['axuidemp'],request['aufin'],request['code'],request['numv'],request['direccion']];
+                $("#sub-table-resol").find('td:eq(0)').text(request['nresolucion']);
+                $("#sub-table-resol").find('td:eq(1)').text(request['aufin']);
+                $("#sub-table-resol").find('td:eq(2)').text(request['code']+' '+request['servicio']);
+                $("#sub-table-resol").find('td:eq(3)').text(request['numv']);
+                $('#main-content-vehiadd').children().removeClass('d-none');
+                $('#main-content-vehiadd').children().first().addClass('d-none').val("");//ESONDE EL FORMURARIO
+                arixshell_cargar_subpaginas("mpsrlicencias/vehicles_add_show","#main-content-vehiadd #second-content-vehiadd");
+            }else{
+                arixshell_notification_alert('error','No encontramos resultados. Por favor, verifique el número RUC');
+                $('#main-content-vehiadd #ruc-search').val('');
+            }
         }else{
             return;
-        }//<div class="alert alert-danger main-alert" role="alert">El número de ruc no fue encontrado...!</div>
+        }        
     });
 </script>

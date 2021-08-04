@@ -10,7 +10,8 @@ class Configuraciones extends CI_Controller {
 		$this->load->library('serv_cifrado');
 		/*se debe denegar el acceso a ARIX CORE desde aquí*/
 		//Controlador[3][2] depende de la carpeta en el que está
-		if(!$this->serv_administracion_usuarios->use_cargar_app_session($controlador[3])){redirect(base_url());}
+		//if(!$this->serv_administracion_usuarios->use_cargar_app_session($controlador[3])){redirect(base_url());}
+		if(!$this->serv_administracion_usuarios->use_cargar_app_session($controlador[3])){show_404();}
 		//comprueba la sesion
 		//ademas puede trabajar con muchas ventanas a la vez, actualiza por cada consulta
 	}

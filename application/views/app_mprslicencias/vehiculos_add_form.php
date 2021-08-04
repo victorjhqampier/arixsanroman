@@ -87,21 +87,19 @@
     }); 
     $('#btn-add-veh2certif').click(function() {        
         if($('#form-vehicertif-newadd').valid()){
-            //console.log($('#form-vehicertif-newadd').serialize());
             var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_certificado_add', $('#form-vehicertif-newadd').serialize());
              if(request['status']===true){
                 $('#btn-cancel-veh2certif').click();
                 arixshell_notification_alert('success','Guardado correctamente...');                
              }else{
-                //alert('No pudimos guardar, Error!');
                 console.log('certif_add_vehi -> NO GUARDAR');
+                $('#btn-cancel-veh2certif').click();
                 arixshell_notification_alert('error','Algo salió mal, no guardamos los datos');
             }
         }else{
             return;
         }
     });
-
     $("#form-vehicertif-newadd #btn-restart-placacertif").click(function () {
         $(this).addClass('d-none');
         $("#form-vehicertif-newadd #certif-vehiplacadescribe").val("").addClass('d-none');
@@ -130,7 +128,7 @@
                 arixshell_abrir_mainModal('AGREGAR NUEVO VEHÍCULO','mpsrlicencias/temp_vehicleadd','btn-modalNewUser-forcertif');
              }else{
                 $("#form-vehicertif-newadd #certif-vehiplacadoc").val('');
-                arixshell_notification_alert('error',request['data']);
+                arixshell_notification_alert('warning',request['data']);
              }
         }else{
              return;

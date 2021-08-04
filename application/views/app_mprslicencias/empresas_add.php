@@ -256,6 +256,7 @@ $(document).ready(function(){
             var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('#form-empr-new-add').serialize());
 
             if(request['status']===true){//el servidor siempre responde con un obejeto
+                arixshell_notification_alert('success','Guardado correctamente...');
                 arixshell_hacer_pagina_atras();
                 //alert('correecto ...!');
             }
@@ -307,6 +308,7 @@ $(document).ready(function(){
             mpsradd_get_emp(data);
             $("#form-empr-new-add #emp-ruc").addClass('is-valid');
         }else{
+            arixshell_notification_alert('warning','La empresa (RUC) se encuntra registrada ...');
             $("#form-empr-new-add #emp-ruc").val("");
             $("#form-empr-new-add #emp-ruc").removeClass('is-valid');            
         }
@@ -319,6 +321,7 @@ $(document).ready(function(){
         if(request['status']==false){
             $("#form-empr-new-add #aut-nresolucion").addClass('is-valid');
         }else{
+            arixshell_notification_alert('warning','El número de resolución se encuntra registrada ...');
             $("#form-empr-new-add #aut-nresolucion").val("");
             $("#form-empr-new-add #aut-nresolucion").removeClass('is-valid');            
         }

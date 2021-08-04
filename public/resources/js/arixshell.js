@@ -366,10 +366,11 @@ function arixshell_cargar_boton_buscar(placeholder = 'Buscar ...'){
 $('nav #dropdown-item-u3').click(function(){
     dato = arixshell_download_datos('arixapi/arixapi_cerrar_sesion');
     if (dato.status == true) {
-        //window.location.replace('../arixmeebetagit');
-        window.location.replace(window.location.href);
+        window.location.replace('./');
+        //window.location.replace(window.location.href);
     }else{
-        location.reload();
+        window.location.replace('./inicio');
+        //location.reload();
         //return;
     }
 });

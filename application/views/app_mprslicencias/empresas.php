@@ -130,7 +130,7 @@ $(document).ready(function(){
             {"data": 'rsocial'},
             {"data": 'aufin'},
             {"data": 'numv'},
-            {"data": 'code'},
+            {"data": 'code'},            
             {"data": null, render: function ( data, type, row ) {return btnss;}}
         ],
         "order": [
@@ -148,12 +148,13 @@ $(document).ready(function(){
                 "searchable": false
             }
         ],
-        /*createdRow: function( row, data, dataIndex ) {
-            // Set the data-status attribute, and add a class
-            $(row).find('td:eq(3)').attr('odd', row.axuidemp);
-        }*/
         "createdRow": function( row, data, dataIndex ) {
             $(row).attr('odd', data.axuidemp);         
+        },
+        "createdRow": function( row, data, dataIndex ) {
+            if ( data.expirated == true ) {
+                $( row ).addClass( "text-danger" );
+            }
         }
     });
     $('#dataTable_emp_activos tbody').on( 'click', '.btn-detalles', function () {
