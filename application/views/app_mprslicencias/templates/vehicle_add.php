@@ -91,7 +91,7 @@
 <script type="text/javascript">
     var thisForm = '#vehi-form-base ';
     function vehicle_autoCache_start(){
-        var infor = arixshell_read_cache_serial('mpsr0x005477newVehicle');       
+        let infor = arixshell_read_cache_serial('mpsr0x005477newVehicle');       
             if(infor!=null){
                 infor=infor['id'];
                 if(infor.length==6){
@@ -203,9 +203,9 @@
     });    
 	$("#btn-enviar-vehicleadd").click(function () {
         if($(thisForm).valid()){
-             var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_vehicleadd', $(thisForm).serialize());
+             let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_vehicleadd', $(thisForm).serialize());
              if(request['status']===true){
-                var data = $(thisForm+' #vehi-matreal').val()+' - '+$(thisForm+'#vehi-brand option:selected').text()+' '+$(thisForm+'#vehi-model').val()+' ('+$(thisForm+' #vehi-year').val()+') - '+$(thisForm+'#vehi-color').val();
+                let data = $(thisForm+' #vehi-matreal').val()+' - '+$(thisForm+'#vehi-brand option:selected').text()+' '+$(thisForm+'#vehi-model').val()+' ('+$(thisForm+' #vehi-year').val()+') - '+$(thisForm+'#vehi-color').val();
                 $('#first-dom').html('<div class="col-xl-12 col-md-12"><table class="table table-striped"> <tbody> <tr> <th scope="row">Vehículo</th><td>'+data+'</td></tr><tr> <th scope="row">Propietario</th> <td>'+$(thisForm+'#vehi-ownerdescribe').val()+'</td></tr></tbody></table></div>');
                 arixshell_write_cache_serial("mpsr0x005477newVehicle",request['id'],data);//Pide 1= nombre clave de identificacion 2: (id)= alguna informacion y 3:(data) alguna descripcion
              }else{
@@ -224,9 +224,9 @@
     });
     //(1) PARA EL MODAL AGREGAR PROPIETARIO
     $(thisForm+"#btn-search-vehicle").click(function () {
-        var temp = $(thisForm+"#vehi-ownerdoc").val();
+        let temp = $(thisForm+"#vehi-ownerdoc").val();
         if(temp.length==8){
-        var request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+temp+'&');//true or false
+        let request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+temp+'&');//true or false
             if(request['status']==true){//ya existe en la base de datos
                 $(thisForm+'#vehi-ownerdescribe').val(request['data']).removeClass('d-none');                
                 $(thisForm+'#vehi-ownerid').val(request['id']);
@@ -243,7 +243,7 @@
     });
     //(2)PARA EL MODAL DE AGREGAR PROPIETARIO
     $(document).on('click', '#btn-modalNewUser-forVehicles', function(){
-        var request = arixshell_read_cache_serial('e0x005477arixNewUser');
+        let request = arixshell_read_cache_serial('e0x005477arixNewUser');
         if(request!==null){
             $(thisForm+'#vehi-ownerdescribe').val(request['data']).removeClass('d-none');                
             $(thisForm+'#vehi-ownerid').val(request['id']);
@@ -258,7 +258,7 @@
     //antes de guardar, prueba la duplicidad
     //esto puede actuar cunadose hace clic en el boton guardar  
      $(thisForm+"#vehi-matreal").blur(function(){
-        var placa = request = $(this).val();
+        let placa = request = $(this).val();
         if(request.length == 6){           
             request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicatevehi', 'txtdata='+request+'&');
             if(request['status']==false){

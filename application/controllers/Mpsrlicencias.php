@@ -90,6 +90,27 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	public function evaluations(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/evaluaciones');
+		}else{
+			show_404();
+		}
+	}
+	public function evaluations_show(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/evaluaciones_show');
+		}else{
+			show_404();
+		}
+	}
+	public function vehicles_search(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/vehiculos_bysearch');
+		}else{
+			show_404();
+		}
+	}
 	public function vehicles_add(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_mprslicencias/vehiculos_add');
@@ -109,6 +130,32 @@ class Mpsrlicencias extends CI_Controller {
 			$this->load->view('app_mprslicencias/vehiculos_add_form');
 		}else{
 			show_404();
+		}
+	}
+	//---------------------*****PRIVATE SECTION****************-----------------
+	//1=placa, 2=dni, 3=ruc
+	private function mpsr_post_check_byplaca($placa){//verifica si un vehiculo(placa) tiene una asociacion vigente a alguna empresa
+		$consulta = array(
+				array(
+					'cer.ncertificado,cer.certificado_id, cer.empresa_id,cer.vehiculo_id,emp.ruc'
+				),			
+				array(
+					'public.certificados cer',
+					'public.vehiculos veh',
+					'public.empresas emp'
+				),			
+				array(
+					'NULL',
+					'cer.vehiculo_id = veh.vehiculo_id',
+					'cer.empresa_id = emp.empresa_id'
+				)			
+		);
+		$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cer.estado'=>true, 'expirated'=>false,'veh.placa'=>$placa),array('cer.fregistro','DESC'));
+		if(!empty($consulta)){
+				$consulta = $consulta[0];
+				return array('status'=>true,'certificado'=>$consulta->certificado_id,'empresa'=>$consulta->empresa_id,'vehiculo'=>$consulta->vehiculo_id,'data'=>$consulta->ncertificado,'ruc'=>$consulta->ruc);
+		}else{
+				return array('status'=>false);
 		}
 	}
 	
@@ -139,7 +186,7 @@ class Mpsrlicencias extends CI_Controller {
 					'aut.clasificacion_id = cla.clasificacion_id'
 				)
 			);
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado='=>true, 'aut.estado='=>true, 'cla.sucursal_id'=>$sucu));
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado'=>true, 'aut.estado'=>true, 'cla.sucursal_id'=>$sucu));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
 				$consulta[$i]->aufin = date("d-m-Y", strtotime($consulta[$i]->aufin));
@@ -149,6 +196,7 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	
 	public function mpsr_get_activeemp_byruc(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdataruc')){
 			$ruc = strrev($this->input->post('txtdataruc'));
@@ -170,27 +218,97 @@ class Mpsrlicencias extends CI_Controller {
 					'aut.clasificacion_id = cla.clasificacion_id'
 				)
 			);
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('aut.estado='=>true, 'aut.expirated'=>false,'emp.ruc='=>$ruc, 'emp.estado='=>true, 'cla.sucursal_id'=>$sucu),array('aut.aufin','DESC'));
-			$consulta = $consulta[0];
-
-			$consulta->axuidemp = $this->serv_cifrado->cod_cifrar_cadena($consulta->axuidemp);
-			$consulta->aufin = date("d-m-Y", strtotime($consulta->aufin));
-
-			$sucu = $this->arixkernel->arixkernel_obtener_data_by_id('descripcion', 'servicios', $consulta->servicio);
-			$consulta->servicio = $sucu->descripcion;
-			echo json_encode($consulta);
-
-			/*for ($i=0; $i < count($consulta); $i++) { 
-				$consulta[$i]->axuidemp = $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
-				$consulta[$i]->aufin = date("d-m-Y", strtotime($consulta[$i]->aufin));
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('aut.estado'=>true, 'aut.expirated'=>false,'emp.ruc'=>$ruc, 'emp.estado'=>true, 'cla.sucursal_id'=>$sucu),array('aut.aufin','DESC'));
+			if(!empty($consulta)){//empty porque es un array
+				$consulta = $consulta[0];
+				$consulta->axuidemp = $this->serv_cifrado->cod_cifrar_cadena($consulta->axuidemp);
+				$consulta->aufin = date("d-m-Y", strtotime($consulta->aufin));
+				$sucu = $this->arixkernel->arixkernel_obtener_data_by_id('descripcion', 'servicios', $consulta->servicio);
+				$consulta->servicio = $sucu->descripcion;
+				echo json_encode($consulta);
+			}else{
+				echo json_encode(array('status'=>false));//sin resultados
 			}
-			$sucu = $this->arixkernel->arixkernel_obtener_data_by_id('descripcion', 'servicios', $consulta[0]->servicio);
-			$consulta[0]->servicio = $sucu->descripcion;
-			echo json_encode($consulta[0]);*/
 		}else{
 			show_404();
 		}
-	}	
+	}
+	public function mpsr_get_activeemp_byplaca(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$ruc = $this->mpsr_post_check_byplaca(strrev($this->input->post('txtdata')));
+			//$ruc = $this->mpsr_post_check_byplaca('X2H449');
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
+			$consulta = array(
+				array (
+					'aut.nresolucion,aut.aufin,aut.nvehiculos numv,aut.servicio_id servicio',
+					'emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial,emp.telefono,emp.direccion',
+					'cla.code'
+				),
+				array (
+					'public.autorizaciones aut',
+					'public.empresas emp',
+					'public.clasificaciones cla'
+				),
+				array (
+					'NULL',
+					'aut.empresa_id = emp.empresa_id',
+					'aut.clasificacion_id = cla.clasificacion_id'
+				)
+			);
+			if($ruc['status']==true){
+				$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('aut.estado'=>true, 'aut.expirated'=>false,'emp.ruc'=>$ruc['ruc'], 'emp.estado'=>true, 'cla.sucursal_id'=>$sucu),array('aut.aufin','DESC'));
+				if(!empty($consulta)){//empty porque es un array
+					$consulta = $consulta[0];
+					$consulta->axuidemp = $this->serv_cifrado->cod_cifrar_cadena($consulta->axuidemp);
+					$consulta->aufin = date("d-m-Y", strtotime($consulta->aufin));
+					$sucu = $this->arixkernel->arixkernel_obtener_data_by_id('descripcion', 'servicios', $consulta->servicio);
+					$consulta->servicio = $sucu->descripcion;
+					echo json_encode($consulta);
+				}else{
+					echo json_encode(array('status'=>false));//sin resultados
+				}
+			}else{
+				echo json_encode(array('status'=>'pene'));//sin resultados
+			}
+		}else{
+			show_404();
+		}
+	}
+	public function mpsr_get_vehicle_bycertif(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$certif = strrev($this->input->post('txtdata'));			
+			$consulta = array(
+				array(
+					'cer.certificado_id axidcert,cer.ncertificado,veh.placa,emp.ruc',
+					"concat(hma.hmarca,' ',veh.modelo) marca",
+					"concat('(',veh.fanio,') - ',veh.color,' - ',veh.nasientos,' Asientos') descripcion",
+					"concat(emp.nombre,' - ',emp.rsocial) emp"
+				),
+				array(
+					'public.certificados cer',
+					'public.vehiculos veh',
+					'private.hmarcas hma',
+					'public.empresas emp'
+				),
+				array(
+					'NULL',
+					'cer.vehiculo_id = veh.vehiculo_id',
+					'veh.hmarca_id = hma.hmarca_id',
+					'cer.empresa_id = emp.empresa_id'
+				)
+			);
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cer.supdate'=>true, 'cer.estado'=>true, 'cer.expirated'=>false,'cer.ncertificado'=>$certif),array('cer.fregistro','ASC'));
+			if(!empty($consulta)){//empty porque es un array
+				$consulta = $consulta[0];
+				$consulta->axidcert = $this->serv_cifrado->cod_cifrar_cadena($consulta->axidcert);
+				echo json_encode($consulta);
+			}else{
+				echo json_encode(array('status'=>false));//sin resultados
+			}
+		}else{
+			show_404();
+		}
+	}
 	public function mpsr_get_modalidad(){
 		$this->load->library('serv_cifrado');
 		$this->load->model('arixkernel');
@@ -225,6 +343,18 @@ class Mpsrlicencias extends CI_Controller {
 		if($this->input->is_ajax_request()){
 			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
 			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("lclasecategoria_id axuidemp, concat (lclasecategoria,' | (',substring(descripcion,0,55),'...)') descripcion",'lclasecategorias',0,array('sucursal_id'=>$sucu));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
+	public function mpsr_get_eval_options(){
+		if($this->input->is_ajax_request()){
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("ccondicion_id axuidemp,ccondicion",'ccondiciones',0,array('ccondicion_id>'=>2));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
 			}
@@ -272,11 +402,11 @@ class Mpsrlicencias extends CI_Controller {
 					'con.persona_id = per.persona_id'
 				 )
 			);
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('x_c.estado='=>true,'cer.estado='=>true,'cer.empresa_id='=>$emp_id),array('cer.certificado_id','ASC'));			
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('x_c.estado'=>true,'cer.estado'=>true,'cer.empresa_id'=>$emp_id),array('cer.certificado_id','ASC'));			
 			if(!empty($consulta)){
 				for ($i=0; $i < count($consulta); $i++) { 
 					$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
-					$consulta[$i]->cert_status = $consulta[$i]->cert_status == 2? true : false;
+					$consulta[$i]->cert_status = $consulta[$i]->cert_status == 3? true : false;
 				}
 				echo json_encode($consulta);
 			}else{
@@ -323,30 +453,7 @@ class Mpsrlicencias extends CI_Controller {
 		}else{
 			show_404();
 		}
-	}
-	//1=placa, 2=dni, 3=ruc
-	private function mpsr_post_check_byplaca($placa){//verifica si un vehiculo(placa) tiene una asociacion vigente a alguna empresa
-		$consulta = array(
-				array(
-					'cer.ncertificado,cer.certificado_id, cer.empresa_id,cer.vehiculo_id'
-				),			
-				array(
-					'public.certificados cer',
-					'public.vehiculos veh'
-				),			
-				array(
-					'NULL',
-					'cer.vehiculo_id = veh.vehiculo_id'
-				)			
-		);
-		$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cer.estado='=>true,'veh.placa'=>$placa),array('cer.fregistro','DESC'));
-		if(!empty($consulta)){
-				$consulta = $consulta[0];
-				return array('status'=>true,'certificado'=>$consulta->certificado_id,'empresa'=>$consulta->empresa_id,'vehiculo'=>$consulta->vehiculo_id,'data'=>$consulta->ncertificado);
-		}else{
-				return array('status'=>false);
-		}
-	}
+	}	
 	public function mpsr_post_duplicate_certifvehi(){//verifica si está registrado correctamnet(vehiculo y propietario)
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$placa = $this->input->post('txtdata');
@@ -373,7 +480,7 @@ class Mpsrlicencias extends CI_Controller {
 						'veh.clasificacion_id = cla.clasificacion_id'
 					)			
 				);
-				$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('x_p.estado='=>true,'veh.placa'=>$placa),array('x_p.fregistro','DESC'));
+				$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('x_p.estado'=>true,'veh.placa'=>$placa),array('x_p.fregistro','DESC'));
 				if(!empty($consulta)){//empty porque es un array
 					$consulta = $consulta[0];
 					echo json_encode(array('status'=>true,'id'=>$this->serv_cifrado->cod_cifrar_cadena($consulta->axuidvehi),'data'=>$consulta->descripcion.' '.$consulta->ownere,'code'=>$consulta->code));
@@ -407,7 +514,7 @@ class Mpsrlicencias extends CI_Controller {
 				)
 			);
 			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('con.estado='=>true,'per.documento'=>$this->input->post('txtdata'),'lcl.sucursal_id'=>$sucu),array('con.fregistro','DESC'));
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('con.estado'=>true,'per.documento'=>$this->input->post('txtdata'),'lcl.sucursal_id'=>$sucu),array('con.fregistro','DESC'));
 			if(!empty($consulta)){//empty porque es un array
 				$consulta = $consulta[0];
 				echo json_encode(array('status'=>true,'id'=>$this->serv_cifrado->cod_cifrar_cadena($consulta->axuiddriver),'data'=>$consulta->license.' '.$consulta->driver));
@@ -465,6 +572,35 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}	
 	}
+	public function mpsr_post_save_eval(){
+		if($this->input->is_ajax_request() && $this->input->post('txtcertifid')){
+			$eval = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtevalclase')));
+			$cert_id = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtcertifid')));			
+			$datos = array(
+				array(
+					'ccondicion_id'=>$eval,
+					'supdate'=>false,					
+					'descripcion'=>$this->input->post('txtevalobserbations'),
+					'factualizacion'=>date('Y-m-d H:i')
+				),array(
+					'certificado_id'=>$cert_id,
+					'nmpsrlicencias'=>substr(date('Y'),2,2).random_int(10, 99).strtoupper(substr(uniqid(),-11))
+				)
+			);
+			if($eval==3){
+				$tables = array('certificados','mpsrlicencias');//array('tabla_actualizar','tabla insertar');
+				$tables = $this->arixkernel->arixkernel_actualizar_guardar_data($datos,$tables,array('certificado_id'=>$cert_id));
+				echo json_encode(array('status'=>$tables['status']));
+			}else{
+				$datos[0] = array_merge($datos[0], array('estado'=>false,'expirated'=>true));
+				$tables = array('certificados','mpsrlicencias');//array('tabla_actualizar','tabla insertar');
+				$tables = $this->arixkernel->arixkernel_actualizar_guardar_data($datos,$tables,array('certificado_id'=>$cert_id));
+				echo json_encode(array('status'=>$tables['status']));
+			}			
+		}else{
+			show_404();
+		}	
+	}
 	public function mpsr_post_vehicleadd(){
 		if($this->input->is_ajax_request() && $this->input->post('txtvehireal')){
 			$datos = array(
@@ -514,21 +650,13 @@ class Mpsrlicencias extends CI_Controller {
 	public function mpsr_post_certificado_add(){
 		if($this->input->is_ajax_request() && $this->input->post('txtcertifempid')){
 			//antes debes comparar cantidad de vehiculos autorizados para guardar
-			/*$data = array(
-				'vehiculo_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtcertifvehiplacaid'))),
-				'empresa_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtcertifempid'))),
-				'conductor_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtcertifdriverid'))),
-				'lugarisp' => $this->input->post('txtcertifplace'),
-				'fechaisp' => date("Y-m-d H:i", strtotime(str_replace('/', '-',$this->input->post('txtcertifdate')))),
-				'ncertificado'=>strtoupper(substr($this->input->post('txtcertifvehiplacadoc'),-3).substr(uniqid(), 1))
-			);*/
 			$datos = array(
 				array(
 					'vehiculo_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtcertifvehiplacaid'))),
 					'empresa_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtcertifempid'))),					
 					'lugarisp' => $this->input->post('txtcertifplace'),
 					'fechaisp' => date("Y-m-d H:i", strtotime(str_replace('/', '-',$this->input->post('txtcertifdate')))),
-					'ncertificado'=>strtoupper(substr($this->input->post('txtcertifvehiplacadoc'),-3).substr(uniqid(), 1))
+					'ncertificado'=>substr(date('Y'),2,2).strtoupper(substr($this->input->post('txtcertifvehiplacadoc'),0,2).substr(uniqid(), -11))
 				),
 				array(
 					//'certificado_id' => es proporcionado por arixkernel
@@ -538,8 +666,6 @@ class Mpsrlicencias extends CI_Controller {
 			$tables = array('certificados','x_conductores');
 			$tables = $this->arixkernel->arixkernel_guargar_sequencial_data($datos,$tables);
 			echo json_encode(array('status'=>$tables['status']));
-			//$data = $this->arixkernel->arixkernel_guargar_simple_data($data, 'certificados');
-			//echo json_encode(array('status'=>$data['status']));
 		}else{
 			show_404();
 		}
@@ -550,12 +676,14 @@ class Mpsrlicencias extends CI_Controller {
 		//$data = array('nombre' => 'My title 47');
 		//echo $this->arixkernel->arixkernel_guargar_simple_data($data,'pruebas');
 		/*$datas = array(
-			array('nombre'=>'prueba_a 1'),
-			array('nombre'=>'prueba_b 2'),
-			array('nombre'=>'prueba_b 3')
+			array('nombre'=>'extoy actua_7'),
+			array(
+				'nombre'=>'prueba_b 7',
+				'prueba_id'=>1
+				)
 		);		
-		$tables = array('pruebas','bpruebas','cpruebas');
-		print_r($this->arixkernel->arixkernel_guargar_sequencial_data($datas,$tables));*/
+		$tables = array('pruebas','bpruebas');
+		print_r($this->arixkernel->arixkernel_actualizar_guardar_data($datas,$tables,array('prueba_id'=>11)));*/
 		
 		/*$this->load->library('serv_administracion_usuarios');
 		echo $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();*/
@@ -565,27 +693,28 @@ class Mpsrlicencias extends CI_Controller {
             'public.empresas'=>'empresa_id,ruc,nombre,rsocial',
             'public.clasificaciones'=>'code'
 		), array(1,0,1));*/
-		//$array_tabla_tupla  = $this->arixkernel->arixkernel_obtener_complex_data($array_tabla_tupla,0,array('emp.estado='=>true, 'aut.estado='=>true));
+		//$array_tabla_tupla  = $this->arixkernel->arixkernel_obtener_complex_data($array_tabla_tupla,0,array('emp.estado'=>true, 'aut.estado'=>true));
 		//print_r($array_tabla_tupla);
 		//$this->load->library('serv_cifrado');		
 		//print_r ($this->serv_cifrado->cod_cifrar_cadena('mi CASA es grande'));
-		//echo ($this->serv_cifrado->cod_decifrar_cadena('10EC7A2B9686EZnJmaU10L3AwZnBqRzVDMDJDWHp1dz09'));
+		//echo ($this->serv_cifrado->cod_decifrar_cadena('0A05F1B023C48OVp3QmVwckhQckYzdGRRdWcrWlpHZz09'));
 		//echo(strtoupper(uniqid('ABC')));
 		//echo json_encode(array('status'=>true));
 		//echo(substr('123abc',-3).substr(uniqid(), 1)); // devuelve "de"
 		
+		print_r($this->mpsr_post_check_byplaca('Z3Z071'));
+
+		//echo (substr(date('Y'),2).random_int(10, 99).substr(uniqid()));
+		//echo (strtoupper(substr($this->input->post('txtcertifvehiplacadoc'),-3).substr(uniqid(), 1)));
 		//echo (date("Y-m-d", strtotime(str_replace('/', '-','19/7/2021'))));
-		$this->load->library('serv_ejecucion_app');
-		$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array( 
-			'public.x_conductores'=>'estado',
+		/*$this->load->library('serv_ejecucion_app');
+		$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(			
 			'public.certificados'=>'ncertificado',
 			'public.vehiculos'=>'modelo',
 			'private.hmarcas'=>'hmarca',
-			'public.conductores'=>'nlicencia',
-			'private.personas'=>'documento'
 			
-		), array(1,0,0,0,1,0));
-		print_r($array_tabla_tupla);
+		), array(1,0,0));
+		print_r($array_tabla_tupla);*/
 
 	}
 }

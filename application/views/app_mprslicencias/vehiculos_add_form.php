@@ -87,7 +87,7 @@
     }); 
     $('#btn-add-veh2certif').click(function() {        
         if($('#form-vehicertif-newadd').valid()){
-            var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_certificado_add', $('#form-vehicertif-newadd').serialize());
+            let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_certificado_add', $('#form-vehicertif-newadd').serialize());
              if(request['status']===true){
                 $('#btn-cancel-veh2certif').click();
                 arixshell_notification_alert('success','Guardado correctamente...');                
@@ -114,9 +114,9 @@
     });
     //(1) PARA EL MODAL AGREGAR VEHICULOS
     $("#form-vehicertif-newadd #btn-search-placacertif").click(function () {
-        var temp = $("#form-vehicertif-newadd #certif-vehiplacadoc").val();
+        let temp = $("#form-vehicertif-newadd #certif-vehiplacadoc").val();
         if(temp.length==6){
-            var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicate_certifvehi', 'txtdata='+temp+'&');//true or false
+            let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicate_certifvehi', 'txtdata='+temp+'&');//true or false
             if(request['status']==true){//ya existe en la base de datos
                 $('#form-vehicertif-newadd #certif-vehiplacadescribe').val(request['data']).removeClass('d-none');                
                 $('#form-vehicertif-newadd #certif-vehiplacaid').val(request['id']);
@@ -136,7 +136,7 @@
     });
      //(2)PARA EL MODAL DE AGREGAR vehiculos
     $(document).on('click', '#btn-modalNewUser-forcertif', function(){
-        var request = arixshell_read_cache_serial('mpsr0x005477newVehicle');
+        let request = arixshell_read_cache_serial('mpsr0x005477newVehicle');
         if(request!==null){
             $('#form-vehicertif-newadd #certif-vehiplacadescribe').val(request['data']).removeClass('d-none');                
             $('#form-vehicertif-newadd #certif-vehiplacaid').val(request['id']);
@@ -150,9 +150,9 @@
     });
     //(2)PARA EL MODAL DE AGREGAR conductores
     $("#form-vehicertif-newadd #btn-search-drivercertif").click(function () {
-        var temp = $("#form-vehicertif-newadd #certif-driverdoc").val();
+        let temp = $("#form-vehicertif-newadd #certif-driverdoc").val();
         if(temp.length==8){
-            var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicate_certifdriver', 'txtdata='+temp+'&');//true or false
+            let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicate_certifdriver', 'txtdata='+temp+'&');//true or false
             if(request['status']==true){//ya existe en la base de datos
                 $('#form-vehicertif-newadd #certif-driverdescribe').val(request['data']).removeClass('d-none');                
                 $('#form-vehicertif-newadd #certif-driverid').val(request['id']);
@@ -169,7 +169,7 @@
     });
      //(2)PARA EL MODAL DE AGREGAR conductores
     $(document).on('click', '#btn-modalNewDriver-fordriver', function(){
-        var request = arixshell_read_cache_serial('mpsr0x005477newDriver');//EL FORMULARIO LO GUARDA AQUI
+        let request = arixshell_read_cache_serial('mpsr0x005477newDriver');//EL FORMULARIO LO GUARDA AQUI
         if(request!==null){
             $('#form-vehicertif-newadd #certif-driverdescribe').val(request['data']).removeClass('d-none');                
             $('#form-vehicertif-newadd #certif-driverid').val(request['id']);

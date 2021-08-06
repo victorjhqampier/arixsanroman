@@ -23,54 +23,47 @@
     <div class="tab-pane fade show active" id="first-href-vehicle" role="tabpanel" aria-labelledby="first-tab-vehicle">
         <div class="row">
             <div class="col-xl-12 col-md-12 mt-2">
-                <h2>En proceso de desarrollo</h2>
-                <h5>Ud. Puede probar agregando vehiculos, click en el botón [+]</h5>
-                <div class="input-group input-group-sm mb-3">
-                    <input type="text" class="form-control" placeholder="Documento del empleado" aria-label="Recipient's username" aria-describedby="button-addon2" />
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+                <div class="row">
+                    <div class="col-xl-12 col-md-12">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="in-vehicle-bysearch" placeholder="Placa del vehículo" maxlength="6"/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="btn-vehicle-bysearch"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4">
                     </div>
-                </div>
+                    <div class="col-xl-12 col-md-12 mt-2" id="content-vehicle-bysearch"></div>    
+                </div> 
             </div>
-            <!--div class="col-xl-12 col-md-12 mt-2">
-                <div class="table-responsive-md">
-                    <table class="table table-striped table-hover" id="table_vehicles_added">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">N. Contrato</th>
-                                <th scope="col">DNI</th>
-                                <th scope="col">Empleado</th>
-                                <th scope="col">Puesto</th>
-                                <th scope="col">Tienda</th>
-                                <th scope="col">Vencimiento</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div-->
         </div>
     </div>
     <div class="tab-pane fade" id="second-href-vehicle" role="tabpanel" aria-labelledby="second-tab-vehicle">
         <div class="table-responsive-md">
             <div class="row">
                 <div class="col-xl-12 col-md-12 mt-2">
-                    <table class="table table-striped table-hover" id="dataTable_inactivos">
-                        <!-- table-sm  table-dark-->
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">N. Contrato</th>
-                                <th scope="col">DNI</th>
-                                <th scope="col">Empleado</th>
-                                <th scope="col">Puesto</th>
-                                <th scope="col">Tienda</th>
-                                <th scope="col">Fechas</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="in-vehicle-chgowner" placeholder="Placa del vehículo" maxlength="6"/>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" id="btn-vehicle-chgowner"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                        </div>
+                        <div class="col-xl-12 col-md-12 mt-2">
+                            <div class="row" id="content-vehicle-chgowner"></div>
+                        </div>    
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,7 +72,26 @@
         <div class="table-responsive-md">
             <div class="row">
                 <div class="col-xl-12 col-md-12 mt-2">
-                    <h2>cambiar conductor</h2>
+                    
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="in-vehicle-chgdriver" placeholder="Placa del vehículo" maxlength="6"/>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" id="btn-vehicle-chgdriver"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                        </div>
+                        <div class="col-xl-12 col-md-12 mt-2">
+                            <div class="row" id="content-vehicle-chgdriver"></div>
+                        </div>    
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -87,13 +99,23 @@
     <div class="tab-pane fade" id="third-href-vehicle" role="tabpanel" aria-labelledby="third-tab-vehicle">
         <div class="row">
             <div class="col-xl-12 col-md-12 mt-2">
-                <h2>ArixCorp todos los pasos para obtener la licencia</h2>
-                <h5>con este paso se termina todo el proceso, y sistematiza los documentos existentes</h5>
-                <div class="input-group input-group-sm mb-3">
-                    <input type="text" class="form-control" placeholder="Documento del empleado" aria-label="Recipient's username" aria-describedby="button-addon2" />
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+                <div class="row">
+                    <div class="col-xl-12 col-md-12">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="in-vehicle-down" placeholder="Placa del vehículo" maxlength="6"/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="btn-vehicle-down"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4">
                     </div>
+                    <div class="col-xl-12 col-md-12 mt-2">
+                        <div class="row" id="content-vehicle-down"></div>
+                    </div>    
                 </div>
             </div>
         </div>
@@ -128,11 +150,29 @@
     </div>    
 </div>
 <script type="text/javascript">
+var mpsr_vehiadd_basevar;//=[0,1,2,3,4,5];
 $(document).ready(function(){
     arixshell_iniciar_llaves_locales("#btn_id_vehiculos");
     arixshell_cargar_botones_menu('btn-agregar');
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-agregar", function() {
         arixshell_cargar_contenido('mpsrlicencias/vehicles_add','Agregar Vehículos');
     });
+});
+$('#first-href-vehicle #in-vehicle-bysearch').mask('AAA999', {reverse: true}).focus();
+$('#first-href-vehicle').on('click', '#btn-vehicle-bysearch', function(){
+    let request = $('#first-href-vehicle #in-vehicle-bysearch').val();
+    if(request.length==6 /*&& mpsr_vehiadd_basevar[5]!=request*/){
+        request = arixshell_upload_datos('mpsrlicencias/mpsr_get_activeemp_byplaca', 'txtdata='+verifyMpsr(request)+'&');
+        if(typeof(request['axuidemp']) !== 'undefined'){
+            mpsr_vehiadd_basevar=request;
+            $('#first-href-vehicle #in-vehicle-bysearch').val(''); 
+            arixshell_cargar_subpaginas("mpsrlicencias/vehicles_search","#first-href-vehicle #content-vehicle-bysearch");                             
+        }else{
+            arixshell_notification_alert('error','No encontramos resultados. Por favor, verifique la placa');
+            $("#first-href-vehicle #content-vehicle-bysearch").html("");
+        }
+    }else{
+        return;
+    }
 });
 </script>

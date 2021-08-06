@@ -176,7 +176,6 @@ a:not([href]):hover {
   color: inherit;
   text-decoration: none;
 }
-
 pre,
 code,
 kbd,
@@ -7582,7 +7581,7 @@ button.bg-dark:focus {
 
 .mt-4,
 .my-4 {
-  margin-top: 1.5rem !important;
+  margin-top: 0.5rem !important;
 }
 
 .mr-4,

@@ -97,9 +97,9 @@
     }); 
 	$("#btn-enviar-driveradd").click(function () {
         if($(thisFormDriver).valid()){
-             var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_driveradd', $(thisFormDriver).serialize());
+             let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_driveradd', $(thisFormDriver).serialize());
              if(request['status']===true){
-                var data = $(thisFormDriver+'#driver-licenseid').val()+' - '+$(thisFormDriver+'#driver-catclass option:selected').text()+' '+$(thisFormDriver+' #driver-vigencia').val();
+                let data = $(thisFormDriver+'#driver-licenseid').val()+' - '+$(thisFormDriver+'#driver-catclass option:selected').text()+' '+$(thisFormDriver+' #driver-vigencia').val();
                 $('#first-dom-driver').html('<div class="col-xl-12 col-md-12"><table class="table table-striped"> <tbody> <tr> <th scope="row">Licencia</th><td>'+data+'</td></tr><tr> <th scope="row">Conductor</th> <td>'+$(thisFormDriver+'#driver-ownerdescribe').val()+'</td></tr></tbody></table></div>');
                 arixshell_write_cache_serial("mpsr0x005477newDriver",request['id'],data);//Pide 1= nombre clave de identificacion 2: (id)= alguna informacion y 3:(data) alguna descripcion
              }else{
@@ -120,9 +120,9 @@
     });
     //(1) PARA EL MODAL AGREGAR PROPIETARIO
     $(thisFormDriver+"#btn-search-driver").click(function () {
-        var temp = $(thisFormDriver+"#driver-ownerdoc").val();
+        let temp = $(thisFormDriver+"#driver-ownerdoc").val();
         if(temp.length==8){
-        var request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+temp+'&');//true or false
+        let request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+temp+'&');//true or false
             if(request['status']==true){//ya existe en la base de datos
                 $(thisFormDriver+'#driver-ownerdescribe').val(request['data']).removeClass('d-none');                
                 $(thisFormDriver+'#driver-ownerid').val(request['id']);
@@ -139,7 +139,7 @@
     });
     //(2)PARA EL MODAL DE AGREGAR conductor
     $(document).on('click', '#btn-modalNewUser-forDriver', function(){
-        var request = arixshell_read_cache_serial('e0x005477arixNewUser');
+        let request = arixshell_read_cache_serial('e0x005477arixNewUser');
         if(request!==null){
             $(thisFormDriver+'#driver-ownerdescribe').val(request['data']).removeClass('d-none');                
             $(thisFormDriver+'#driver-ownerid').val(request['id']);
@@ -155,7 +155,7 @@
     //antes de guardar, prueba la duplicidad
     //esto puede actuar cunadose hace clic en el boton guardar  
      $(thisFormDriver+"#driver-licenseid").blur(function(){
-        var placa = request = $(this).val();
+        let placa = request = $(this).val();
         if(request.length >= 9){           
             request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicatedriver', 'txtdata='+request+'&');
             if(request['status']==false){

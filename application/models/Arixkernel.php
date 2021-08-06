@@ -196,4 +196,25 @@ class Arixkernel extends CI_Model{
 	public function arixkernel_guargar_parallel_data($data, $table){
 		return;
 	}
+	//arixkernel_actualizar_guardar_data(array(=>actualizar),array(=>guardar),array(=>condiciones de actualizacion))
+	public function arixkernel_actualizar_guardar_data($datas, $tables,$update_con){
+		$this->db->trans_start();			
+			try{
+				$this->db->where($update_con);
+				$this->db->update($tables[0], $datas[0]);
+				if($this->db->affected_rows()){
+					$this->db->insert($tables[1], $datas[1]);
+				}else{
+					throw new Exception('No affected rows');
+				}				
+			}catch (PDOException $e){
+				$this->db->rollback();
+			}
+		$this->db->trans_complete();
+		if($this->db->trans_status()!==FALSE){
+			return array('status'=>true);
+		}else{
+			return array('status'=>false);
+		}
+	}
 }

@@ -158,7 +158,7 @@ $(document).ready(function(){
         }
     });
     $('#dataTable_emp_activos tbody').on( 'click', '.btn-detalles', function () {
-        var fila = $(this).closest("tr"), uid = fila.attr('odd');
+        let fila = $(this).closest("tr"), uid = fila.attr('odd');
         //toda la lista
         //fila = fila.find("td").text();
         arixshell_cargar_contenido(window.location.href+'/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(2)').text());

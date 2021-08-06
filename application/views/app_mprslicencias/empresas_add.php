@@ -134,7 +134,7 @@ $(document).ready(function(){
     $('#form-empr-new-add #emp-ruc').focus();
     //$('#form-usuario-sucursal #select-permiso').selectpicker();//inicializa la multiple seleccion
     $(arixshell_cargar_llave_local(1)+' .card').on("click", "button", function() {//click unico en la página
-        var a = $(this).closest('div').attr('id');
+        let a = $(this).closest('div').attr('id');
         alert('-> '+a);
     });
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-cerrar", function() {
@@ -143,7 +143,7 @@ $(document).ready(function(){
     });
 
     function mpsradd_get_emp(ruc){
-        request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/ruc/'+ruc+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
+       let request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/ruc/'+ruc+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
         if (request['ruc']== ruc){
             $("#form-empr-new-add #emp-rsocial").val(request.razonSocial);
             $("#form-empr-new-add #emp-nombre").val(request.nombreComercial);
@@ -160,7 +160,7 @@ $(document).ready(function(){
     mpsr_subir_fechas('#form-empr-new-add #aut-ffinal',6);
     arixshell_cargar_opciones('#form-empr-new-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad');
     /*$('#form-empr-new-add #aut-categoria').change(function(){
-        var r = $(this).val();
+        let r = $(this).val();
         mpsr_subir_opciones('#form-empr-new-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad', 'txtdata='+r+'&');
     });*/
     $("#form-empr-new-add").validate({
@@ -253,7 +253,7 @@ $(document).ready(function(){
     $("#btn-enviar-empadd").click(function () {     
         if($("#form-empr-new-add").valid()){
             //console.log($('#form-empr-new-add').serialize());
-            var request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('#form-empr-new-add').serialize());
+            let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('#form-empr-new-add').serialize());
 
             if(request['status']===true){//el servidor siempre responde con un obejeto
                 arixshell_notification_alert('success','Guardado correctamente...');
@@ -274,9 +274,9 @@ $(document).ready(function(){
     });
     //boton para buscar administrador
     $("#form-empr-new-add #btn-search-people").click(function () {
-        var temp = $("#form-empr-new-add #emp-mamanger").val();
+        let temp = $("#form-empr-new-add #emp-mamanger").val();
         if(temp.length==8){//si es falso, entonces no hay duplicidad
-        var request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+temp+'&');//true or false
+        let request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+temp+'&');//true or false
             if(request['status']==true){//ya existe en la base de datos
                 $('#form-empr-new-add #emp-mamanger').val(request['data']);
                 $('#form-empr-new-add #emp-adminname').val(request['id']);
@@ -291,7 +291,7 @@ $(document).ready(function(){
     });
     //ojo en el boton que hace click
     $(document).on('click', '#btn-cerrar-modalNewUser', function(){
-        var infor = arixshell_read_cache_serial('e0x005477arixNewUser');//otorgado por eldesarrollador del formulario anterior
+        let infor = arixshell_read_cache_serial('e0x005477arixNewUser');//otorgado por eldesarrollador del formulario anterior
         if(infor!==null){
             $('#form-empr-new-add #emp-mamanger').val(infor['data']);
             $('#form-empr-new-add #emp-adminname').val(infor['id']);
@@ -302,33 +302,45 @@ $(document).ready(function(){
     });
 
     $("#form-empr-new-add #emp-ruc").blur(function(){
-        var data = request = $(this).val();
-        request.length == 11 ? request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateru', 'txtdata='+request+'&') : request['status']=true;        
-        if(request['status']==false){
-            mpsradd_get_emp(data);
-            $("#form-empr-new-add #emp-ruc").addClass('is-valid');
+        let data = request = $(this).val();
+        //request.length == 11 ? request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateru', 'txtdata='+request+'&') : request['status']=true;
+        if(request.length == 11){
+            request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateru', 'txtdata='+request+'&');
+            if(request['status']==false){
+                mpsradd_get_emp(data);
+                $("#form-empr-new-add #emp-ruc").addClass('is-valid');
+            }else{
+                arixshell_notification_alert('warning','La empresa (RUC) se encuntra registrada ...');
+                $("#form-empr-new-add #emp-ruc").val("");
+                $("#form-empr-new-add #emp-ruc").removeClass('is-valid');            
+            }
         }else{
-            arixshell_notification_alert('warning','La empresa (RUC) se encuntra registrada ...');
-            $("#form-empr-new-add #emp-ruc").val("");
-            $("#form-empr-new-add #emp-ruc").removeClass('is-valid');            
-        }
+            return;
+        }        
+        
     });
     $("#form-empr-new-add #aut-nresolucion").blur(function(){
-        var request = $(this).val();
-        request.length > 11 ? request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateres', 'txtdata='+request+'&') : request['status']=true;
+        let request = $(this).val();
+        if(request.length > 11){
+            request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateres', 'txtdata='+request+'&');
+            if(request['status']==false){
+            $("#form-empr-new-add #aut-nresolucion").addClass('is-valid');
+            }else{
+                arixshell_notification_alert('warning','El número de resolución se encuntra registrada ...');
+                $("#form-empr-new-add #aut-nresolucion").val("");
+                $("#form-empr-new-add #aut-nresolucion").removeClass('is-valid');            
+            }
+        }else{
+            return;
+        }
+        //request.length > 11 ? request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateres', 'txtdata='+request+'&') : request['status']=true;
         //request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicateres', 'txtdata='+request+'&');
         //console.log(request);
-        if(request['status']==false){
-            $("#form-empr-new-add #aut-nresolucion").addClass('is-valid');
-        }else{
-            arixshell_notification_alert('warning','El número de resolución se encuntra registrada ...');
-            $("#form-empr-new-add #aut-nresolucion").val("");
-            $("#form-empr-new-add #aut-nresolucion").removeClass('is-valid');            
-        }
+        
     });
     //si ago click en el modal y el nombre que aparece
     /*$('#arixgeneralmodal tbody').on("click", "tr", function() {
-        var fila = $(this).closest("tr"), uid = fila.attr('odd');
+        let fila = $(this).closest("tr"), uid = fila.attr('odd');
         //alert($(this).attr('odd'));
         alert('carajo');
     });*/
