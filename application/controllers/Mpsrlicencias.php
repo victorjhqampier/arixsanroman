@@ -575,7 +575,9 @@ class Mpsrlicencias extends CI_Controller {
 	public function mpsr_post_save_eval(){
 		if($this->input->is_ajax_request() && $this->input->post('txtcertifid')){
 			$eval = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtevalclase')));
-			$cert_id = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtcertifid')));			
+			//$eval = 3;
+			$cert_id = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtcertifid')));
+			//$cert_id = 8;	
 			$datos = array(
 				array(
 					'ccondicion_id'=>$eval,
@@ -584,22 +586,22 @@ class Mpsrlicencias extends CI_Controller {
 					'factualizacion'=>date('Y-m-d H:i')
 				),array(
 					'certificado_id'=>$cert_id,
-					'nmpsrlicencias'=>substr(date('Y'),2,2).random_int(10, 99).strtoupper(substr(uniqid(),-11))
+					'nmpsrlicencias'=>substr(date('Y'),2,2).random_int(10, 99).strtoupper(substr(uniqid(),-11)),
+					'sucursal_id'=>$this->serv_administracion_usuarios->use_obtener_sucursal_id_actual()
 				)
 			);
-			if($eval==3){
+			if($eval==3){//actualiza y guarda
 				$tables = array('certificados','mpsrlicencias');//array('tabla_actualizar','tabla insertar');
-				$tables = $this->arixkernel->arixkernel_actualizar_guardar_data($datos,$tables,array('certificado_id'=>$cert_id));
+				$tables = $this->arixkernel->arixkernel_actualizar_guardar_data($datos,$tables,array('certificado_id'=>$cert_id,'supdate'=>true));
 				echo json_encode(array('status'=>$tables['status']));
-			}else{
+			}else{//solo actualiza
 				$datos[0] = array_merge($datos[0], array('estado'=>false,'expirated'=>true));
-				$tables = array('certificados','mpsrlicencias');//array('tabla_actualizar','tabla insertar');
-				$tables = $this->arixkernel->arixkernel_actualizar_guardar_data($datos,$tables,array('certificado_id'=>$cert_id));
+				$tables = $this->arixkernel->arixkernel_actualizar_simple_data($datos[0],'certificados',array('certificado_id'=>$cert_id,'supdate'=>true));
 				echo json_encode(array('status'=>$tables['status']));
 			}			
 		}else{
 			show_404();
-		}	
+		}
 	}
 	public function mpsr_post_vehicleadd(){
 		if($this->input->is_ajax_request() && $this->input->post('txtvehireal')){
@@ -697,12 +699,12 @@ class Mpsrlicencias extends CI_Controller {
 		//print_r($array_tabla_tupla);
 		//$this->load->library('serv_cifrado');		
 		//print_r ($this->serv_cifrado->cod_cifrar_cadena('mi CASA es grande'));
-		//echo ($this->serv_cifrado->cod_decifrar_cadena('0A05F1B023C48OVp3QmVwckhQckYzdGRRdWcrWlpHZz09'));
+		echo ($this->serv_cifrado->cod_decifrar_cadena('54F747562B763dDV1YkVMQ3dDUy8rVEtNRHNZM01sdz09'));
 		//echo(strtoupper(uniqid('ABC')));
 		//echo json_encode(array('status'=>true));
 		//echo(substr('123abc',-3).substr(uniqid(), 1)); // devuelve "de"
 		
-		print_r($this->mpsr_post_check_byplaca('Z3Z071'));
+		//print_r($this->mpsr_post_check_byplaca('Z3Z071'));
 
 		//echo (substr(date('Y'),2).random_int(10, 99).substr(uniqid()));
 		//echo (strtoupper(substr($this->input->post('txtcertifvehiplacadoc'),-3).substr(uniqid(), 1)));

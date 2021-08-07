@@ -217,4 +217,23 @@ class Arixkernel extends CI_Model{
 			return array('status'=>false);
 		}
 	}
+	//arixkernel_actualizar_simple_data(array(), string, array())
+	public function arixkernel_actualizar_simple_data($data, $table,$condition){
+		$this->db->trans_start();			
+			try{
+				$this->db->where($condition);
+				$this->db->update($table, $data);
+				if(!$this->db->affected_rows()){
+					throw new Exception('No affected rows');
+				}				
+			}catch (PDOException $e){
+				$this->db->rollback();
+			}
+		$this->db->trans_complete();
+		if($this->db->trans_status()===FALSE){
+			return array('status'=>false);
+		}else{
+			return array('status'=>true);
+		}
+	}
 }

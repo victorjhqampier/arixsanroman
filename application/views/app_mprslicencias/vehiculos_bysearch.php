@@ -63,7 +63,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    arixshell_iniciar_llaves_locales("#btn_id_veh2empresas_add");
     (function(){
         $("#sub-table-emp").find('td:eq(0)').text(mpsr_vehiadd_basevar['ruc']);
         $("#sub-table-emp").find('td:eq(1)').text(mpsr_vehiadd_basevar['nombre']);
