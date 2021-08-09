@@ -26,6 +26,17 @@ class Arixapi extends CI_Controller {
 		}
 		
 	}// OJO OJO COMO SABEN quien cierra la sesion
+	////---------------------*****ARIXAPI_ARIXJOB****************-----------------
+	public function arixapi_arixjob_mpsr(){
+		$this->load->model('arixkernel');
+		$data = array(
+			'nombre' => date('Y-m-d H:i')
+		);
+		$data = $this->arixkernel->arixkernel_guargar_simple_data($data, 'arixjobs');		
+	}
+
+
+	//---------------------*****ARIX****************-----------------
 	public function arixapi_cerrar_sesion(){// ******requiere SESION y conexion POST
 		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request()) {
 			echo json_encode(array('status' => $this->serv_administracion_usuarios->use_cerrar_session()));
@@ -90,22 +101,14 @@ class Arixapi extends CI_Controller {
 			echo json_encode(array('status' => 403));//acceso denedo
 		}
 	}
-	public function arixapi_change_sucursal(){		
-		$new = $this->input->post('data');
-		echo json_encode($this->serv_administracion_usuarios->cambiar_sucursal($new));
+	public function arixapi_change_sucursal(){
+		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {	
+			$new = $this->input->post('data');
+			echo json_encode($this->serv_administracion_usuarios->cambiar_sucursal($new));
+		}else{
+			echo json_encode(array('status' => 403));//acceso denedo
+		}
 	}
-	//funcion descartada
-	/*public function arixapi_cargar_botones($botones = 'btn-detalles, btn-guardar, btn-actualizar, btn-borrar'){
-		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request() && $this->input->post('data')){
-			$botones = $this->input->post('data');
-			$usuario_permiso = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
-			$usuario_permiso = $usuario_permiso->binario;
-			echo json_encode($this->serv_ejecucion_app->exe_obtener_botones($usuario_permiso,$botones));
-		}
-		else{
-			echo json_encode(array('status' => 403));
-		}
-	}*/
 	public function arixapi_cargar_botones(){
 		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request()){
 			$usuario_permiso = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
@@ -175,14 +178,14 @@ class Arixapi extends CI_Controller {
 		}
 	}
 	public function arixapi_get_form_person(){
-		if ($this->input->is_ajax_request()) {
+		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {
 			$this->load->view('templates/person_add');
 		}else{
 			show_404();
 		}
 	}
 	public function arixapi_check_duplicate_person(){
-		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata') && $this->serv_administracion_usuarios->use_probar_session()){
 			$this->load->library('serv_cifrado');
 			$this->load->model('arixkernel');
 		$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('persona_id axuid, documento, nombres, paterno, materno', 'private.personas', false, array('documento'=>$this->input->post('txtdata')));
@@ -196,7 +199,7 @@ class Arixapi extends CI_Controller {
 		}
 	}
 	public function arixapi_post_personas(){//post
-		if($this->input->is_ajax_request() && $this->input->post('txtperdni')){
+		if($this->input->is_ajax_request() && $this->input->post('txtperdni') && $this->serv_administracion_usuarios->use_probar_session()){
 			$data = array(
 				'documento'=>$this->input->post('txtperdni'),
 				'nombres'=>$this->input->post('txtpername'),

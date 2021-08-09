@@ -48,9 +48,16 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	public function mayores(){
+	public function licencias(){
 		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_mprslicencias/mayores');
+			$this->load->view('app_mprslicencias/licencias');
+		}else{
+			show_404();
+		}
+	}
+	public function licpendientes(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/licpendientes');
 		}else{
 			show_404();
 		}
@@ -196,7 +203,42 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	
+	public function mpsr_get_imp_licencias(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$print = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			$print = $print == 77? false : true;		
+			$consulta = array(
+				array(
+					'mps.mpsrlicencia_id axlicid,mps.fregistro,mps.nmpsrlicencias licencia,cer.ncertificado certificado',
+					'veh.placa,hma.hmarca,veh.modelo',
+					"concat ('(',veh.fanio,') ',veh.color,', ',veh.nasientos,' As. - ',veh.clase) descript",
+					"concat(emp.ruc,' - ',emp.nombre) emp"
+				),
+				array(
+					'public.mpsrlicencias mps',
+					'public.certificados cer',
+					'public.vehiculos veh',
+					'private.hmarcas hma',
+					'public.empresas emp'
+				),
+				array(
+					'NULL',
+					'mps.certificado_id = cer.certificado_id',
+					'cer.vehiculo_id = veh.vehiculo_id',
+					'veh.hmarca_id = hma.hmarca_id',
+					'cer.empresa_id = emp.empresa_id'
+				)
+			);
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('mps.estado'=>$print, 'mps.expirated'=>false, 'mps.sucursal_id'=>$sucu));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axlicid);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
 	public function mpsr_get_activeemp_byruc(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdataruc')){
 			$ruc = strrev($this->input->post('txtdataruc'));
@@ -698,8 +740,8 @@ class Mpsrlicencias extends CI_Controller {
 		//$array_tabla_tupla  = $this->arixkernel->arixkernel_obtener_complex_data($array_tabla_tupla,0,array('emp.estado'=>true, 'aut.estado'=>true));
 		//print_r($array_tabla_tupla);
 		//$this->load->library('serv_cifrado');		
-		//print_r ($this->serv_cifrado->cod_cifrar_cadena('mi CASA es grande'));
-		echo ($this->serv_cifrado->cod_decifrar_cadena('54F747562B763dDV1YkVMQ3dDUy8rVEtNRHNZM01sdz09'));
+		print_r ($this->serv_cifrado->cod_cifrar_cadena(17));
+		//echo ($this->serv_cifrado->cod_decifrar_cadena('54F747562B763dDV1YkVMQ3dDUy8rVEtNRHNZM01sdz09'));
 		//echo(strtoupper(uniqid('ABC')));
 		//echo json_encode(array('status'=>true));
 		//echo(substr('123abc',-3).substr(uniqid(), 1)); // devuelve "de"
@@ -711,11 +753,13 @@ class Mpsrlicencias extends CI_Controller {
 		//echo (date("Y-m-d", strtotime(str_replace('/', '-','19/7/2021'))));
 		/*$this->load->library('serv_ejecucion_app');
 		$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(			
+			'public.mpsrlicencias'=>'mpsrlicencia_id,nmpsrlicencias,fregistro',
 			'public.certificados'=>'ncertificado',
-			'public.vehiculos'=>'modelo',
+			'public.vehiculos'=>'placa,modelo,color,nasientos,fanio,clase',
 			'private.hmarcas'=>'hmarca',
+			'public.empresas'=>'empresa_id	ruc	nombre'
 			
-		), array(1,0,0));
+		), array(1,0,0,0,1));
 		print_r($array_tabla_tupla);*/
 
 	}
