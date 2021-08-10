@@ -7,7 +7,7 @@
                      <tr>
                         <th scope="col">ID</th>
                         <th scope="col">fregistro</th>
-                        <th scope="col">N° Licencia</th>
+                        <th scope="col">N° TUC</th>
                         <th scope="col">N° Certificado</th>
                         <th scope="col">Placa</th>
                         <th scope="col">Marca</th>

@@ -32,8 +32,21 @@ class Arixapi extends CI_Controller {
 		$data = array(
 			'nombre' => date('Y-m-d H:i')
 		);
-		$data = $this->arixkernel->arixkernel_guargar_simple_data($data, 'arixjobs');		
+		$data = $this->arixkernel->arixkernel_guargar_simple_data($data, 'arixjobs');	
 	}
+	public function arixapi_arixjob_mpsrautorizaciones(){
+		$this->load->model('arixkernel');
+		return;	
+	}
+	public function arixapi_arixjob_mpsrlicencias(){
+		$this->load->model('arixkernel');
+		return;	
+	}
+	public function arixapi_arixjob_mpsrcertificados(){
+		$this->load->model('arixkernel');
+		return;	
+	}
+
 
 
 	//---------------------*****ARIX****************-----------------

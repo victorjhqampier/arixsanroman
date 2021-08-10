@@ -72,3 +72,60 @@ function mpsr_subir_fechas(location, year){//years == años que se ejetutaran
         $(location).val(hoy.getDate() + "/" + (hoy.getMonth() +1) + "/" + hoy.getFullYear());
     }
 }
+function mpsr_emp_loaddata (id,btn='btn-detalles, btn-imprimir'){
+    $('#main-emp-active').html('');
+    table = '<div class="table-responsive-md"><table class="table table-sm" id="table-data-emp"><thead><tr><th scope="col">ID</th><th scope="col">fecha</th>'+
+    '<th scope="col">RUC</th><th scope="col">Resolución</th><th scope="col">Nombre</th><th scope="col">Razon social</th><th scope="col">Vigente hasta</th>'+
+    '<th scope="col">Flota</th><th scope="col">Categoría</th><th scope="col">Acciones</th></tr></thead><tbody></tbody></table></div>';
+    btnss = arixshell_cargar_botones(btn);
+    $('#main-emp-active').html(table);
+    $('#table-data-emp').DataTable({
+        "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se ha encontrado nada, lo siento",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)"
+            },
+            "ajax": {
+                "url" : "mpsrlicencias/mpsr_get_activeemp",
+                "dataSrc":"",
+                "type": "POST",
+                "data": {"txtdata" : id}
+            },
+            "columns":[
+                {"data": 'axuidemp'},
+                {"data": 'fecha'},
+                {"data": 'ruc'},            
+                {"data": 'nresolucion'},
+                {"data": 'nombre'},
+                {"data": 'rsocial'},
+                {"data": 'aufin'},
+                {"data": 'numv'},
+                {"data": 'code'},            
+                {"data": null, render: function ( data, type, row ) {return btnss;}}
+            ],
+            "order": [
+                [ 1, "desc" ]
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [1],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            "createdRow": function( row, data, dataIndex ) {
+                $(row).attr('odd', data.axuidemp);         
+            }
+    });
+    $('#table-data-emp tbody').on( 'click', '.btn-detalles',function(){
+        let fila = $(this).closest("tr"), uid = fila.attr('odd');
+        arixshell_cargar_contenido('mpsrlicencias/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(2)').text());
+    });
+}

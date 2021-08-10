@@ -1,10 +1,10 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <ul class="nav nav-tabs" id="myTabEmp" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="licencia-impresa" data-toggle="tab" href="#hrefLicenciaImpresa" role="tab" aria-controls="home" aria-selected="true">Licencias Impresas</a>
+        <a class="nav-link active" id="licencia-impresa" data-toggle="tab" href="#hrefLicenciaImpresa" role="tab" aria-controls="home" aria-selected="true">TUC Impresas</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="licencia-imp-buscar" data-toggle="tab" href="#hrefLicencia-imp-buscar" role="tab" aria-controls="profile" aria-selected="false">Buscar licencia impresa</a>
+        <a class="nav-link" id="licencia-imp-buscar" data-toggle="tab" href="#hrefLicencia-imp-buscar" role="tab" aria-controls="profile" aria-selected="false">Buscar TUC impresa</a>
     </li>
 </ul>
 <div class="tab-content">
@@ -17,7 +17,7 @@
                      <tr>
                         <th scope="col">ID</th>
                         <th scope="col">fregistro</th>
-                        <th scope="col">N° Licencia</th>
+                        <th scope="col">N° TUC</th>
                         <th scope="col">N° Certificado</th>
                         <th scope="col">Placa</th>
                         <th scope="col">Marca</th>
@@ -74,7 +74,7 @@ $(document).ready(function(){
             "url" : "mpsrlicencias/mpsr_get_imp_licencias",
             "dataSrc":"",
             "type": "POST",
-            "data": {"txtdata" : "54F747562B763Rzkva2RYNXFaT1gwSFppZEhtUzRxQT09"}//54F747562B763MTFiV3FCR0V0S2NHQVhJSEdRb3FlZz09
+            "data": {"txtdata" : "54F747562B763Rzkva2RYNXFaT1gwSFppZEhtUzRxQT09"}
         },
         "columns":[
             {"data": 'axlicid'},

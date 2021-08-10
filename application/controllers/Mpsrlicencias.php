@@ -169,16 +169,17 @@ class Mpsrlicencias extends CI_Controller {
 	//---------------------*****GET - SELECT* SECTION****************-----------------
 
 	public function mpsr_get_activeemp(){
-		if ($this->input->is_ajax_request()){
-			//$this->load->library('serv_ejecucion_app');
-			$this->load->library('serv_cifrado');
-			$this->load->library('serv_administracion_usuarios');		 
-			$this->load->model('arixkernel');
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){			
+			//$this->load->library('serv_cifrado');
+			//$this->load->library('serv_administracion_usuarios');		 
+			//$this->load->model('arixkernel');
+			$print = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
+			$print = $print == 77? false : true;
 			//consulta construida por la funcion exe_construir_consultas
 			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
 			$consulta = array(
 				array (
-					'aut.nresolucion,aut.aufin,aut.factualizacion fecha, aut.nvehiculos numv,aut.expirated',
+					'aut.nresolucion,aut.aufin,aut.factualizacion fecha, aut.nvehiculos numv',
 					'emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial',
 					'cla.code'
 				),
@@ -193,7 +194,7 @@ class Mpsrlicencias extends CI_Controller {
 					'aut.clasificacion_id = cla.clasificacion_id'
 				)
 			);
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado'=>true, 'aut.estado'=>true, 'cla.sucursal_id'=>$sucu));
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado'=>true, 'aut.estado'=>true, 'aut.expirated'=>$print,'cla.sucursal_id'=>$sucu));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
 				$consulta[$i]->aufin = date("d-m-Y", strtotime($consulta[$i]->aufin));
@@ -740,7 +741,7 @@ class Mpsrlicencias extends CI_Controller {
 		//$array_tabla_tupla  = $this->arixkernel->arixkernel_obtener_complex_data($array_tabla_tupla,0,array('emp.estado'=>true, 'aut.estado'=>true));
 		//print_r($array_tabla_tupla);
 		//$this->load->library('serv_cifrado');		
-		print_r ($this->serv_cifrado->cod_cifrar_cadena(17));
+		print_r ($this->serv_cifrado->cod_cifrar_cadena(78));
 		//echo ($this->serv_cifrado->cod_decifrar_cadena('54F747562B763dDV1YkVMQ3dDUy8rVEtNRHNZM01sdz09'));
 		//echo(strtoupper(uniqid('ABC')));
 		//echo json_encode(array('status'=>true));
