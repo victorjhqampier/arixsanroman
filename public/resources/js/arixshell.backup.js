@@ -62,9 +62,12 @@ function arixshell_add_cache_page(location, url){
         return;
     }
 }
-var arixshellmainvar;
-function arixshell_autoload_sessiondata(){
-    arixshellmainvar = arixshell_download_datos('arixapi/arixapi_autoload_session_data');
+
+/*---mama */
+function arixshell_auload_data(){
+    //var apps = arixshell_download_datos('arixapi/arixapi_mostrar_apps_usuario');
+    //var sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursal_actual'); arixshell_cargar_sucursal()
+    return;
 }
 function arixshell_write_cache_serial(serial,dataOne, dataTwo = ''){
     sessionStorage.setItem('axtemp'+serial, '{ "id":"'+dataOne+'", "data": "'+dataTwo+'"}');
@@ -91,7 +94,7 @@ function arixshell_cargar_third_subtitulo(title){
     }
 }
 //FUNCION OBSOLETA
-/*function arixshell_agregar_subtitulo(title,position = 4){
+function arixshell_agregar_subtitulo(title,position = 4){
     a = $('#nav-idont-know .breadcrumb-item').length;    
     if (a >= position - 1 && position > 3){
         if (a== position-1) {
@@ -106,7 +109,7 @@ function arixshell_cargar_third_subtitulo(title){
     else{
         return;
     }
-}*/
+}
 function arixshell_cargar_titulo_page(){
     title = $("#navbarNav li.active" ).text();
     $('title').text(title+" - Arix Corporation");
@@ -114,15 +117,14 @@ function arixshell_cargar_titulo_page(){
 function arixshell_activeshadow_app(a,b){return b==a?"active":""}//dessaroolando su mejora
 function arixshell_desactivehref_app(r,a){return r==a?("javascript:;"):r}//para desactivar url
 function arixshell_cargar_apps() {//esta funcion es estatica -> siempre cargará en el mismo lugar
-    //let apps = arixshell_download_datos('arixapi/arixapi_mostrar_apps_usuario');
-    let apps =  arixshellmainvar[0];
+	var apps = arixshell_download_datos('arixapi/arixapi_mostrar_apps_usuario');
     if (apps!= false) {
         control=window.location.pathname;
         control= control.split("/"); ////********b[2] restar menos uno -> si arixmee no esta en un directorio
         control = arixshell_limpiar_string(control[2]);
-        let list = '', elocation = '#navbarNav .navbar-nav';        
+        var list = '', elocation = '#navbarNav .navbar-nav';        
         $(elocation).html(list);//borras los registros actuales
-        for (i = 0; i < apps.length; i++) {
+        for (var i = 0; i < apps.length; i++) {
             list ='<li class="nav-item '+arixshell_activeshadow_app(apps[i].controller,control)+'"><a class="nav-link" href="'+arixshell_desactivehref_app(apps[i].controller,control,apps[i].app)+'">'+apps[i].app+'</a></li>';
             $(elocation).append(list);//agregas al final
         }
@@ -132,9 +134,8 @@ function arixshell_cargar_apps() {//esta funcion es estatica -> siempre cargará
     }
 }
 function arixshell_cargar_menu(){
-    //var menu = arixshell_download_datos('arixapi/arixapi_mostrar_menu_aplicaciones');
-    let menu = arixshellmainvar[1];
-    let list = '', elocation = '#sidenavAccordion .nav';
+    var menu = arixshell_download_datos('arixapi/arixapi_mostrar_menu_aplicaciones');
+    var list = '', elocation = '#sidenavAccordion .nav';
     $(elocation).html(list);//borras los registros actuales
     if(menu != 403){
         for (var i = 0; i < menu.length; i++) {
@@ -152,36 +153,21 @@ function arixshell_cargar_menu(){
 }
 
 function arixshell_cargar_usuario(){
-    //var user = arixshell_download_datos('arixapi/arixapi_mostrar_usuario_actual');
-    let user = arixshellmainvar[2];
+    var user = arixshell_download_datos('arixapi/arixapi_mostrar_usuario_actual');
     if (user != null && user != 403) {
         $("nav").find('#dropdown-item-u1').text(user.documento+" | "+user.nombres+" "+user.paterno+" "+user.materno);
     }else{
         console.log('arixshell_cargar_usuario -> error');
     }
 }
-function arixshell_cargar_sucursal_auto(){
-    let sucursal = arixshellmainvar[3][0];
-    $("nav").find('#sucursal-db small').text(sucursal.nombre.substring(0,20)+"...");
-    $('nav #sucursal-db-list').html('<a class="dropdown-item active" href="javascript:;" id="0xFF">N-'+sucursal.numero+', '+sucursal.nombre+'</a>');
-    sucursal = arixshellmainvar[3];
-    if (sucursal.length > 1) {
-        for (i = 1; i < sucursal.length; i++) {
-            $('nav #sucursal-db-list').append('<a class="dropdown-item" href="javascript:;" id="'+sucursal[i].serial+'">N-'+sucursal[i].numero+', '+sucursal[i].nombre+'</a>');//agregas al final 
-         }        
-    }else{
-        return;
-    }
-}
 
 function arixshell_cargar_sucursal(){
-    //var sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursal_actual');
-    let sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursal_actual');
+    var sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursal_actual');
     if (sucursal != null && !$.isNumeric(sucursal.nombre)) {
         $("nav").find('#sucursal-db small').text(sucursal.nombre.substring(0,20)+"...");
         $('nav #sucursal-db-list').html('<a class="dropdown-item active" href="javascript:;" id="0xFF">N-'+sucursal.numero+', '+sucursal.nombre+'</a>');
     }else{
-        console.log('arixshell_cargar_sucursal -> error');
+        console.log('arixshell_cargar_usuario -> error');
     }
 }
 
@@ -189,7 +175,7 @@ function arixshell_cargar_sucursal_lista(){
     var sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursales'), ubicacion = 'nav #sucursal-db-list';
     if (sucursal != null && sucursal != 403) {
         //$(ubicacion).html('');//limias todo
-        for (i = 0; i < sucursal.length; i++) {
+        for (var i = 0; i < sucursal.length; i++) {
            $(ubicacion).append('<a class="dropdown-item" href="javascript:;" id="'+sucursal[i].serial+'">N-'+sucursal[i].numero+', '+sucursal[i].nombre+'</a>');//agregas al final 
         }
     }else{
@@ -253,7 +239,7 @@ function arixshell_cargar_contenido(url,titulo = 'Sin Subtitulo', position = 4){
             $( "#user-title-breadcrumb li:eq("+(position - 2)+")" ).nextAll().remove();
             $('#user-title-breadcrumb').append('<li class="breadcrumb-item active">'+titulo+'</li>');
             leer = JSON.parse(sessionStorage.getItem('pages'));
-            for (i = 1; i < leer.length; i++) {//no toues el el registro 0
+            for (var i = 1; i < leer.length; i++) {//no toues el el registro 0
                 leer.pop();
             }
             leer.push(url);
@@ -281,11 +267,11 @@ function arixshell_cargar_llave_local(one = 0){
         return li;
     }
 }
+let tbtns;
 function arixshell_cargar_botones_auto(){
-    //var apps = arixshell_download_datos('arixapi/arixapi_cargar_botones');
-    let apps = arixshellmainvar[4];//arixshell_download_datos('arixapi/arixapi_cargar_botones');
+    var apps = arixshell_download_datos('arixapi/arixapi_cargar_botones');
     if (apps !== null) {
-        arixshellmainvar = apps;
+        tbtns = apps;
     }else{
         console.log('arixshell_cargar_botones_auto -- error!');
     }
@@ -295,7 +281,7 @@ function arix_search_btns(btns){
     btns = btns.split(",");
     let temp = [];
     for (var i = 0; i < btns.length; i++) {
-        let name = arixshellmainvar.find(data => data.boton == btns[i]);
+        let name = tbtns.find(data => data.boton == btns[i]);
         if (name !== null){
             temp.push(name); 
         }
@@ -306,7 +292,7 @@ function arix_search_btns(btns){
 function arixshell_cargar_botones_menu(botones='btn-refrescar, btn-borrar'){
     botones = arix_search_btns(botones);
     if (botones != false) {
-        for (i = 0; i < botones.length; i++) {           
+        for (var i = 0; i < botones.length; i++) {           
             $(arixshell_cargar_llave_local(0)).append('<button type="button" class="btn btn-secondary '+botones[i]['boton']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"><i class="'+botones[i]['icono']+'"></i></button>');//agregas al final
         }
     }else{
@@ -442,11 +428,11 @@ $('#sucursal-db-list').on("click", ".dropdown-item", function() { //Clic en algu
     }    
 });
 function arixshell_cargar_lista_cards(tabla,btns='btn-detalles,btn-borrar',cant){
-   let lista = arixshell_upload_datos('arixapi/arixapi_cargar_lista_card','data='+tabla+'&cant='+cant);
+    lista = arixshell_upload_datos('arixapi/arixapi_cargar_lista_card','data='+tabla+'&cant='+cant);
     if (lista != false) {
         var elocation = '#use-container-secondary';
         $(elocation).html('');//borras los registros actuales
-        for (i = 0; i < lista.length; i++) { 
+        for (var i = 0; i < lista.length; i++) { 
             temp = arixshell_mostrar_card_users(lista[i].fotografia,lista[i].nombres+', '+lista[i].paterno+' '+lista[i].materno, lista[i].documento+' - '+lista[i].codigo, lista[i].codigo, lista[i].fregistro,lista[i].fregistro, lista[i].fregistro, btns, lista[i].uid);         
             $(elocation).append(temp);//agregas al final
         }
@@ -455,11 +441,11 @@ function arixshell_cargar_lista_cards(tabla,btns='btn-detalles,btn-borrar',cant)
     }
 }
 function arixshell_cargar_opciones(location, url, html=''){
-    let data = arixshell_download_datos(url),keys=[];
+    var data = arixshell_download_datos(url),keys=[];
     if(typeof(data)==='object'){
         $(location).html(html);
         for (var key in data[0]) {keys.push(key);}
-        for(i =0; i<data.length; i++){
+        for(var i =0; i<data.length; i++){
             $(location).append('<option value="'+data[i][keys[0]]+'" >'+data[i][keys[1]]+'</option>');
         }
     }else{
@@ -509,7 +495,7 @@ function arixshell_cerrar_modalbase(){
     $('#arixgeneralmodal .modal-body').html('');
     $('#arixgeneralmodal').modal('hide');
 }
-function arixshell_confirm_alert(url,data,btnClickExit,titl='Error',message='Arix Corp',btntext='Anular',icono='error'){
+function arixshell_confirm_alert(url,data,btnClickExit,titl='Error',message='pene',btntext='Anular',icono='error'){
     Swal.fire({
         title: titl,
         text: message,
@@ -524,7 +510,7 @@ function arixshell_confirm_alert(url,data,btnClickExit,titl='Error',message='Ari
         }
     }).then((result) => {
         if (result.isConfirmed) {
-            let request = arixshell_upload_datos(url,data);
+            var request = arixshell_upload_datos(url,data);
             if(request['status']===true){
                 $(btnClickExit).click();
                 Swal.fire(
@@ -559,11 +545,13 @@ function arixshell_notification_alert(icone,message){
 /*----------------REDESARROLLAR MODULO DE TITULOS---------*/
 
 /*--------------------------MAIN----------------*/
-arixshell_autoload_sessiondata(); //inicializa los valores de la interfaz
+//arixshell_probar_url();
+//arixshell_localdata_restarting();
 arixshell_cargar_apps();
 arixshell_cargar_titulo_page();
+arixshell_cargar_sucursal();
 arixshell_cargar_auto_subtitulos();
 arixshell_cargar_menu();
 arixshell_cargar_usuario();
-arixshell_cargar_sucursal_auto();
+arixshell_cargar_sucursal_lista();
 arixshell_cargar_botones_auto();

@@ -46,10 +46,44 @@ class Arixapi extends CI_Controller {
 		$this->load->model('arixkernel');
 		return;	
 	}
+	public function arixapi_arixjob_axconfigcontrato(){
+		$this->load->model('arixkernel');
+		return;	
+	}
 
 
 
 	//---------------------*****ARIX****************-----------------
+	private function arixapi_cargar_botones(){
+		//if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request()){
+			$usuario_permiso = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
+			$usuario_permiso = $usuario_permiso->permiso;
+			return $this->serv_ejecucion_app->exe_obtener_botones($usuario_permiso);
+			//echo json_encode($this->serv_ejecucion_app->exe_obtener_botones($usuario_permiso));
+		/*}
+		else{
+			//echo json_encode(array('status' => 403));
+			show_404();
+		}*/
+	}
+	public function arixapi_autoload_session_data(){
+		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request()) {
+			$apps = $this->serv_administracion_usuarios->use_aplicaciones_usuario();
+			$menu = $this->serv_administracion_usuarios->use_lista_menu_aplicaciones();
+			$user = $this->serv_administracion_usuarios->use_cargar_sessiondata_usuario();
+			$sucu_l = $this->serv_administracion_usuarios->use_obtener_sucursales();
+			$btns = $this->arixapi_cargar_botones();
+			for ($i=0; $i < count($sucu_l); $i++) { 
+				$sucu_l[$i]->serial = $this->serv_cifrado->cod_cifrar_cadena($sucu_l[$i]->serial);
+			}
+			$temp = array();
+			array_push($temp,$apps,$menu,$user,$sucu_l,$btns);
+			unset($apps,$menu,$user,$sucu_l,$btns);
+			echo json_encode($temp);
+		}else{
+			echo json_encode(array('status' => 403));//acceso denedo
+		}		
+	}
 	public function arixapi_cerrar_sesion(){// ******requiere SESION y conexion POST
 		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request()) {
 			echo json_encode(array('status' => $this->serv_administracion_usuarios->use_cerrar_session()));
@@ -57,7 +91,7 @@ class Arixapi extends CI_Controller {
 			echo json_encode(array('status' => 403));//acceso denedo
 		}
 	}
-	public function arixapi_mostrar_apps_usuario(){// ******requiere SESION y conexion POST
+	/*public function arixapi_mostrar_apps_usuario(){
 		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {
 			$apps = $this->serv_administracion_usuarios->use_aplicaciones_usuario();
 			print_r(json_encode($apps));
@@ -65,23 +99,23 @@ class Arixapi extends CI_Controller {
 			echo json_encode(array('status' => 403));//acceso denedo
 		}
 		
-	}
-	public function arixapi_mostrar_menu_aplicaciones(){
+	}*/
+	/*public function arixapi_mostrar_menu_aplicaciones(){//DELETE
 		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {
 			$lista_menu = $this->serv_administracion_usuarios->use_lista_menu_aplicaciones();
 			echo json_encode($lista_menu);
 		}else{
 			echo json_encode(array('status' => 403));//acceso denedo
 		}
-	}
-	public function arixapi_mostrar_usuario_actual(){
+	}*/
+	/*public function arixapi_mostrar_usuario_actual(){//DELETE
 		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {
 			echo json_encode($this->serv_administracion_usuarios->use_cargar_sessiondata_usuario());
 		}
 		else{
 			echo json_encode(array('status' => 403));//acceso denedo
 		}
-	}
+	}*/
 	public function arixapi_mostrar_sucursal_actual(){
 		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {
 			$sucursal = $this->serv_administracion_usuarios->use_obtener_sucursal_actual();
@@ -121,18 +155,7 @@ class Arixapi extends CI_Controller {
 		}else{
 			echo json_encode(array('status' => 403));//acceso denedo
 		}
-	}
-	public function arixapi_cargar_botones(){
-		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request()){
-			$usuario_permiso = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
-			$usuario_permiso = $usuario_permiso->permiso;
-			echo json_encode($this->serv_ejecucion_app->exe_obtener_botones($usuario_permiso));
-		}
-		else{
-			//echo json_encode(array('status' => 403));
-			show_404();
-		}
-	}
+	}	
 	public function arixapi_cargar_lista_card(){
 		if ($this->serv_administracion_usuarios->use_probar_session() && $this->input->is_ajax_request() && $this->input->post('data')){
 			$table = $this->input->post('data');
@@ -234,7 +257,7 @@ class Arixapi extends CI_Controller {
 		}
 	}
 	public function probar_arixapi(){
-		$data = $this->serv_administracion_usuarios->use_mostrar_usuario_permiso();
+		$data = $this->arixapi_cargar_botones();//$this->serv_administracion_usuarios->use_obtener_sucursales();
 		print_r($data);
 	}
 }

@@ -69,8 +69,11 @@ class Serv_administracion_usuarios {
         }
     }
     public function use_aplicaciones_usuario(){//la cuenta_id se recupera de la sesion
-        return $this->ci->arixkernel->select_all_content_where('app, controller','config.v_cuenta_app_rol',array('cuenta_id' => $this->ci->session->userdata('usuario'), 'rol_id !='=>4));// rol_id=4 => sin permiso
+        //return $this->ci->arixkernel->select_all_content_where('app, controller','config.v_cuenta_app_rol',array('cuenta_id' => $this->ci->session->userdata('usuario'), 'rol_id !='=>4));// rol_id=4 => sin permiso
+        //arixkernel_obtener_simple_data($tupla, $tabla, $offset = 0, $array_condition = '');
+        return $this->ci->arixkernel->arixkernel_obtener_simple_data('app, controller','config.v_cuenta_app_rol',0,array('cuenta_id' => $this->ci->session->userdata('usuario'), 'rol_id !='=>4),array('app_id','ASC'));
     }
+
     public function use_cargar_app_session($controlador){//requiere al usuario asi que tambien la sesion
         $controlador = $this->ci->arixkernel->select_one_content('app_id','config.v_cuenta_app_rol', array('controller' => $controlador,'cuenta_id' => $this->ci->session->userdata('usuario'),'rol_id !='=>4));// rol_id=4 => sin permiso
         if ($this->use_probar_session() && !is_null($controlador)) {
@@ -119,19 +122,20 @@ class Serv_administracion_usuarios {
             $rol = $this->object_to_array($rol);//hacemos la conversion para agregar arrays
             //$Rol hasta ahora es un array con los submenus, ahora agregamos sus elementos (Subapp)
             for ($i=0; $i < count($rol); $i++) { 
-                array_push($rol[$i],$this->ci->arixkernel->select_all_content_where('subapp, controller','config.v_menu_subapp','submenu_id = '.$rol[$i]['submenu_id'].' AND '.$this->subapp_for_this_rol($cuenta,$app)));
+                //array_push($rol[$i],$this->ci->arixkernel->select_all_content_where('subapp, controller','config.v_menu_subapp','submenu_id = '.$rol[$i]['submenu_id'].' AND '.$this->subapp_for_this_rol($cuenta,$app)));
+                array_push($rol[$i],$this->ci->arixkernel->arixkernel_obtener_simple_data('subapp, controller','config.v_menu_subapp',0,'submenu_id = '.$rol[$i]['submenu_id'].' AND '.$this->subapp_for_this_rol($cuenta,$app),array('subapp_id','ASC')));
                 unset($rol[$i]['submenu_id']);//elinamos llaves primarias
             }
             return $rol;
-
         }else{
             return false;
         }
     }
     public function use_cargar_sessiondata_usuario(){
         $cuenta = $this->ci->session->userdata('usuario');
-        $usuario = $this->ci->arixkernel->select_one_content('documento, nombres, paterno, materno','config.v_persona_empleado_cuenta', array('cuenta_id' => $cuenta));
-        return $usuario;
+        //$usuario = $this->ci->arixkernel->select_one_content('documento, nombres, paterno, materno','config.v_persona_empleado_cuenta', array('cuenta_id' => $cuenta));
+        return $this->ci->arixkernel->arixkernel_obtener_data_by_id('documento, nombres, paterno, materno', 'config.v_persona_empleado_cuenta', false, array('cuenta_id' => $cuenta));
+        //return $usuario;
     }
     public function use_obtener_sucursal_id_actual(){//solo recupera de la sesion
         return $this->ci->session->userdata('sucursal');//sucursal_id sid
@@ -144,8 +148,21 @@ class Serv_administracion_usuarios {
     public function use_obtener_otros_sucursales(){//listar sucursales adiciones a la actual
         $cuenta = $this->ci->session->userdata('usuario'); 
         $suc = $this->ci->session->userdata('sucursal');
-        $sucursales = $this->ci->arixkernel->select_all_content_where('sucursal_id serial, numero, nombre','config.v_cuenta_sucursal', array('cuenta_id' => $cuenta, 'sucursal_id !=' => $suc, 'estado' => true));
-        return $sucursales;
+        //$sucursales = $this->ci->arixkernel->select_all_content_where('sucursal_id serial, numero, nombre','config.v_cuenta_sucursal', array('cuenta_id' => $cuenta, 'sucursal_id !=' => $suc, 'estado' => true));
+        return $this->ci->arixkernel->arixkernel_obtener_simple_data('sucursal_id serial, numero, nombre','config.v_cuenta_sucursal',0,array('cuenta_id' => $cuenta, 'sucursal_id !=' => $suc, 'estado' => true),array('sucursal_id','ASC'));
+        //return $sucursales;
+    }
+    public function use_obtener_sucursales(){
+        $cuenta = $this->ci->session->userdata('usuario'); 
+        $suc = $this->ci->session->userdata('sucursal');       
+        $info = $this->ci->arixkernel->arixkernel_obtener_simple_data('sucursal_id serial, numero, nombre','config.v_cuenta_sucursal',0,array('cuenta_id' => $cuenta, 'sucursal_id' => $suc, 'estado' => true),array('sucursal_id','ASC'));        
+        $info2 = $this->ci->arixkernel->arixkernel_obtener_simple_data('sucursal_id serial, numero, nombre','config.v_cuenta_sucursal',0,array('cuenta_id' => $cuenta, 'sucursal_id !=' => $suc, 'estado' => true),array('sucursal_id','ASC'));
+        if(!empty($info2)){
+            $info = array_merge($info,$info2);
+            return $info;
+        }else{
+            return $info;
+        }        
     }
     public function probar_usuario_sucursal($newsucursal){//true = tiene acceso
         $cuenta = $this->ci->session->userdata('usuario');

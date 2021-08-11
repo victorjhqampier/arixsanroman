@@ -1,46 +1,58 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="row">
-<div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Primary Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Warning Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Success Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="col-xl-12 col-md-12 mt-2" id="areas-base-panel">
+        <div class="table-responsive-md">
+            <table class="table table-hover table-sm" id="dataTable-areas">
+                <thead>
+                    <tr>
+                        <th scope="col">DATE</th>
+                        <th scope="col">Oficina</th>
+                        <th scope="col">Departamento</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){
-    arixshell_iniciar_llaves_locales("#btn_id_areas_1","#con_id_areas_1");
-    arixshell_cargar_botones_menu();
-    //arixshell_cargar_boton_buscar('Buscar por DNI');
-}); 
+/*$(document).ready(function(){
+    
+});*/
+    arixshell_iniciar_llaves_locales("#btn_id_areas_base");
+    arixshell_cargar_botones_menu('btn-agregar');
+   btnss = arixshell_cargar_botones('btn-borrar,btn-detalles');    
+    $('#dataTable-areas').DataTable({
+      "language": {
+             "lengthMenu": "Mostrar _MENU_ registros por página",
+             "zeroRecords": "No se ha encontrado nada, lo siento",
+             "info": "Mostrando página _PAGE_ de _PAGES_",
+             "infoEmpty": "No hay registros disponibles",
+             "infoFiltered": "(filtrado de _MAX_ registros totales)"
+         },
+        "ajax": {
+            "url" : "configuraciones/axconfig_get_areas",
+            "dataSrc":""
+        },
+        "columns":[
+            {"data": 'fecha'},
+            {"data": 'oficina'},
+            {"data": 'departamento'},
+            {"data": 'descrt'},
+            {"data": null, render: function ( data, type, row ) {return btnss;}}
+        ],
+        "order": [
+            [ 0, "desc" ]
+        ],
+        "columnDefs": [{
+                "targets": [0],
+                "visible": false,
+                "searchable": true
+        }],
+        "createdRow": function( row, data, dataIndex ) {
+            $(row).attr('odd', data.axuid);         
+        }
+    });
 </script>

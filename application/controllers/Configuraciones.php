@@ -16,7 +16,10 @@ class Configuraciones extends CI_Controller {
 		//ademas puede trabajar con muchas ventanas a la vez, actualiza por cada consulta
 	}
 	public function index(){
-		//se cargan en ese orden
+		$this->load->library('serv_ejecucion_app');
+		$this->load->library('serv_cifrado');
+		$this->load->model('arixkernel');
+		$this->load->library('serv_administracion_usuarios');
 		$js = $this->serv_ejecucion_app->exe_cargar_js('configuraciones-arixjs, Chart');
 		$this->load->view('arixshellbase',compact('js'));
 	}
@@ -60,6 +63,14 @@ class Configuraciones extends CI_Controller {
 			show_404();
 		}
 	}
+	public function arixcontrata(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_configuraciones/axcontrata');
+		}
+		else{
+			show_404();
+		}
+	}
 	public function reportes(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('gen_user_new');
@@ -88,6 +99,101 @@ class Configuraciones extends CI_Controller {
         ), array(1,0,0,1));
         echo json_encode($this->serv_ejecucion_app->exe_obtener_complex_data($array_tabla_tupla, 0,'', array('sucursal_id','ASC')));
 	}
+
+	public function axconfig_get_areas(){
+		if ($this->input->is_ajax_request()){
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
+			$consulta = array(
+				array(
+				   'are.area_id axuid,substring(are.descripcion,0,35) descrt',
+				   'dep.departamento, are.fregistro fecha',
+				   "concat(suc.numero,' - ',substring(suc.nombre,0,35)) oficina"
+				),
+				array(
+				   'config.areas are',
+				   'config.departamentos dep',
+				   'config.sucursales suc'
+				),
+				array(
+				   'NULL',
+				   'are.departamento_id = dep.departamento_id',
+				   'are.sucursal_id= suc.sucursal_id'
+				)
+			 );
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('are.estado'=>true, 'are.sucursal_id'=>$sucu));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuid);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
+	public function axconfig_get_empleados(){
+		if ($this->input->is_ajax_request()){
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
+			$consulta = array(
+				array(
+				   'con.contrato_id axuid,con.numero contrato, con.fregistro fecha',
+				   "concat(per.documento,' - ',per.nombres,' ',per.paterno,' ',per.materno) persona, concat('Desde ',to_char(con.cinicio, 'DD-MM-YYYY'),' hasta ',to_char(cfinal, 'DD-MM-YYYY')) fecha",
+				   'substring(dep.departamento,0,35) departamento, pue.puesto cargo'
+				),
+				array(
+				   'config.contratos con',
+				   'private.personas per',
+				   'config.areas are',
+				   'config.departamentos dep',
+				   'config.puestos pue'
+				),
+				array(
+				   'NULL',
+				   'con.persona_id = per.persona_id',
+				   'con.area_id = are.area_id',
+				   'are.departamento_id = dep.departamento_id',
+				   'con.puesto_id = pue.puesto_id'
+				)
+			 );
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('con.estado'=>true, 'con.contrato_id>'=>1,'are.estado'=>true, 'are.sucursal_id'=>$sucu));
+			//print_r($consulta);
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuid);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
+	public function axconfig_get_usuarios(){
+		//if ($this->input->is_ajax_request()){
+			//$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
+			$consulta = array(
+				array(
+					"cue.cuenta_id axuid, concat(substring(cue.correo,0,7),'***@***') cuenta, cue.fmodificacion fecha",
+					'con.numero',
+					"concat(per.documento,' - ',per.nombres,' ',per.paterno,' ',per.materno) persona, concat('Desde ',to_char(con.cinicio, 'DD-MM-YYYY'),' hasta ',to_char(cfinal, 'DD-MM-YYYY')) vigencia"
+				),
+				array(
+					'config.cuentas cue',
+					'config.contratos con',
+					'private.personas per'
+				),
+				array(
+					'NULL',
+					'cue.contrato_id = con.contrato_id',
+					'con.persona_id = per.persona_id'
+				)
+			);
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cue.estado'=>true, 'con.estado'=>true, 'cue.cuenta_id>'=>1));
+			//print_r($consulta);
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuid);
+			}
+			echo json_encode($consulta);
+		/*}else{
+			show_404();
+		}*/
+	}
+	
 
 	#REHACER TODO DESQUE AQUI CON EL NUEVO KERNEL Y SERVICIO DE EJECUCIÓN
 	public function axconfiguraciones_cargar_lista_sucursales(){
@@ -153,5 +259,14 @@ class Configuraciones extends CI_Controller {
 		else{
 			show_404();
 		}
+	}
+	public function config_pruebas(){
+		$this->load->library('serv_ejecucion_app');
+		$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(			
+			'config.cuentas'=>'cuenta_id,correo',
+			'config.contratos'=>'numero',
+			'private.personas'=>'documento,nombres,paterno'
+		), array(1,0,0));
+		print_r($array_tabla_tupla);		
 	}
 }
