@@ -339,3 +339,23 @@
 </div>
 
 <div class="btn-group btn-group-sm"><button type="button" class="btn btn-primary"><i class="fas fa-pen"></i></button><button type="button" class="btn btn-secondary"><i class="fa fa-check-square"></i></button></div>
+
+         <!--<link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/css/styles.css');?>"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/css/material-icons.css');?>"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/DataTables-1.10.23/css/jquery.dataTables.min.css');?>"/>
+         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/css/autoFill.dataTables.css');?>"/>
+         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/css/buttons.dataTables.min.css');?>"/>
+         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/resources/dtables/KeyTable-2.5.3/css/keyTable.dataTables.min.css');?>"/-->
+               
+        <!--<script type="text/javascript" src="<?php echo base_url('public/resources/dtables/JSZip-2.5.0/jszip.min.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/pdfmake-0.1.36/pdfmake.min.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/pdfmake-0.1.36/vfs_fonts.js');?>"></script>        
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/DataTables-1.10.23/js/jquery.dataTables.min.js');?>"></script>-->
+        <!--script src="public/resources/js/bootstrap-datepicker.min.js"></script--><!--necesario para datetimepiker-->
+        <!--script src="public/resources/js/bootstrap-datepicker.es.min.js"></script-->
+        <!--script src="public/resources/js/jquery.cryptojs.min.js"></script-->
+        <!--<script type="text/javascript" src="<?php echo base_url('public/resources/dtables/AutoFill-2.3.5/js/dataTables.autoFill.min.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/dataTables.buttons.min.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/buttons.html5.min.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/Buttons-1.6.5/js/buttons.print.min.js');?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('public/resources/dtables/KeyTable-2.5.3/js/dataTables.keyTable.min.js');?>"></script>--> 

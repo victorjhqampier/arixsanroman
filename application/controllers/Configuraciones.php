@@ -20,7 +20,9 @@ class Configuraciones extends CI_Controller {
 		$this->load->library('serv_cifrado');
 		$this->load->model('arixkernel');
 		$this->load->library('serv_administracion_usuarios');
-		$js = $this->serv_ejecucion_app->exe_cargar_js('configuraciones-arixjs, Chart');
+		$css = $this->serv_ejecucion_app->exe_cargar_axcss(array('axcss-dataTables'));
+		$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('axjs-dataTables','configuraciones-arixjs'));
+		$js = array($js,$css);
 		$this->load->view('arixshellbase',compact('js'));
 	}
 	public function sucursales(){
@@ -164,11 +166,11 @@ class Configuraciones extends CI_Controller {
 		}
 	}
 	public function axconfig_get_usuarios(){
-		//if ($this->input->is_ajax_request()){
+		if ($this->input->is_ajax_request()){
 			//$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
 			$consulta = array(
 				array(
-					"cue.cuenta_id axuid, concat(substring(cue.correo,0,7),'***@***') cuenta, cue.fmodificacion fecha",
+					"cue.cuenta_id axuid, concat('*',substring(cue.correo,2,5),'*@***') cuenta, cue.fmodificacion fecha",
 					'con.numero',
 					"concat(per.documento,' - ',per.nombres,' ',per.paterno,' ',per.materno) persona, concat('Desde ',to_char(con.cinicio, 'DD-MM-YYYY'),' hasta ',to_char(cfinal, 'DD-MM-YYYY')) vigencia"
 				),
@@ -189,9 +191,9 @@ class Configuraciones extends CI_Controller {
 				$consulta[$i]->axuid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuid);
 			}
 			echo json_encode($consulta);
-		/*}else{
+		}else{
 			show_404();
-		}*/
+		}
 	}
 	
 
@@ -262,11 +264,13 @@ class Configuraciones extends CI_Controller {
 	}
 	public function config_pruebas(){
 		$this->load->library('serv_ejecucion_app');
-		$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(			
+		/*$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(			
 			'config.cuentas'=>'cuenta_id,correo',
 			'config.contratos'=>'numero',
 			'private.personas'=>'documento,nombres,paterno'
 		), array(1,0,0));
-		print_r($array_tabla_tupla);		
+		print_r($array_tabla_tupla);*/		
+		$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('axjs-validate-p1','axjs-validate-p2'));
+		print_r($js);		
 	}
 }

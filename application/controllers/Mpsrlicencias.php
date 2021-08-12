@@ -12,7 +12,9 @@ class Mpsrlicencias extends CI_Controller {
 		$this->load->library('serv_cifrado');
 		$this->load->model('arixkernel');
 		$this->load->library('serv_administracion_usuarios');
-		$js = $this->serv_ejecucion_app->exe_cargar_js('mpsr-arixjs, Chart');
+		$css = $this->serv_ejecucion_app->exe_cargar_axcss(array('axcss-dataTables','axcss-timepicker'));		
+		$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('axjs-dataTables','axjs-validate-p1','axjs-validate-p2','axjs-mask','axjs-timepicker','mpsr-arixjs', 'axjs-chart'));
+		$js = array($js,$css);
 		$this->load->view('arixshellbase',compact('js'));
 	}
 

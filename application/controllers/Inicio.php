@@ -10,7 +10,9 @@ class Inicio extends CI_Controller {
 		if(!$this->serv_administracion_usuarios->use_cargar_app_session($controlador[3])){redirect(base_url());}
 	}
 	public function index(){
-		$js = $this->serv_ejecucion_app->exe_cargar_js('inicio-arixjs');
+		$css = $this->serv_ejecucion_app->exe_cargar_axcss(array('axcss-dataTables'));		
+		$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('inicio-arixjs'));
+		$js = array($js,$css);
 		$this->load->view('arixshellbase',compact('js'));
 	}
 	public function notificaciones(){

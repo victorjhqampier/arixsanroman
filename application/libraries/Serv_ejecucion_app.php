@@ -54,7 +54,7 @@ class Serv_ejecucion_app {
     }
 
 /*FUNCIOMES RESERVADAS PARA EL SISTEMA*/
-    public function exe_cargar_js($jss = null){
+    /*public function exe_cargar_js($jss = null){
        	if ($jss != null) {
             $jss = preg_replace('([^A-Za-z0-9\,._-])', '', $jss);//eliminacaracter raros
             $jss = explode(",", $jss);
@@ -70,9 +70,34 @@ class Serv_ejecucion_app {
         }else{
             return false;
         }
+    }*/
+    public function exe_cargar_axjs($jsarray){
+        $temp = array();
+        if (!empty($jsarray)) {
+            for ($i=0; $i < count($jsarray); $i++) {
+                $dato = $this->ci->arixkernel->arixkernel_obtener_data_by_id('nombre,xsources','config.xsources',false,array('nombre' => $jsarray[$i],'tipo' => true));
+                if(!is_null($dato)){
+                    array_push($temp,$dato->xsources);
+                }
+            }
+            return $temp;
+        }else{
+            return null;
+        }
     }
-    public function exe_cargar_css(){
-        return 0;
+    public function exe_cargar_axcss($jsarray){
+        $temp = array();
+        if (!empty($jsarray)) {
+            for ($i=0; $i < count($jsarray); $i++) {
+                $dato = $this->ci->arixkernel->arixkernel_obtener_data_by_id('nombre,xsources','config.xsources',false,array('nombre' => $jsarray[$i],'tipo' => false));
+                if(!is_null($dato)){
+                    array_push($temp,$dato->xsources);
+                }
+            }
+            return $temp;
+        }else{
+            return null;
+        }
     }
     public function exe_subir_archivos(){
         return 0;

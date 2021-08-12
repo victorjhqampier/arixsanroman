@@ -43,7 +43,7 @@ function arixshell_limpiar_string(s) {//elimina caracteres raros de un string *#
     return s;
 }
 //FUNCION OBSOLETA
-function arixshell_localdata_restarting(){
+/*function arixshell_localdata_restarting(){
     sessionStorage.setItem("last_page", false);
     sessionStorage.setItem("current_page", false);
     sessionStorage.setItem("last_serial", null);
@@ -61,7 +61,7 @@ function arixshell_add_cache_page(location, url){
     else{
         return;
     }
-}
+}*/
 var arixshellmainvar;
 function arixshell_autoload_sessiondata(){
     arixshellmainvar = arixshell_download_datos('arixapi/arixapi_autoload_session_data');
@@ -164,6 +164,7 @@ function arixshell_cargar_sucursal_auto(){
     let sucursal = arixshellmainvar[3][0];
     $("nav").find('#sucursal-db small').text(sucursal.nombre.substring(0,20)+"...");
     $('nav #sucursal-db-list').html('<a class="dropdown-item active" href="javascript:;" id="0xFF">N-'+sucursal.numero+', '+sucursal.nombre+'</a>');
+    $('#user-title-breadcrumb li').first().text(sucursal.numero);
     sucursal = arixshellmainvar[3];
     if (sucursal.length > 1) {
         for (i = 1; i < sucursal.length; i++) {
@@ -173,7 +174,6 @@ function arixshell_cargar_sucursal_auto(){
         return;
     }
 }
-
 function arixshell_cargar_sucursal(){
     //var sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursal_actual');
     let sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursal_actual');
@@ -184,7 +184,6 @@ function arixshell_cargar_sucursal(){
         console.log('arixshell_cargar_sucursal -> error');
     }
 }
-
 function arixshell_cargar_sucursal_lista(){
     var sucursal = arixshell_download_datos('arixapi/arixapi_mostrar_sucursales'), ubicacion = 'nav #sucursal-db-list';
     if (sucursal != null && sucursal != 403) {
@@ -237,7 +236,6 @@ function arixshell_cargar_subpaginas(url,lugar){//carga paginas en un modal
         }
     });
 }
-
 //aqui trabajo, falta agregar funcionalidad de caché
 function arixshell_cargar_contenido(url,titulo = 'Sin Subtitulo', position = 4){//esta es una funcion muy especifica para llenar subtitulos y paginas(caches)
     a = $('#nav-idont-know .breadcrumb-item').length;
