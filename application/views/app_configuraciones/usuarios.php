@@ -20,7 +20,7 @@
 </div>
 <script type="text/javascript">
     arixshell_iniciar_llaves_locales("#btn_id_usuarios_base");
-    arixshell_cargar_botones_menu('btn-agregar');
+    arixshell_cargar_botones_menu('btn-refrescar,btn-agregar');
     //arixshell_cargar_boton_buscar('Buscar por DNI');
     //axconfiguraciones_mostrar_icono_usuarios('btn-detalles');//donde lo voy a cargar debe decir
    /* $(arixshell_cargar_llave_local(1)+' .card').on("click", "button", function() {//click unico en la página
@@ -30,7 +30,7 @@
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-agregar", function() {
     	arixshell_cargar_contenido(window.location.href+'/usuarios_nuevo','Usuario Nuevo');
     });
-    btnss = arixshell_cargar_botones('btn-borrar,btn-detalles');    
+    btnss = arixshell_cargar_botones('btn-banear,btn-editar,btn-detalles');    
     $('#dataTable-usuarios').DataTable({
       "language": {
              "lengthMenu": "Mostrar _MENU_ registros por página",

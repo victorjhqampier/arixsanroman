@@ -77,7 +77,7 @@ function mpsr_emp_loaddata (id,btn='btn-detalles, btn-imprimir'){
     table = '<div class="table-responsive-md"><table class="table table-sm" id="table-data-emp"><thead><tr><th scope="col">ID</th><th scope="col">fecha</th>'+
     '<th scope="col">RUC</th><th scope="col">Resolución</th><th scope="col">Nombre</th><th scope="col">Razon social</th><th scope="col">Vigente hasta</th>'+
     '<th scope="col">Flota</th><th scope="col">Categoría</th><th scope="col">Acciones</th></tr></thead><tbody></tbody></table></div>';
-    btnss = arixshell_cargar_botones(btn);
+    //btnss = arixshell_cargar_botones(btn);
     $('#main-emp-active').html(table);
     $('#table-data-emp').DataTable({
         "language": {
@@ -103,7 +103,7 @@ function mpsr_emp_loaddata (id,btn='btn-detalles, btn-imprimir'){
                 {"data": 'aufin'},
                 {"data": 'numv'},
                 {"data": 'code'},            
-                {"data": null, render: function ( data, type, row ) {return btnss;}}
+                {"data": null, render: function ( data, type, row ) {return arixshell_cargar_botones(btn);}}
             ],
             "order": [
                 [ 1, "desc" ]

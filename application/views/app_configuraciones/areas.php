@@ -6,8 +6,8 @@
                 <thead>
                     <tr>
                         <th scope="col">DATE</th>
-                        <th scope="col">Oficina</th>
-                        <th scope="col">Departamento</th>
+                        <th scope="col">Oficina (Sucursal)</th>
+                        <th scope="col">Nombre de área</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Acciones</th>
                     </tr>

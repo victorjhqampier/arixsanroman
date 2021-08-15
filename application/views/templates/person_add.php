@@ -99,28 +99,50 @@
     </div>    
 </div>
 <script type="text/javascript">
-    function mpsr_form_auto_start(){
+    (function(){
+        let infor = arixshell_read_cache_serial('e0x005477arixNewUser');       
+            if(infor!=null){
+                infor=infor['id'];
+                if(infor.length==8){
+                    $('#per-form-base #per-dni').val(infor);
+                    $('#per-form-base #per-dni').attr('readonly',true);
+                    $('#per-form-base #per-dni').focus();
+                }else{
+                    $('#per-form-base #per-dni').focus();
+                    //return;
+                }
+        }else{
+            return;
+        }
+    })();
+    /*function mpsr_form_auto_start(){
         var infor = arixshell_read_cache_serial('e0x005477arixNewUser');       
             if(infor!=null){
                 infor=infor['id'];
                 if(infor.length==8){
                     $('#per-form-base #per-dni').val(infor);
                     $('#per-form-base #per-dni').attr('readonly',true);
+                    $('#per-form-base #per-dni').focus();
                 }else{
-                    return;
+                    $('#per-form-base #per-dni').focus();
+                    //return;
                 }
         }else{
             return;
         }
     }
-    mpsr_form_auto_start();
+    mpsr_form_auto_start();*/
     $('#per-form-base #per-dni').mask('99999999');
-    $('#per-form-base #per-borndate').mask('00/00/0000');
-    $('#per-form-base #per-dni').focus();
+    $('#per-form-base #per-borndate').mask('00/00/0000');    
 
-    arixshell_cargar_opciones('#per-form-base #per-departament', 'arixapi/arixapi_get_departamentos');
-    var dep = $("#per-departament option:eq(20)").attr("selected", "selected").val();arixshell_subir_opciones('#per-form-base #per-province','arixapi/arixapi_get_provincias', 'txtdata='+dep+'&');
-    dep = $("#per-province option:eq(10)").attr("selected", "selected").val();arixshell_subir_opciones('#per-form-base #per-distrite','arixapi/arixapi_get_distritos', 'txtdata='+dep+'&');
+    arixshell_cargar_opciones('#per-form-base #per-departament', 'arixapi/arixapi_get_departamentos').then(function(){
+        var dep = $("#per-departament option:eq(20)").attr("selected", "selected").val();
+        arixshell_subir_opciones('#per-form-base #per-province','arixapi/arixapi_get_provincias', 'txtdata='+dep+'&').then(function(){
+            dep = $("#per-province option:eq(10)").attr("selected", "selected").val();
+            arixshell_subir_opciones('#per-form-base #per-distrite','arixapi/arixapi_get_distritos', 'txtdata='+dep+'&');
+        });        
+    });
+    
     $('#per-form-base #per-departament').change(function(){
         var r = $(this).val();
         $('#per-form-base #per-distrite').html('');
@@ -215,7 +237,7 @@
         }else{
             return;
         }
-    }
+    }    
     $("#per-form-base #per-dni").blur(function(){
         var dni = request = $(this).val();
         //var entero = parseInt(request).toString();

@@ -90,6 +90,9 @@ function arixshell_cargar_third_subtitulo(title){
         $('#user-title-breadcrumb').append('<li class="breadcrumb-item active">'+title+'</li>');
     }
 }
+function arixshell_verify_data(s){
+    return s.split("").reverse().join("");
+}
 //FUNCION OBSOLETA
 /*function arixshell_agregar_subtitulo(title,position = 4){
     a = $('#nav-idont-know .breadcrumb-item').length;    
@@ -452,62 +455,7 @@ function arixshell_cargar_lista_cards(tabla,btns='btn-detalles,btn-borrar',cant)
         console.log('arixshell_cargar_lista_cards -> error');
     }
 }
-function arixshell_cargar_opciones(location, url, html=''){
-    let data = arixshell_download_datos(url),keys=[];
-    if(typeof(data)==='object'){
-        $(location).html(html);
-        for (var key in data[0]) {keys.push(key);}
-        for(i =0; i<data.length; i++){
-            $(location).append('<option value="'+data[i][keys[0]]+'" >'+data[i][keys[1]]+'</option>');
-        }
-    }else{
-        console.log('mpsr_cargar_servicios -- Error');
-    }
-}
-
-function arixshell_subir_opciones(location,url,data,html=''){
-    var data = arixshell_upload_datos(url, data), keys=[];
-    if(typeof(data)==='object'){
-        $(location).html(html);
-        for (var key in data[0]) {keys.push(key);}
-        for(var i =0; i<data.length; i++){
-            $(location).append('<option value="'+data[i][keys[0]]+'" >'+data[i][keys[1]]+'</option>');
-        }
-    }else{
-        console.log('mpsr_subir_opciones -- Error');
-    }
-}
-function arixshell_abrir_modalbase(titulo,loadurl,btnkey){    
-    $('#arixgeneralmodal .modal-title').text(titulo);
-    arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal .modal-body');
-    $('#arixgeneralmodal .modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Aceptar</button>');
-    $('#arixgeneralmodal').modal({
-        keyboard: false,
-        backdrop: "static",
-        show:true
-    });
-}
-function arixshell_abrir_mainModal(titulo,loadurl,btnkey){    
-    $('#arixgeneralmodal2 .modal-title').text(titulo);
-    arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal2 .modal-body');
-    $('#arixgeneralmodal2 .modal-footer').html('<button type="button" class="btn btn-secondary btn-sm" id="'+btnkey+'">Aceptar</button>');
-    $('#arixgeneralmodal2').modal({
-        keyboard: false,
-        backdrop: "static",
-        show:true
-    });
-}
-function arixshell_cerrar_mainModal(){
-    $('#arixgeneralmodal2 .modal-footer').html('');
-    $('#arixgeneralmodal2 .modal-body').html('');
-    $('#arixgeneralmodal2').modal('hide');
-}
-function arixshell_cerrar_modalbase(){
-    $('#arixgeneralmodal .modal-footer').html('');
-    $('#arixgeneralmodal .modal-body').html('');
-    $('#arixgeneralmodal').modal('hide');
-}
-function arixshell_confirm_alert(url,data,btnClickExit,titl='Error',message='Arix Corp',btntext='Anular',icono='error'){
+function arixshell_confirm_alert(icono='error',titl='Error',message='Arix Corp',btntext='Anular',url,data,btnClickExit){
     Swal.fire({
         title: titl,
         text: message,
@@ -554,6 +502,82 @@ function arixshell_notification_alert(icone,message){
         toast:true
     })
 }
+async function arixshell_cargar_opciones(location, url, html=''){
+    let data = await arixshell_download_datos(url),keys=[];
+    if(typeof(data)==='object'){
+        $(location).html(html);
+        for (var key in data[0]) {keys.push(key);}
+        for(i =0; i<data.length; i++){
+            $(location).append('<option value="'+data[i][keys[0]]+'" >'+data[i][keys[1]]+'</option>');
+        }
+    }else{
+        console.log('mpsr_cargar_servicios -- Error');
+    }
+}
+async function arixshell_subir_opciones(location,url,data,html=''){
+    var data = await arixshell_upload_datos(url, data), keys=[];
+    if(typeof(data)==='object'){
+        $(location).html(html);
+        for (var key in data[0]) {keys.push(key);}
+        for(var i =0; i<data.length; i++){
+            $(location).append('<option value="'+data[i][keys[0]]+'" >'+data[i][keys[1]]+'</option>');
+        }
+    }else{
+        console.log('mpsr_subir_opciones -- Error');
+    }
+}
+//perfecto par BLUR
+async function  arixshell_check_duplicate(location,url,request){
+        request = await arixshell_upload_datos(url, 'txtdata='+request+'&');
+        if(request['status']==false){
+            $(location).addClass('is-valid');
+        }else{
+            arixshell_notification_alert('warning','El dato ingresado se encuentra registrado ...');
+            $(location).val("");
+            $(location).removeClass('is-valid');            
+        }
+}
+//IDEAL PARA RESPUIEST INMEDIATA
+function  arixshell_isn_duplicated(url,request){
+    request = arixshell_upload_datos(url, 'txtdata='+request+'&');
+    if(request.status==false){
+        return true;//esto se intercambia por si occurre un error de arixshell_upload_datos
+    }else{
+        arixshell_notification_alert('warning','El dato ingresado se encuentra registrado ...');        
+        return false;           
+    }
+}
+function arixshell_abrir_modalbase(titulo,loadurl,btnkey){    
+    $('#arixgeneralmodal .modal-title').text(titulo);
+    arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal .modal-body');
+    $('#arixgeneralmodal .modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Aceptar</button>');
+    $('#arixgeneralmodal').modal({
+        keyboard: false,
+        backdrop: "static",
+        show:true
+    });
+}
+function arixshell_abrir_mainModal(titulo,loadurl,btnkey){    
+    $('#arixgeneralmodal2 .modal-title').text(titulo);
+    arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal2 .modal-body');
+    $('#arixgeneralmodal2 .modal-footer').html('<button type="button" class="btn btn-secondary btn-sm" id="'+btnkey+'">Aceptar</button>');
+    $('#arixgeneralmodal2').modal({
+        keyboard: false,
+        backdrop: "static",
+        show:true
+    });
+}
+function arixshell_cerrar_mainModal(){
+    $('#arixgeneralmodal2 .modal-footer').html('');
+    $('#arixgeneralmodal2 .modal-body').html('');
+    $('#arixgeneralmodal2').modal('hide');
+}
+function arixshell_cerrar_modalbase(){
+    $('#arixgeneralmodal .modal-footer').html('');
+    $('#arixgeneralmodal .modal-body').html('');
+    $('#arixgeneralmodal').modal('hide');
+}
+
 /*----------------REDESARROLLAR MODULO DE TITULOS---------*/
 
 /*--------------------------MAIN----------------*/
