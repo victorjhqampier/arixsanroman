@@ -89,6 +89,30 @@ class Configuraciones extends CI_Controller {
 			show_404();
 		}
 	}
+	public function employees_add(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_configuraciones/empleados_add');
+		}
+		else{
+			show_404();
+		}
+	}
+	public function sucursales_sub2(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_configuraciones/sucursales_sub2');
+		}
+		else{
+			show_404();
+		}
+	}
+	public function sucursales_sub3(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_configuraciones/sucursales_sub3');
+		}
+		else{
+			show_404();
+		}
+	}
 
 	//SELECCIONAR LOS SUCURSALES 
 	public function axconfig_get_sucursales_simple(){
@@ -178,6 +202,28 @@ class Configuraciones extends CI_Controller {
 			show_404();
 		}
 	}
+	public function axconfig_get_roles(){
+		if ($this->input->is_ajax_request()){							
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('rol_id axuid,rol', 'private.roles',0, '', array('rol_id','desc'));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuid);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
+	public function axconfig_get_apps(){
+		if ($this->input->is_ajax_request()){							
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('app_id axaid,app', 'private.apps',0, array('id_app is not null'=>null), array('app_id','asc'));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axaid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axaid);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
 	public function axconfig_duplicate_employee(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$doc = strrev($this->input->post('txtdata'));			
@@ -195,11 +241,38 @@ class Configuraciones extends CI_Controller {
 				)
 			 );
 			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('con.estado'=>true, 'per.documento'=>$doc));
-			//print_r($consulta);
-			if(!empty($consulta)){
-				echo json_encode(array('status'=>true));
+			if(empty($consulta)){
+				echo json_encode($this->serv_ejecucion_app->exe_get_people_data($doc));
 			}else{
-				echo json_encode(array('status'=>false));
+				echo json_encode(array('status'=>null));//ya esta registrado
+			}
+		}else{
+			show_404();
+		}
+	}
+	public function axconfig_duplicate_user(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$doc = strrev($this->input->post('txtdata'));	
+			$consulta = array(
+				array(
+				   "per.documento"
+				),
+				array(
+					'config.cuentas cu',
+				   	'config.contratos con',
+				   	'private.personas per'
+				),
+				array(
+				   'NULL',
+				   'cu.contrato_id = con.contrato_id',
+				   'con.persona_id = per.persona_id'
+				)
+			 );
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cu.estado'=>true, 'per.documento'=>$doc));
+			if(empty($consulta)){//SI ESTA VACIO (NO TIENE CUENTA)
+				echo json_encode($this->serv_ejecucion_app->exe_get_people_data($doc));
+			}else{
+				echo json_encode(array('status'=>null));//TIENE YA UNA CUENTA
 			}
 		}else{
 			show_404();
@@ -211,7 +284,7 @@ class Configuraciones extends CI_Controller {
 			$consulta = array(
 				array(
 				   'con.contrato_id axuid,con.numero contrato, con.fregistro fecha',
-				   "concat(per.documento,' - ',per.nombres,' ',per.paterno,' ',per.materno) persona, concat('De ',to_char(con.cinicio, 'DD-MM-YYYY'),' a ',to_char(cfinal, 'DD-MM-YYYY')) fecha",
+				   "concat(per.documento,' - ',per.nombres,', ',per.paterno,' ',per.materno) persona, concat('De ',to_char(con.cinicio, 'DD-MM-YYYY'),' a ',to_char(cfinal, 'DD-MM-YYYY')) fecha",
 				   "concat('(',suc.numero,' ',substring(suc.nombre,0,11),') ',substring(dep.departamento,0,30)) departamento, pue.puesto cargo"
 				),
 				array(
@@ -231,7 +304,7 @@ class Configuraciones extends CI_Controller {
 				   'are.sucursal_id = suc.sucursal_id'
 				)
 			 );
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('con.estado'=>true, 'con.contrato_id>'=>1,'are.estado'=>true/*, 'are.sucursal_id'=>$sucu*/));
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('con.estado'=>true, 'con.contrato_id>'=>1,'are.estado'=>true,'ffinal' => null/*, 'are.sucursal_id'=>$sucu*/));
 			//print_r($consulta);
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuid);
@@ -283,6 +356,7 @@ class Configuraciones extends CI_Controller {
 			show_404();
 		}
 	}
+
 	/*++++++++++++++++++POS_AREA++++++++++++++++++++++++++*/
 	public function axconfig_post_employee(){
 		if($this->input->is_ajax_request() && $this->input->post('txtcontnumber')){			
@@ -300,7 +374,45 @@ class Configuraciones extends CI_Controller {
 			show_404();
 		}
 	}
-	
+	public function axconfig_delete_employee(){//validacion interna en delete/update
+		if($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$id_contrato = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
+			$id_contrato = $this->arixkernel->arixkernel_obtener_data_by_id('contrato_id,estado', 'config.contratos', $id_contrato,array('estado'=>true));			
+			$cuenta = $this->arixkernel->arixkernel_obtener_data_by_id('cuenta_id,correo,estado', 'config.cuentas', false,array('estado'=>true,'contrato_id'=>$id_contrato->contrato_id));
+			if(!is_null($cuenta)){//tiene cuenta
+				$temp = explode("@", $cuenta->correo);
+				$datos = array(
+					array(
+						'estado'=>false,
+						'fmodificacion'=>date('Y-m-d H:i:s'),
+						'correo'=>$temp[0].'@'.uniqid()
+					),
+					array(
+						'estado'=>false,
+						'ffinal'=>date('Y-m-d'),
+						'fmodificacion'=>date('Y-m-d H:i:s')
+					)
+				);
+				$tables = array('config.cuentas','config.contratos');
+				$conditions = array(
+					array('cuenta_id'=>$cuenta->cuenta_id),
+					array('contrato_id'=>$id_contrato->contrato_id)
+				);				
+				$datos = $this->arixkernel->arixkernel_actualizar_serial_data($datos, $tables,$conditions);
+				echo json_encode(array('status'=>$datos['status']));
+			}else{//no tiene cuenta
+				$datos=array(
+					'estado'=>false,
+					'ffinal'=>date('Y-m-d'),
+					'fmodificacion'=>date('Y-m-d H:i:s')
+				);
+				$datos=$this->arixkernel->arixkernel_actualizar_simple_data($datos,'config.contratos',array('contrato_id'=>$id_contrato->contrato_id));				
+				echo json_encode(array('status'=>$datos['status']));
+			}			
+		}else{
+			show_404();
+		}
+	}
 
 	#REHACER TODO DESQUE AQUI CON EL NUEVO KERNEL Y SERVICIO DE EJECUCIÓN
 	public function axconfiguraciones_cargar_lista_sucursales(){
@@ -335,47 +447,17 @@ class Configuraciones extends CI_Controller {
 			echo json_encode(array('status' => 403));
 		}
 	}
-
-	public function axconfiguraciones_pruebas(){		
-		//$lista = $this->serv_ejecucion_app->exe_obtener_lista_ordenado('*', 'private.traductores', 'sal, ASC',20);
-		/*$this->serv_ejecucion_app->arixkernel_obtener_datos('submenu_id, submenu', 'config.v_menu_subapp', 100, 0,'app_id = 1002 AND rol >= 4','',array('submenu_id','submenu'));
-		$lista = $this->serv_cifrado->cod_cifrar_ids_matrices($lista);*/
-		$lista = $this->serv_ejecucion_app->arixkernel_obtener_datos_xxx3();
-		print_r($lista);		
-	}
-	public function employees_add(){
-		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_configuraciones/empleados_add');
-		}
-		else{
-			show_404();
-		}
-	}
-	public function sucursales_sub2(){
-		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_configuraciones/sucursales_sub2');
-		}
-		else{
-			show_404();
-		}
-	}
-	public function sucursales_sub3(){
-		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_configuraciones/sucursales_sub3');
-		}
-		else{
-			show_404();
-		}
-	}
 	public function config_pruebas(){
 		$this->load->library('serv_ejecucion_app');
-		$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(
+		/*$array_tabla_tupla = $this->serv_ejecucion_app->exe_contruir_consulta(array(
             'config.sucursales'=>'sucursal_id,numero,nombre,direccion,estado',
             'config.subcategorias'=>'subcategoria',
             'config.categorias'=>'categoria',
             'private.distritos'=>'distrito'
         ), array(1,0,0,1));
-		print_r($array_tabla_tupla);	
+		print_r($array_tabla_tupla);
+		*/
+		echo ($this->serv_cifrado->cod_cifrar_cadena(0));
 		/*$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('axjs-validate-p1','axjs-validate-p2'));
 		print_r($js);	*/	
 	}

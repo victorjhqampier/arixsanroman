@@ -134,6 +134,15 @@ class Serv_ejecucion_app {
         }
         return $temp;        
     }
+    public function exe_get_people_data($dni){
+        //$extra = $extra==true?",factualizacion axextra":",concat(".$extra.") axextra";
+        $consulta = $this->ci->arixkernel->arixkernel_obtener_data_by_id("persona_id axuid, concat(documento,' - ', nombres,', ', paterno,' ', materno) datas", 'private.personas', false, array('documento'=>$dni));
+		if(!is_null($consulta)){
+			return array('status'=>true,'id'=>$this->ci->serv_cifrado->cod_cifrar_cadena($consulta->axuid),'data'=>$consulta->datas);
+		}else{
+			return array('status'=>false);
+		}      
+    }
 
     public function exe_contruir_consulta($array_tabla_tupla, $array_runlebel = array(1,0,0,0,0,0)){// CORREGIR con TABLAS HASH
         $table = array_keys ($array_tabla_tupla); //captura el nombre de la tabla

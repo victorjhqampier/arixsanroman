@@ -100,12 +100,12 @@
             if(request['status']===true){
                 $("#second-content-evaluation .card-body").last().addClass('text-center').html('<i class="material-icons" style="color: #5cb85c; font-size:7rem">done</i>');
                 $('#main-content-evaluation #eval-search-certif').focus();
-                arixshell_notification_alert('success','Guardado correctamente...');                
+                arixshell_alert_notification('success','Guardado correctamente...');                
              }else{
                 console.log('EVALUATION_SHOW -> NO GUARDAR');
                 $("#second-content-evaluation .card-body").last().addClass('text-center').html('<i class="material-icons" style="color: red; font-size:7rem">cancel</i>');
                 $('#main-content-evaluation #eval-search-certif').focus();
-                arixshell_notification_alert('error','Algo salió mal, no guardamos los datos');
+                arixshell_alert_notification('error','Algo salió mal, no guardamos los datos');
             }
         }else{
             return;

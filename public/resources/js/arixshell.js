@@ -401,8 +401,8 @@ $('#layoutSidenav_nav').on("click", ".nav-link", function() { //Clic en alguno d
     $('#use-container-secondary').html('');//reestablce el primer contenedor
     var a = $(this).attr('controller'), b = $(this).text();//titulo
     arixshell_cargar_paginas(window.location.href+'/'+a);
-    $('#sidenavAccordion').find('a').removeClass('active');
-    $(this).addClass('active');
+    $('#sidenavAccordion').find('a').removeClass('active').removeClass('disabled');
+    $(this).addClass('active').addClass('disabled');
     arixshell_cargar_third_subtitulo(b);//esto debe ser generalizado (titulo,url,position)
 });
 //usa pila, ultimo en entrar ultimo en salir 
@@ -455,7 +455,27 @@ function arixshell_cargar_lista_cards(tabla,btns='btn-detalles,btn-borrar',cant)
         console.log('arixshell_cargar_lista_cards -> error');
     }
 }
-function arixshell_confirm_alert(icono='error',titl='Error',message='Arix Corp',btntext='Anular',url,data,btnClickExit){
+function arixshell_alert_continue(icono='error',titl='Error',message='Arix Corp',btntext='Anular',url,data){
+    Swal.fire({
+        title: titl,
+        text: message,
+        icon: icono,
+        showCancelButton: true,
+        confirmButtonText: btntext,
+        cancelButtonText:'Cerrar',
+        allowOutsideClick:false,
+        customClass:{
+            confirmButton:'btn btn-info btn-sm',
+            cancelButton:'btn btn-secondary btn-sm'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            arixshell_write_cache_serial("local_cache_id",data);
+            arixshell_cargar_contenido(url,message);             
+        }
+    })
+}
+function arixshell_alert_delete(icono='error',titl='Error',message='Arix Corp',btntext='Anular',url,data,btnClickExit){
     Swal.fire({
         title: titl,
         text: message,
@@ -471,7 +491,7 @@ function arixshell_confirm_alert(icono='error',titl='Error',message='Arix Corp',
     }).then((result) => {
         if (result.isConfirmed) {
             let request = arixshell_upload_datos(url,data);
-            if(request['status']===true){
+            if(request.status===true){
                 $(btnClickExit).click();
                 Swal.fire(
                     'Correcto...!',
@@ -488,7 +508,7 @@ function arixshell_confirm_alert(icono='error',titl='Error',message='Arix Corp',
         }
     })
 }
-function arixshell_notification_alert(icone,message){
+function arixshell_alert_notification(icone,message){
     Swal.fire({
         title: message,
         icon: icone,
@@ -532,21 +552,21 @@ async function  arixshell_check_duplicate(location,url,request){
         if(request['status']==false){
             $(location).addClass('is-valid');
         }else{
-            arixshell_notification_alert('warning','El dato ingresado se encuentra registrado ...');
+            arixshell_alert_notification('warning','El dato ingresado se encuentra registrado ...');
             $(location).val("");
             $(location).removeClass('is-valid');            
         }
 }
 //IDEAL PARA RESPUIEST INMEDIATA
-function  arixshell_isn_duplicated(url,request){
+/*function  arixshell_isn_duplicated(url,request){
     request = arixshell_upload_datos(url, 'txtdata='+request+'&');
     if(request.status==false){
         return true;//esto se intercambia por si occurre un error de arixshell_upload_datos
     }else{
-        arixshell_notification_alert('warning','El dato ingresado se encuentra registrado ...');        
+        arixshell_alert_notification('warning','El dato ingresado se encuentra registrado ...');        
         return false;           
     }
-}
+}*/
 function arixshell_abrir_modalbase(titulo,loadurl,btnkey){    
     $('#arixgeneralmodal .modal-title').text(titulo);
     arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal .modal-body');

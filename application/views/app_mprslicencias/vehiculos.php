@@ -168,7 +168,7 @@ $('#first-href-vehicle').on('click', '#btn-vehicle-bysearch', function(){
             $('#first-href-vehicle #in-vehicle-bysearch').val(''); 
             arixshell_cargar_subpaginas("mpsrlicencias/vehicles_search","#first-href-vehicle #content-vehicle-bysearch");                             
         }else{
-            arixshell_notification_alert('error','No encontramos resultados. Por favor, verifique la placa');
+            arixshell_alert_notification('error','No encontramos resultados. Por favor, verifique la placa');
             $("#first-href-vehicle #content-vehicle-bysearch").html("");
         }
     }else{

@@ -33,7 +33,7 @@
                 $('#main-content-evaluation #eval-search-certif').val(''); 
                 arixshell_cargar_subpaginas("mpsrlicencias/evaluations_show","#main-content-evaluation #second-content-evaluation");                             
             }else{
-                arixshell_notification_alert('error','No encontramos resultados. Por favor, verifique el número de certificación');
+                arixshell_alert_notification('error','No encontramos resultados. Por favor, verifique el número de certificación');
                 //$('#main-content-evaluation #eval-search-certif').val('');
                 $("#main-content-evaluation #second-content-evaluation").html("");
             }

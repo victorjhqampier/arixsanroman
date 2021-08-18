@@ -222,14 +222,15 @@ class Arixapi extends CI_Controller {
 	}
 	public function arixapi_check_duplicate_person(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata') && $this->serv_administracion_usuarios->use_probar_session()){
-			$this->load->library('serv_cifrado');
-			$this->load->model('arixkernel');
-		$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('persona_id axuid, documento, nombres, paterno, materno', 'private.personas', false, array('documento'=>$this->input->post('txtdata')));
+			//$this->load->library('serv_cifrado');
+			//$this->load->model('arixkernel');
+			/*$consulta = $this->arixkernel->arixkernel_obtener_data_by_id("persona_id axuid, concat(documento,' - ', nombres,', ', paterno,' ', materno) datas, concat(correo,'@',telefono) axextra", 'private.personas', false, array('documento'=>$this->input->post('txtdata')));
 			if(!is_null($consulta)){
-				echo json_encode(array('status'=>true,'id'=>$this->serv_cifrado->cod_cifrar_cadena($consulta->axuid),'data'=>$consulta->documento.' - '.$consulta->nombres.', '.$consulta->paterno.' '.$consulta->materno));
+				echo json_encode(array('status'=>true,'id'=>$this->serv_cifrado->cod_cifrar_cadena($consulta->axuid),'data'=>$consulta->datas,'extra'=>$consulta->axextra));
 			}else{
 				echo json_encode(array('status'=>false));
-			}
+			}*/
+			echo json_encode($this->serv_ejecucion_app->exe_get_people_data($this->input->post('txtdata')));
 		}else{
 			show_404();
 		}

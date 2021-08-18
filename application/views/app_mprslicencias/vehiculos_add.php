@@ -102,7 +102,7 @@
                 $('#main-content-vehiadd').children().first().addClass('d-none').val("");//ESONDE EL FORMURARIO
                 arixshell_cargar_subpaginas("mpsrlicencias/vehicles_add_show","#main-content-vehiadd #second-content-vehiadd");
             }else{
-                arixshell_notification_alert('error','No encontramos resultados. Por favor, verifique el número RUC');
+                arixshell_alert_notification('error','No encontramos resultados. Por favor, verifique el número RUC');
                 $('#main-content-vehiadd #ruc-search').val('');
             }
         }else{

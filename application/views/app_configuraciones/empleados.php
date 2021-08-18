@@ -55,47 +55,51 @@
         //$('#datatable-activeemplo'').DataTable().clear();
         $('#datatable-activeemplo').DataTable().ajax.reload();
     });
-    $('#datatable-activeemplo').DataTable({
-            //"destroy": true,
-            "language": {
-                    "lengthMenu": "Mostrar _MENU_ registros por página",
-                    "zeroRecords": "No se ha encontrado nada, lo siento",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)"
-            },
-            "ajax": {
-                    "url" : "configuraciones/axconfig_get_empleados",
-                    "dataSrc":""
-            },
-            "columns":[
-                    {"data": 'fecha'},
-                    {"data": 'contrato'},
-                    {"data": 'persona'},
-                    {"data": 'fecha'},
-                    {"data": 'departamento'},
-                    {"data": 'cargo'},
-                    {"data": null, render: function ( data, type, row ) {return arixshell_cargar_botones('btn-borrar,btn-editar,btn-detalles');}}
-            ],
-            "order": [
-                    [ 0, "desc" ]
-            ],
-            "columnDefs": [{
-                        "targets": [0],
-                        "visible": false,
-                        "searchable": true
-            }],
-            "createdRow": function( row, data, dataIndex ) {
-                    $(row).attr('odd', data.axuid);         
-            }
-    });
+    (function(){
+        let btns = arixshell_cargar_botones('btn-borrar,btn-editar,btn-detalles');
+        $('#datatable-activeemplo').DataTable({
+                //"destroy": true,
+                "language": {
+                        "lengthMenu": "Mostrar _MENU_ registros por página",
+                        "zeroRecords": "No se ha encontrado nada, lo siento",
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "No hay registros disponibles",
+                        "infoFiltered": "(filtrado de _MAX_ registros totales)"
+                },
+                "ajax": {
+                        "url" : "configuraciones/axconfig_get_empleados",
+                        "dataSrc":""
+                },
+                "columns":[
+                        {"data": 'fecha'},
+                        {"data": 'contrato'},
+                        {"data": 'persona'},
+                        {"data": 'fecha'},
+                        {"data": 'departamento'},
+                        {"data": 'cargo'},
+                        {"data": null, render: function ( data, type, row ) {return btns;}}
+                ],
+                "order": [
+                        [ 0, "desc" ]
+                ],
+                "columnDefs": [{
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": true
+                }],
+                "createdRow": function( row, data, dataIndex ) {
+                        $(row).attr('odd', data.axuid);         
+                }
+        });
+    })();
+        
     $('#datatable-activeemplo tbody').on( 'click', '.btn-detalles',function(){
         let fila = $(this).closest("tr"), uid = fila.attr('odd');
         //arixshell_cargar_contenido('mpsrlicencias/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(2)').text());
-        arixshell_notification_alert('success',uid);
+        arixshell_alert_notification('success',uid);
     });
     $('#datatable-activeemplo tbody').on( 'click', '.btn-borrar',function(){
         let fila = $(this).closest("tr"), uid = fila.attr('odd');
-        arixshell_confirm_alert('question','Finalizar contrato para',fila.find('td:eq(1)').text(),'Si, finalizar','configuraciones/axconfig_del_employee','txtdata='+uid+'&',arixshell_cargar_llave_local(0)+' .btn-refrescar');
+        arixshell_alert_delete('question','Finalizar contrato para',fila.find('td:eq(1)').text(),'Si, finalizar','configuraciones/axconfig_delete_employee','txtdata='+uid+'&',arixshell_cargar_llave_local(0)+' .btn-refrescar');
     });
 </script>

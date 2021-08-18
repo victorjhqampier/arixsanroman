@@ -93,22 +93,24 @@
     //(1)PARA EL MODAL DE AGREGAR persona
     $("#btn-search-contEmployee").click(function () {     
         let temp = $("#cont-employee-doc").val();
-        let data = temp.length == 8 ? arixshell_isn_duplicated('configuraciones/axconfig_duplicate_employee',arixshell_verify_data(temp)) : false;//true = (continuar) sin resultados || false= error/lleno        
-        //console.log(data);
-        if(data==true){
-            let request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+temp+'&');//true or false
+        if(temp.length == 8){
+            let request = arixshell_upload_datos('configuraciones/axconfig_duplicate_employee', 'txtdata='+arixshell_verify_data(temp)+'&');//true or false
             if(request.status==true){//ya existe en la base de datos
                 $('#cont-employee-dscrb').val(request.data).removeClass('d-none');                
                 $('#cont-employee-id').val(request.id);
                 $("#btn-restart-contEmployee").removeClass('d-none');
                 $("#cont-employee-doc").addClass('d-none');
                 $(this).addClass('d-none');
-            }else{
+            }else if(request.status==false){
                 arixshell_write_cache_serial('e0x005477arixNewUser',temp);//clave y dato
                 arixshell_abrir_modalbase('AGREGAR NUEVO PERSONA','arixapi/arixapi_get_form_person','btn-modalNewUser-forDriver');
             }
+            else{
+                arixshell_alert_notification('warning','La persona se encuntra registrada ...'); 
+                $("#cont-employee-doc").val("");
+            }
         }else{
-            $("#cont-employee-doc").val("");
+            return;
         } 
     });
     //(2)PARA EL MODAL DE AGREGAR persona
@@ -125,7 +127,7 @@
             arixshell_cerrar_modalbase();
         }
     });
-    //(2) boton reniciar
+    //(3) boton reniciar
     $("#btn-restart-contEmployee").click(function () {
         $(this).addClass('d-none');
         $("#cont-employee-dscrb").val("").addClass('d-none');
@@ -160,12 +162,12 @@
         if($("#form-contrato-new-add").valid()){
             let request = arixshell_upload_datos('configuraciones/axconfig_post_employee', $('#form-contrato-new-add').serialize());
             if(request['status']===true){//el servidor siempre responde con un obejeto
-                arixshell_notification_alert('success','Guardado correctamente...');
+                arixshell_alert_notification('success','Guardado correctamente...');
                 arixshell_hacer_pagina_atras();
             }
             else{
                 //alert('Lo sentimos, los datos no fueron guardados ...!');
-                arixshell_notification_alert('error','Lo sentimos, no pudimos guardar los datos...');
+                arixshell_alert_notification('error','Lo sentimos, no pudimos guardar los datos...');
                 //arixshell_hacer_pagina_atras();
             }
         }
@@ -303,7 +305,7 @@
             let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_emprmpsr', $('#form-contrato-new-add').serialize());
 
             if(request['status']===true){//el servidor siempre responde con un obejeto
-                arixshell_notification_alert('success','Guardado correctamente...');
+                arixshell_alert_notification('success','Guardado correctamente...');
                 arixshell_hacer_pagina_atras();
                 //alert('correecto ...!');
             }
@@ -354,7 +356,7 @@
                 mpsradd_get_emp(data);
                 $("#form-contrato-new-add #cont-number").addClass('is-valid');
             }else{
-                arixshell_notification_alert('warning','La empresa (RUC) se encuntra registrada ...');
+                arixshell_alert_notification('warning','La empresa (RUC) se encuntra registrada ...');
                 $("#form-contrato-new-add #cont-number").val("");
                 $("#form-contrato-new-add #cont-number").removeClass('is-valid');            
             }
@@ -370,7 +372,7 @@
             if(request['status']==false){
             $("#form-contrato-new-add #aut-nresolucion").addClass('is-valid');
             }else{
-                arixshell_notification_alert('warning','El número de resolución se encuntra registrada ...');
+                arixshell_alert_notification('warning','El número de resolución se encuntra registrada ...');
                 $("#form-contrato-new-add #aut-nresolucion").val("");
                 $("#form-contrato-new-add #aut-nresolucion").removeClass('is-valid');            
             }

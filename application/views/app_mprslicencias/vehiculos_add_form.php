@@ -90,11 +90,11 @@
             let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_certificado_add', $('#form-vehicertif-newadd').serialize());
              if(request['status']===true){
                 $('#btn-cancel-veh2certif').click();
-                arixshell_notification_alert('success','Guardado correctamente...');                
+                arixshell_alert_notification('success','Guardado correctamente...');                
              }else{
                 console.log('certif_add_vehi -> NO GUARDAR');
                 $('#btn-cancel-veh2certif').click();
-                arixshell_notification_alert('error','Algo salió mal, no guardamos los datos');
+                arixshell_alert_notification('error','Algo salió mal, no guardamos los datos');
             }
         }else{
             return;
@@ -128,7 +128,7 @@
                 arixshell_abrir_mainModal('AGREGAR NUEVO VEHÍCULO','mpsrlicencias/temp_vehicleadd','btn-modalNewUser-forcertif');
              }else{
                 $("#form-vehicertif-newadd #certif-vehiplacadoc").val('');
-                arixshell_notification_alert('warning',request['data']);
+                arixshell_alert_notification('warning',request['data']);
              }
         }else{
              return;
