@@ -21,24 +21,152 @@ class Mpsrlicencias extends CI_Controller {
 	//---------------------*****LOAD PAGE SECTION****************-----------------
 	public function mpsrdashboard(){
 		$this->load->view('app_mprslicencias/resumen');
-    }
+	}
+	public function mpsrhistoriales(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axhistoriales');
+		}else{
+			show_404();
+		}
+	}
     public function compania(){
-		$this->load->view('app_mprslicencias/empresas');
+		$this->load->view('app_mprslicencias/axempresas');
+	}
+	public function mpsrchangeautorization(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axrenovaciones');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrgeneralchange(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axmodificaciones');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrdoaction(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axinhahilitar');
+		}else{
+			show_404();
+		}
 	}
 	public function vehicles(){
 		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_mprslicencias/vehiculos');
+			$this->load->view('app_mprslicencias/axvehiculos');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrcanceljoin(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axdesligarvehicle');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrchangevehicle(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axmodificacionesvehiculos');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrputdownvehicle(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axdardebaja');
 		}else{
 			show_404();
 		}
 	}
 	public function responsability(){
 		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_mprslicencias/responsabilidad');
+			$this->load->view('app_mprslicencias/axhabilitarconductor');
 		}else{
 			show_404();
 		}
 	}
+	public function mpsrputdowndriver(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axinhabilitardriver');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrcertreals(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axcertificacionactual');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrcertrenew(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axrenovarcertificado');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrcronogram(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axcronograma');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrprograme(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axprogramar');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrrepogram(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axreprogramar');
+		}else{
+			show_404();
+		}
+	}
+	public function evaluations(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axevaluaciones');
+		}else{
+			show_404();
+		}
+	}
+	public function licencias(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axlicencias');
+		}else{
+			show_404();
+		}
+	}
+	public function licpendientes(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axlicpendientes');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrduplicate(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axduplicatetuc');
+		}else{
+			show_404();
+		}
+	}
+	public function mpsrsuspend(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/axsuspendertuc');
+		}else{
+			show_404();
+		}
+	}
+	//en correccion desde aqui
+	
 	public function compania_add(){
 		$this->load->view('app_mprslicencias/empresas_add');
 	}
@@ -49,21 +177,7 @@ class Mpsrlicencias extends CI_Controller {
 		}else{
 			show_404();
 		}
-	}
-	public function licencias(){
-		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_mprslicencias/licencias');
-		}else{
-			show_404();
-		}
-	}
-	public function licpendientes(){
-		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_mprslicencias/licpendientes');
-		}else{
-			show_404();
-		}
-	}
+	}	
 	public function mayores_add(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_mprslicencias/mayores_add');
@@ -98,14 +212,7 @@ class Mpsrlicencias extends CI_Controller {
 		}else{
 			show_404();
 		}
-	}
-	public function evaluations(){
-		if ($this->input->is_ajax_request()) {
-			$this->load->view('app_mprslicencias/evaluaciones');
-		}else{
-			show_404();
-		}
-	}
+	}	
 	public function evaluations_show(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_mprslicencias/evaluaciones_show');

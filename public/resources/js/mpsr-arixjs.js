@@ -72,7 +72,7 @@ function mpsr_subir_fechas(location, year){//years == años que se ejetutaran
         $(location).val(hoy.getDate() + "/" + (hoy.getMonth() +1) + "/" + hoy.getFullYear());
     }
 }
-function mpsr_emp_loaddata (id,btn='btn-detalles, btn-imprimir'){
+/*function mpsr_emp_loaddata (id,btn='btn-detalles, btn-imprimir'){
     $('#main-emp-active').html('');
     table = '<div class="table-responsive-md"><table class="table table-sm" id="table-data-emp"><thead><tr><th scope="col">ID</th><th scope="col">fecha</th>'+
     '<th scope="col">RUC</th><th scope="col">Resolución</th><th scope="col">Nombre</th><th scope="col">Razon social</th><th scope="col">Vigente hasta</th>'+
@@ -128,4 +128,4 @@ function mpsr_emp_loaddata (id,btn='btn-detalles, btn-imprimir'){
         let fila = $(this).closest("tr"), uid = fila.attr('odd');
         arixshell_cargar_contenido('mpsrlicencias/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(2)').text());
     });
-}
+}*/
