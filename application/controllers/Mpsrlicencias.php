@@ -165,12 +165,10 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	//en correccion desde aqui
-	
+	/*---------------- INICIA LA LOGICA DEL SISTEMA --------------------*/
 	public function compania_add(){
 		$this->load->view('app_mprslicencias/empresas_add');
-	}
-	
+	}	
 	public function compania_view(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_mprslicencias/empresas_view');
@@ -277,14 +275,10 @@ class Mpsrlicencias extends CI_Controller {
 	
 	//---------------------*****GET - SELECT* SECTION****************-----------------
 
-	public function mpsr_get_activeemp(){
+	public function mpsr_get_activeemp(){// OK
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){			
-			//$this->load->library('serv_cifrado');
-			//$this->load->library('serv_administracion_usuarios');		 
-			//$this->load->model('arixkernel');
 			$print = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
 			$print = $print == 77? false : true;
-			//consulta construida por la funcion exe_construir_consultas
 			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
 			$consulta = array(
 				array (
@@ -303,16 +297,17 @@ class Mpsrlicencias extends CI_Controller {
 					'aut.clasificacion_id = cla.clasificacion_id'
 				)
 			);
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado'=>true, 'aut.estado'=>true, 'aut.expirated'=>$print,'cla.sucursal_id'=>$sucu));
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('emp.estado'=>true, 'aut.estado'=>true, 'aut.advanced'=>false,'aut.expirated'=>$print,'cla.sucursal_id'=>$sucu));
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
-				$consulta[$i]->aufin = date("d-m-Y", strtotime($consulta[$i]->aufin));
+				$consulta[$i]->aufin = date("d/m/Y", strtotime($consulta[$i]->aufin));
 			}
 			echo json_encode($consulta);
 		}else{
 			show_404();
 		}
 	}
+
 	public function mpsr_get_imp_licencias(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$print = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
@@ -461,7 +456,7 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	public function mpsr_get_modalidad(){
+	public function mpsr_get_modalidad(){// OK
 		$this->load->library('serv_cifrado');
 		$this->load->model('arixkernel');
 		$consulta = $this->arixkernel->arixkernel_obtener_simple_data('servicio_id axuidemp, descripcion ','servicios');
@@ -479,7 +474,7 @@ class Mpsrlicencias extends CI_Controller {
 		}
 		echo json_encode($consulta);
 	}
-	public function mpsr_get_tipounidad(){//requiere si o si una peticion post
+	public function mpsr_get_tipounidad(){// OK
 		if($this->input->is_ajax_request()){
 			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
 			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("clasificacion_id axuidemp, concat (code,' | ',substring(descripcion,0,25)) descripcion",'clasificaciones',0,array('sucursal_id'=>$sucu));
@@ -569,8 +564,7 @@ class Mpsrlicencias extends CI_Controller {
 		}
 	}
 	//---------------------*****POST - DUPLICATE_CHECK SECTION****************-----------------
-
-	public function mpsr_post_duplicateru(){
+	public function mpsr_post_duplicateru(){// OK
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('ruc', 'empresas', false, array('ruc'=>$this->input->post('txtdata')));		
 			if(!is_null($consulta)){
@@ -582,7 +576,7 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	public function mpsr_post_duplicateres(){
+	public function mpsr_post_duplicateres(){// OK
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('nresolucion', 'autorizaciones', false, array('nresolucion'=>$this->input->post('txtdata')));
 			if(!is_null($consulta)){
@@ -692,12 +686,12 @@ class Mpsrlicencias extends CI_Controller {
 
 
 	//---------------------*****POST - SAVE SECTION****************-----------------
-	public function mpsr_post_emprmpsr(){
+	public function mpsr_post_emprmpsr(){// OK
 		if($this->input->is_ajax_request() && $this->input->post('txtruc')){			
 			$datos = array(
 				array(//tabla empresa
 					'ruc' => $this->input->post('txtruc'),
-					'administrador_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtadminkey'))),
+					'administrador_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtpeopleid'))),
 					'rsocial' => $this->input->post('txtrsocial'),
 					'nombre' => $this->input->post('txtnombre'),
 					'direccion' => $this->input->post('txtdireccion'),
@@ -820,6 +814,68 @@ class Mpsrlicencias extends CI_Controller {
 			$tables = array('certificados','x_conductores');
 			$tables = $this->arixkernel->arixkernel_guargar_sequencial_data($datos,$tables);
 			echo json_encode(array('status'=>$tables['status']));
+		}else{
+			show_404();
+		}
+	}
+	//---------------------*****DELETE SECTION****************-----------------
+	public function mpsr_delete_compania(){// OK
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$empresa_id = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));//pude ser ruc
+			//esto puede tener 
+			//1. autorizacion adelantada
+			//2. vehiculos (asocianes activas)
+			//3. certificados activos
+			//4. tucs asociados			
+			$autorizacion = $this->arixkernel->arixkernel_obtener_data_by_id('autorizacion_id', 'autorizaciones', false,array('estado'=>true,'empresa_id'=>$empresa_id,'advanced'=>false));
+			$datos = array(
+				array(
+					'estado'=>false,
+					'fmodificacion'=>date('Y-m-d H:i:s')
+				),
+				array(
+					'estado'=>false,
+					'ffinal'=>date('Y-m-d'),
+					'fmodificacion'=>date('Y-m-d H:i:s')
+				)
+			);
+			$tables = array('autorizacion','empresas');
+			$conditions = array(
+				array('cuenta_id'=>$cuenta->cuenta_id),
+				array('contrato_id'=>$id_contrato->contrato_id)
+			);				
+			$datos = $this->arixkernel->arixkernel_actualizar_serial_data($datos, $tables,$conditions);
+			echo json_encode(array('status'=>$datos['status']));
+			/*if(!is_null($)){
+				$temp = explode("@", $cuenta->correo);
+				$datos = array(
+					array(
+						'estado'=>false,
+						'fmodificacion'=>date('Y-m-d H:i:s'),
+						'correo'=>$temp[0].'@'.uniqid()
+					),
+					array(
+						'estado'=>false,
+						'ffinal'=>date('Y-m-d'),
+						'fmodificacion'=>date('Y-m-d H:i:s')
+					)
+				);
+				$tables = array('config.cuentas','config.contratos');
+				$conditions = array(
+					array('cuenta_id'=>$cuenta->cuenta_id),
+					array('contrato_id'=>$id_contrato->contrato_id)
+				);				
+				$datos = $this->arixkernel->arixkernel_actualizar_serial_data($datos, $tables,$conditions);
+				echo json_encode(array('status'=>$datos['status']));
+			}else{//no tiene cuenta
+				$datos=array(
+					'estado'=>false,
+					'ffinal'=>date('Y-m-d'),
+					'fmodificacion'=>date('Y-m-d H:i:s')
+				);
+				$datos=$this->arixkernel->arixkernel_actualizar_simple_data($datos,'config.contratos',array('contrato_id'=>$id_contrato->contrato_id));				
+				echo json_encode(array('status'=>$datos['status']));
+			}*/
 		}else{
 			show_404();
 		}

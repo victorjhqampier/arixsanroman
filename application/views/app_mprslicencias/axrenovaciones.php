@@ -44,10 +44,13 @@
    </div>
 </div>
 <script type="text/javascript">
-   arixshell_iniciar_llaves_locales("#btns_menu_renovacion");//esta ultima se carga en el DOM secundario
-   arixshell_cargar_botones_menu('btn-agregar');
+   arixshell_iniciar_llaves_locales("#btns_menu_renovaciones");//esta ultima se carga en el DOM secundario
+   arixshell_cargar_botones_menu('btn-refrescar,btn-agregar');
    $(arixshell_cargar_llave_local(0)).on("click", ".btn-agregar", function() {
         arixshell_cargar_contenido('mpsrlicencias/renovacion_add','Renovar autorización');
+   });
+   $(arixshell_cargar_llave_local(0)).on("click", ".btn-refrescar", function() {        
+        $('#table-data-emptwo').DataTable().ajax.reload();
    });
    (function(){
       let btns = arixshell_cargar_botones('btn-banear,btn-editar,btn-detalles');
@@ -98,7 +101,11 @@
       });    
    })();
    $('#table-data-emptwo tbody').on( 'click', '.btn-detalles',function(){
-         let fila = $(this).closest("tr"), uid = fila.attr('odd');
-         arixshell_cargar_contenido('mpsrlicencias/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(2)').text());
+      let fila = $(this).closest("tr"), uid = fila.attr('odd');
+      arixshell_cargar_contenido('mpsrlicencias/compania_view',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(2)').text());
+   });
+   $('#table-data-emptwo tbody').on( 'click', '.btn-banear',function(){
+      let fila = $(this).closest("tr"), uid = fila.attr('odd');
+      arixshell_alert_delete('question','Inhabilitar a la empresa',fila.find('td:eq(0)').text()+' - '+fila.find('td:eq(3)').text(),'Si, Inhabilitar','mpsrlicencias/mpsr_delete_compania','txtdata='+uid+'&',arixshell_cargar_llave_local(0)+' .btn-refrescar');
    });
 </script>

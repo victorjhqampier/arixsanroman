@@ -72,6 +72,17 @@ function mpsr_subir_fechas(location, year){//years == años que se ejetutaran
         $(location).val(hoy.getDate() + "/" + (hoy.getMonth() +1) + "/" + hoy.getFullYear());
     }
 }
+function mpsradd_get_emp(ruc){
+    let request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/ruc/'+
+    ruc+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
+     if (request['ruc']== ruc){
+         $("#form-empr-new-add #emp-rsocial").val(request.razonSocial);
+         $("#form-empr-new-add #emp-nombre").val(request.nombreComercial);
+         $("#form-empr-new-add #emp-direccion").val(request.direccion+' '+request.distrito+' '+request.provincia+' '+request.departamento);
+     }else{
+         return;
+     }
+}
 /*function mpsr_emp_loaddata (id,btn='btn-detalles, btn-imprimir'){
     $('#main-emp-active').html('');
     table = '<div class="table-responsive-md"><table class="table table-sm" id="table-data-emp"><thead><tr><th scope="col">ID</th><th scope="col">fecha</th>'+
