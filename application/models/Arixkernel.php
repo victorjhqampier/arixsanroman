@@ -160,10 +160,10 @@ class Arixkernel extends CI_Model{
 			$this->db->insert($table, $data);
 			$id = $this->db->insert_id();
 		$this->db->trans_complete();
-		if($this->db->trans_status()!==FALSE){
-			return array('status'=>true, 'id'=>$id);
-		}else{
+		if($this->db->trans_status()===FALSE){
 			return array('status'=>false);
+		}else{
+			return array('status'=>true, 'id'=>$id);
 		}
 	}
 	

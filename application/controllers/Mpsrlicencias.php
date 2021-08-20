@@ -166,16 +166,30 @@ class Mpsrlicencias extends CI_Controller {
 		}
 	}
 	/*---------------- INICIA LA LOGICA DEL SISTEMA --------------------*/
-	public function compania_add(){
+	public function compania_add(){//OK
 		$this->load->view('app_mprslicencias/empresas_add');
 	}	
-	public function compania_view(){
+	public function compania_view(){//OK
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_mprslicencias/empresas_view');
 		}else{
 			show_404();
 		}
-	}	
+	}
+	public function renovacion_add(){//OK
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/renovacion_add');
+		}else{
+			show_404();
+		}
+	}
+	public function renovacion_add_form(){//OK
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/renovacion_add_form');
+		}else{
+			show_404();
+		}
+	}
 	public function mayores_add(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_mprslicencias/mayores_add');
@@ -263,7 +277,7 @@ class Mpsrlicencias extends CI_Controller {
 					'cer.vehiculo_id = veh.vehiculo_id',
 					'cer.empresa_id = emp.empresa_id'
 				)			
-		);
+		);	
 		$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cer.estado'=>true, 'expirated'=>false,'veh.placa'=>$placa),array('cer.fregistro','DESC'));
 		if(!empty($consulta)){
 				$consulta = $consulta[0];
@@ -271,6 +285,14 @@ class Mpsrlicencias extends CI_Controller {
 		}else{
 				return array('status'=>false);
 		}
+	}
+	private function mpsr_complex_data_repo($array_id){//en construccion
+		//EMPRESAS AUTORIZACIONES,CLASIFICACIONES
+		$temp_array[0]= array(
+			array ('aut.nresolucion,aut.aufin,aut.nvehiculos numv,aut.servicio_id servicio, emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial,emp.telefono,emp.direccion,cla.code'),
+			array ('public.autorizaciones aut',	'public.empresas emp','public.clasificaciones cla'),
+			array ('NULL', 'aut.empresa_id = emp.empresa_id','aut.clasificacion_id = cla.clasificacion_id')
+		);
 	}
 	
 	//---------------------*****GET - SELECT* SECTION****************-----------------
@@ -564,6 +586,37 @@ class Mpsrlicencias extends CI_Controller {
 		}
 	}
 	//---------------------*****POST - DUPLICATE_CHECK SECTION****************-----------------
+	
+	public function mpsr_post_renovacion(){// OK
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			//probar si la autorizacion actual vence, si: retornar info de todo: no:retornar status.false
+			//probar si no tiene ya una renovacion de autorizacion -DEJA PASA --ERROR
+			$ruc= strrev($this->input->post('txtdata'));
+			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
+			$consulta = array(
+				array (
+					'emp.empresa_id axuidemp,emp.ruc,emp.nombre,emp.rsocial,emp.direccion,emp.telefono',
+					'aut.nvehiculos,aut.horario,aut.frecuencia,aut.rutaini,aut.rutafin,aut.aufin,aut.estado status,aut.nresolucion',
+					"concat(per.documento,' - ',per.nombres,', ',per.paterno,' ',per.materno) admindata, concat(aut.aufin,'@',aut.autorizacion_id) extra",
+					"concat (cla.code,' | ',substring(cla.descripcion,0,25)) clasificacion, ser.descripcion servicio"
+				),
+				array ('public.autorizaciones aut','public.empresas emp','private.personas per','public.clasificaciones cla','public.servicios ser'),
+				array ('NULL','aut.empresa_id = emp.empresa_id','emp.administrador_id = per.persona_id','aut.clasificacion_id = cla.clasificacion_id','aut.servicio_id = ser.servicio_id')
+			);
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('aut.estado'=>true /*,'aut.advanced'=>false*/,"date_part('year', aut.aufin) <= "=>date('Y'),'emp.ruc'=>$ruc,'emp.estado'=>true,'cla.sucursal_id'=>$sucu));
+			if(count($consulta)==1){
+				$consulta=$consulta[0];
+				$consulta->axuidemp = $this->serv_cifrado->cod_cifrar_cadena($consulta->axuidemp);
+				$consulta->extra = $this->serv_cifrado->cod_cifrar_cadena($consulta->extra);
+				$consulta->aufin = date('d/m/Y',strtotime($consulta->aufin));
+				echo json_encode($consulta);
+			}else{
+				echo json_encode(array('status'=>false));
+			}
+		}else{
+			show_404();
+		}
+	}
 	public function mpsr_post_duplicateru(){// OK
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('ruc', 'empresas', false, array('ruc'=>$this->input->post('txtdata')));		
@@ -717,6 +770,39 @@ class Mpsrlicencias extends CI_Controller {
 		}else{
 			show_404();
 		}	
+	}
+	public function mpsr_post_renovaciones(){// OK
+		if($this->input->is_ajax_request() && $this->input->post('txtempid')){
+			$caducado = $this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtautid'));
+			//$caducado = $this->serv_cifrado->cod_decifrar_cadena('54F747562B763SDR5Tmp0MHM1bTM1UTltaDVrcmtUUT09');
+			$caducado = explode('@',$caducado);
+			$data = array(//tabla autorizaciones
+				'empresa_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtempid'))),
+				'nresolucion' => $this->input->post('txtnresolucion'),
+				'cautorizacion' => $this->input->post('txtcresolucion'),
+				'servicio_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtmodalidad'))),//decifrar
+				'clasificacion_id' => intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtunidad'))),//
+				'horario' => $this->input->post('txthorarios'),
+				'frecuencia' => $this->input->post('txtfrecuencia'),
+				'nvehiculos' => intval($this->input->post('txtflota')),
+				'auinicio' => date("Y-m-d", strtotime(str_replace('/', '-',$this->input->post('txtfinicio')))),//formatear YY/mm/dd
+				'aufin' => $this->input->post('txtffinal'),
+				'rutaini' => $this->input->post('txtrinicio'),
+				'rutafin' => $this->input->post('txtrfinal'),
+				'advanced'=>true,
+				'axlog'=>$this->serv_administracion_usuarios->use_obtener_actual_usuario().' -> CREADO -> EL '.date('d-m-Y H:i')
+			);
+			
+			if(date("Y", strtotime($caducado[0])) < date('Y')){//si ya expiro la autorizacion
+				$data = $this->arixkernel->arixkernel_actualizar_guardar_data(array(array('estado'=>false),$data), array('autorizaciones','autorizaciones'),array('autorizacion_id'=>intval($caducado[1])));				
+				echo json_encode(array('status'=>$data['status']));
+			}else{
+				$data = $this->arixkernel->arixkernel_guargar_simple_data($data, 'autorizaciones');
+				echo json_encode(array('status'=>$data['status']));
+			}
+		}else{
+			show_404();
+		}
 	}
 	public function mpsr_post_save_eval(){
 		if($this->input->is_ajax_request() && $this->input->post('txtcertifid')){
@@ -906,8 +992,10 @@ class Mpsrlicencias extends CI_Controller {
 		//$array_tabla_tupla  = $this->arixkernel->arixkernel_obtener_complex_data($array_tabla_tupla,0,array('emp.estado'=>true, 'aut.estado'=>true));
 		//print_r($array_tabla_tupla);
 		//$this->load->library('serv_cifrado');		
-		print_r ($this->serv_cifrado->cod_cifrar_cadena(78));
-		//echo ($this->serv_cifrado->cod_decifrar_cadena('54F747562B763dDV1YkVMQ3dDUy8rVEtNRHNZM01sdz09'));
+		//print_r ($this->serv_cifrado->cod_cifrar_cadena('12-12-31@45896'));
+		//print_r ($this->serv_administracion_usuarios->use_obtener_dato_session('axlogin'));
+		//echo ($this->serv_cifrado->cod_decifrar_cadena('CBEFB076C9E7FTG5KdjNWNEFGR2p3STh5S2RUalpKQT09'));
+		print_r(count(array('mas')));
 		//echo(strtoupper(uniqid('ABC')));
 		//echo json_encode(array('status'=>true));
 		//echo(substr('123abc',-3).substr(uniqid(), 1)); // devuelve "de"

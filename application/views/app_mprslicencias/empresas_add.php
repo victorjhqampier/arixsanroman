@@ -1,46 +1,48 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="row">
-	<div class="col-xl-12 col-md-12">
+    <div class="col-xl-12 col-md-12">
         <form id="form-empr-new-add">
             <div class="card-group">
                 <div class="card">
                     <div class="card-header text-center"><strong>Datos de la Empresa de Transportes</strong></div>
-                        <div class="card-body">
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label for="emp-ruc">R.U.C.</label>                          
-                                    <input type="text" class="form-control" id="emp-ruc" name="txtruc" placeholder="RUC de la empresa">                                
-                                </div>
-                                <div class="form-group col-md-8">                                
-                                    <label for="temp-people-doc">Administrador</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="temp-people-doc" name="txtpeopledoc" placeholder="DNI de la persona">
-                                        <input type="text" class="form-control d-none" id="temp-people-describe" name="txtpeopledescrive" readonly>
-                                        <input type="hidden" class="d-none" id="temp-people-id" name="txtpeopleid" readonly>
-                                        <div class="input-group-append">                                        
-                                            <button class="btn btn-outline-secondary" type="button" id="btn-search-people"><i class="fa fa-search"></i></button>
-                                            <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-people"><i class="fa fa-times"></i></button>
-                                        </div>                                        
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="emp-ruc">R.U.C.</label>
+                                <input type="text" class="form-control" id="emp-ruc" name="txtruc" placeholder="RUC de la empresa" />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="temp-people-doc">Administrador</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="temp-people-doc" name="txtpeopledoc" placeholder="DNI de la persona" />
+                                    <input type="text" class="form-control d-none" id="temp-people-describe" name="txtpeopledescrive" readonly />
+                                    <input type="hidden" class="d-none" id="temp-people-id" name="txtpeopleid" readonly />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="btn-search-people"><i class="fa fa-search"></i></button>
+                                        <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-people"><i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group input-group-sm">
-                                <!--input type="hidden" class="d-none" id="emp-adminname" name="txtadminkey"-->
-                                <label for="emp-rsocial">Razon Social</label>
-                                <input type="text" class="form-control" id="emp-rsocial" name="txtrsocial" placeholder="Razon social de la empresa"> </div>
-                            <div class="form-group input-group-sm">
-                                <label for="emp-nombre">Nombre Comercial</label>
-                                <input type="text" class="form-control" id="emp-nombre" name="txtnombre" placeholder="Nombre comercial de la empresa"> </div>
-                            <div class="form-group input-group-sm">
-                                <label for="emp-direccion">Dirección Fiscal</label>
-                                <input type="text" class="form-control" id="emp-direccion" name="txtdireccion" placeholder="Dirección fiscal de la empresa"> </div>
-                            <div class="form-group">
-                                <label for="emp-telefonos">Teléfonos</label>
-                                <input type="text" class="form-control form-control-sm" id="emp-telefonos" name="txttelefonos" placeholder="Teléfonos de la empresa"> </div>
-                            <div class="form-group">                            
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <!--input type="hidden" class="d-none" id="emp-adminname" name="txtadminkey"-->
+                            <label for="emp-rsocial">Razon Social</label>
+                            <input type="text" class="form-control" id="emp-rsocial" name="txtrsocial" placeholder="Razon social de la empresa" />
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label for="emp-nombre">Nombre Comercial</label>
+                            <input type="text" class="form-control" id="emp-nombre" name="txtnombre" placeholder="Nombre comercial de la empresa" />
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label for="emp-direccion">Dirección Fiscal</label>
+                            <input type="text" class="form-control" id="emp-direccion" name="txtdireccion" placeholder="Dirección fiscal de la empresa" />
+                        </div>
+                        <div class="form-group">
+                            <label for="emp-telefonos">Teléfonos</label>
+                            <input type="text" class="form-control form-control-sm" id="emp-telefonos" name="txttelefonos" placeholder="Teléfonos de la empresa" />
                         </div>
                     </div>
-                    <div class="card-footer"> <small class="text-muted">El ruc se comprobará para evitar duplicidad</small> </div>
+                    <div class="card-footer"><small class="text-muted">El ruc se comprobará para evitar duplicidad</small></div>
                 </div>
                 <div class="card">
                     <div class="card-header text-center"><strong>Datos de la Autorización</strong></div>
@@ -48,18 +50,19 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="aut-nresolucion">Número de Resolución</label>
-                                <input type="text" class="form-control" id="aut-nresolucion" name="txtnresolucion" placeholder="Número de resolución"> </div>
+                                <input type="text" class="form-control" id="aut-nresolucion" name="txtnresolucion" placeholder="Número de resolución" />
+                            </div>
                             <div class="form-group col-md-6">
                                 <label for="aut-cresolucion">Clase de Resolución</label>
                                 <select id="aut-cresolucion" name="txtcresolucion" class="form-control">
                                     <option value="Resolucion de tipo -R1" selected>Resolucion de tipo -R1</option>
-                                    <option value="Resolucion de tipo -R2" >Resolucion de tipo -R2</option>
-                                    <option value="Resolucion de tipo -R3" >Resolucion de tipo -R3</option>
-                                    <option value="Resolucion de tipo -R4" >Resolucion de tipo -R4</option>
-                                    <option value="Resolucion de tipo -R5" >Resolucion de tipo -R5</option>
-                                    <option value="Resolucion de tipo -R6" >Resolucion de tipo -R6</option>
-                                    <option value="Resolucion de tipo -R7" >Resolucion de tipo -R7</option>
-                               </select>
+                                    <option value="Resolucion de tipo -R2">Resolucion de tipo -R2</option>
+                                    <option value="Resolucion de tipo -R3">Resolucion de tipo -R3</option>
+                                    <option value="Resolucion de tipo -R4">Resolucion de tipo -R4</option>
+                                    <option value="Resolucion de tipo -R5">Resolucion de tipo -R5</option>
+                                    <option value="Resolucion de tipo -R6">Resolucion de tipo -R6</option>
+                                    <option value="Resolucion de tipo -R7">Resolucion de tipo -R7</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row">
@@ -79,18 +82,22 @@
                         <div class="form-row">
                             <div class="form-group col-md-5">
                                 <label for="aut-horarios">Horarios</label>
-                                <input type="text" class="form-control form-control-sm" id="aut-horarios" name="txthorarios" placeholder="Horarios"> </div>
+                                <input type="text" class="form-control form-control-sm" id="aut-horarios" name="txthorarios" placeholder="Horarios" />
+                            </div>
                             <div class="form-group col-md-5">
                                 <label for="aut-frecuencia">Frecuencia</label>
-                                <input type="text" class="form-control form-control-sm" id="aut-frecuencia" name="txtfrecuencia" placeholder="Frecuencia"> </div>
+                                <input type="text" class="form-control form-control-sm" id="aut-frecuencia" name="txtfrecuencia" placeholder="Frecuencia" />
+                            </div>
                             <div class="form-group col-md-2">
                                 <label for="aut-flota">Flota</label>
-                                <input type="number" class="form-control form-control-sm" id="aut-flota" name="txtflota" placeholder="Flota" value="10"> </div>
+                                <input type="number" class="form-control form-control-sm" id="aut-flota" name="txtflota" placeholder="Flota" value="10" />
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="aut-finicio">Fecha de inicio de vigencia</label>
-                                <input type="text" class="form-control form-control-sm" id="aut-finicio" name="txtfinicio" placeholder="Fecha de inicio de vigencia"> </div>
+                                <input type="text" class="form-control form-control-sm" id="aut-finicio" name="txtfinicio" placeholder="Fecha de inicio de vigencia" />
+                            </div>
                             <div class="form-group col-md-6">
                                 <label for="aut-ffinal">Fecha de vencimiento</label>
                                 <select id="aut-ffinal" name="txtffinal" class="form-control form-control-sm">
@@ -110,17 +117,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer"> <small class="text-muted">Verificaremos el número de resolución</small> </div>
+                    <div class="card-footer"><small class="text-muted">Verificaremos el número de resolución</small></div>
                 </div>
             </div>
+        </form>
+    </div>
+    <div class="col-xl-12 col-md-12 mt-2">
+        <div class="alert alert-dark text-center" role="alert">
+            <button class="btn btn-success" id="btn-enviar-empadd">Guardar</button>
         </div>
-        <div class="col-xl-12 col-md-12 mt-2">
-            <div class="alert alert-dark text-center" role="alert">
-                <button class="btn btn-success" id="btn-enviar-empadd">Guardar</button>
-            </div>
-        </div>
-	</div>
+    </div>
 </div>
+
 <script type="text/javascript">
 //$(document).ready(function(){
     arixshell_iniciar_llaves_locales("#btn_id_empresas_nuevo");
@@ -173,7 +181,7 @@
                 arixshell_hacer_pagina_atras();
             }
             else{
-                alert('Lo sentimos, los datos no fueron guardados ...!');
+                arixshell_alert_notification('error','Lo sentimos, no pudimos guardar los datos...');
                 arixshell_hacer_pagina_atras();
             }
         }

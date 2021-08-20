@@ -38,12 +38,14 @@ class Serv_administracion_usuarios {
         return password_hash($pass,PASSWORD_DEFAULT,array("cost"=>12));
     }
     public function use_abrir_session($correo, $pass){
-        $correo = $this->ci->arixkernel->select_one_content('cuenta_id cuenta, correo, pass','config.cuentas', array('correo' => $correo,'estado' => true));
-        if(!empty($correo)){
+        //$correo = $this->ci->arixkernel->select_one_content('cuenta_id cuenta, correo, pass','config.cuentas', array('correo' => $correo,'estado' => true));
+        $correo = $this->ci->arixkernel->arixkernel_obtener_data_by_id('cuenta_id cuenta, correo, pass,axlog', 'config.v_persona_cuenta_access', false,array('correo' => $correo));
+        if(!is_null($correo)){//1empty()
             if (password_verify($pass,$correo->pass)){
                 $correo = array(
                     'sesion' => "Ciy12Kjs2gyAvfrZMgqS2vm4uCuHHMN8tqKaKwumWEUvnWOeCQEx5Fxeb5214004bb84dda238ea2de1b3812Ax",
                     'usuario' => $correo->cuenta,
+                    'axlogin' => $correo->axlog,
                     'sucursal' => 0,//$pass[0]->sucursal_id,
                     'app'=> 0
                 );
@@ -139,6 +141,9 @@ class Serv_administracion_usuarios {
     }
     public function use_obtener_sucursal_id_actual(){//solo recupera de la sesion
         return $this->ci->session->userdata('sucursal');//sucursal_id sid
+    }
+    public function use_obtener_actual_usuario(){//solo recupera de la sesion
+        return $this->ci->session->userdata('axlogin');//sucursal_id sid
     }
     public function use_obtener_sucursal_actual(){//solo recupera de la sesion
         $sucursal_actual = $this->ci->session->userdata('sucursal');//sucursal_id sid
