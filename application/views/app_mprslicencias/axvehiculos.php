@@ -157,7 +157,7 @@ mpsr_vehiadd_basevar='';//=[0,1,2,3,4,5];
                 $("#sub-table-resol").find('td:eq(1)').text(request.aufin);
                 $("#sub-table-resol").find('td:eq(2)').text(request.code+' '+request.servicio);
                 $("#sub-table-resol").find('td:eq(3)').text(request.numv);
-                $("#main-content-vehiadd").addClass('d-none');
+                //$("#main-content-vehiadd").addClass('d-none');
                 $("#main-content-vehiadd").siblings().removeClass('d-none');
                 mpsr_load_table_activevehicle('#dataTable_emp_activos',request.axuidemp,request.numv);
                 /*mpsr_vehiadd_basevar=request;
@@ -165,7 +165,8 @@ mpsr_vehiadd_basevar='';//=[0,1,2,3,4,5];
                 arixshell_cargar_subpaginas("mpsrlicencias/vehicles_search","#main-content-vehiadd #content-vehicle-bysearch");    */                         
             }else{
                 arixshell_alert_notification('error','No encontramos resultados. Por favor, verifique la placa');
-                $("#main-content-vehiadd #content-vehicle-bysearch").html("");
+                $("#main-content-vehiadd").siblings().addClass('d-none');
+                //$("#main-content-vehiadd #content-vehicle-bysearch").html("");
             }
         }else{
             return;
