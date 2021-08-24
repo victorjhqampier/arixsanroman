@@ -42,6 +42,9 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="card-body text-info">
+                        <p><mark>Nota: </mark>Apartir de la renovación de autorización, tanto los certificados como la TUC se basaran en esta nueva autorización.</p>
+                    </div>
                 </div>
                 <div class="card-footer"><small class="text-muted">Esta informacion no se puede actualizar en esta sección</small></div>
             </div>
@@ -141,7 +144,8 @@
         $('#form-empr-renew-add #aut-rinicio').val(mpsr_vehiadd_basevar.rutaini);
         $('#form-empr-renew-add #aut-rfinal').val(mpsr_vehiadd_basevar.rutafin);
         $('#form-empr-renew-add #aut-emp-id').val(mpsr_vehiadd_basevar.axuidemp);
-        $('#form-empr-renew-add #aut-aut-id').val(mpsr_vehiadd_basevar.extra);
+        $('#form-empr-renew-add #aut-aut-id').val(mpsr_vehiadd_basevar.extra);//setDate(fecha.getDate() + dias
+        //let hoy = new Date(); $('#form-empr-renew-add #aut-finicio').val("01/01/" + parseInt(hoy.getFullYear()+1));
     })();
 
     arixshell_cargar_opciones('#form-empr-renew-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad').then(function(){
@@ -149,9 +153,10 @@
     });    
     arixshell_cargar_opciones('#form-empr-renew-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad').then(function(){
         $("#aut-tunidad option:contains("+mpsr_vehiadd_basevar.clasificacion+")").attr('selected', 'selected');
-    });
-    mpsr_subir_fechas('#form-empr-renew-add #aut-finicio',true);
-    mpsr_subir_fechas('#form-empr-renew-add #aut-ffinal',6);
+    });   
+   
+    mpsr_subir_fechas('#form-empr-renew-add #aut-ffinal',6,1);
+    mpsr_subir_fechas('#form-empr-renew-add #aut-finicio',true,1);
 
     $("#form-empr-renew-add #aut-nresolucion").blur(function(){
         let request = $(this).val();

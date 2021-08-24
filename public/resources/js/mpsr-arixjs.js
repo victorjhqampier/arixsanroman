@@ -13,13 +13,13 @@ function formatoFecha(fecha, formato) {
 function verifyMpsr(s){
     return s.split("").reverse().join("");
 }
-function mpsr_autoload_btnadd(params) {
+/*function mpsr_autoload_btnadd(params) {
     if(params < mpsr_vehiadd_basevar[3]){
-        $('#dataTable_emp_activos').parent().parent().siblings().first().html('<div class="alert alert-primary text-right" role="alert"><button class="btn btn-primary" id="btn-add-veh2emp">Agregar</button></div>');
+        $('#second-content-vehiadd').parent().parent().siblings().first().html('<div class="alert alert-primary text-right" role="alert"><button class="btn btn-primary" id="btn-add-veh2emp">Agregar</button></div>');
     }else{
         return;
     }        
-}
+}*/
 function mpsr_message_color(cert){
     if(cert == true){
         return '<span class="badge badge-success">Activo</span>';
@@ -34,6 +34,7 @@ function mpsr_message_color_data(message,cert){
         return '<span class="text-danger">'+message+'</span>';
     }
 }
+/*
 function mpsr_autoload_datatable(){
     $('#dataTable_emp_activos tbody').html("");
     var request = arixshell_upload_datos('mpsrlicencias/mpsr_get_vehicle_byemp', 'txtdata='+mpsr_vehiadd_basevar[0]+'&');//esta variable se encuanta el el padre
@@ -58,18 +59,19 @@ function mpsr_autoload_datatable(){
     }else{
         $('#dataTable_emp_activos tbody').append('<tr><h6>Sin vehículos</h6></tr>');
     }
-}
+}*/
 
-function mpsr_subir_fechas(location, year){//years == años que se ejetutaran
+function mpsr_subir_fechas(location, year,number=0){//years == años que se ejetutaran
     const hoy = new Date();
     if(typeof(year)==='number'){   
         anio = hoy.getFullYear();    
         $(location).html('');
         for(var i =0; i<year; i++){
-            $(location).append('<option value="'+(anio+i)+'/12/31">31/12/'+(anio+i)+'</option>');
+            $(location).append('<option value="'+(anio+i)+'/12/31">31/12/'+(anio+i+number)+'</option>');
         }
     }else{        
-        $(location).val(hoy.getDate() + "/" + (hoy.getMonth() +1) + "/" + hoy.getFullYear());
+        //$(location).val(hoy.getDate() + "/" + (hoy.getMonth() +1) + "/" + hoy.getFullYear());
+        $(location).val("01/01/" + parseInt(hoy.getFullYear()+number));
     }
 }
 function mpsradd_get_emp(ruc){
@@ -82,6 +84,30 @@ function mpsradd_get_emp(ruc){
      }else{
          return;
      }
+}
+//solo debe cargar los datos y mostrar el boton agregar
+function mpsr_load_table_activevehicle(ubication,data,long){
+    $('#second-content-vehiadd').removeClass('d-none'); 
+    request = arixshell_upload_datos('mpsrlicencias/mpsr_get_vehicle_byemp', 'txtdata='+data+'&');    
+    long = Object.keys(request).length - 1 < long?'<div class="alert alert-primary text-right" role="alert"><button class="btn btn-primary" id="btn-add-veh2emp">Agregar</button></div>':'';
+    $(ubication).parent().parent().siblings().last().html(long);
+    if(request.status==true){   
+        data = arixshell_cargar_botones('btn-borrar,btn-detalles');
+        $(ubication+'#dataTable_emp_activos tbody').html('');
+        for( i = 0; i<Object.keys(request).length-1; i++){
+            $(ubication+' tbody').append('<tr odd="'+
+                request[i].axuidemp+'"><td>'+
+                request[i].placa+'</td><td>'+
+                request[i].hmarca+'</td><td>'+
+                request[i].modelo+'</td><td>'+
+                request[i].descripcion+'</td><td>'+
+                mpsr_message_color_data(request[i].driv_data,request[i].driv_status)+'</td><td class="text-center">'+
+                data+'</td></tr>'
+            );
+        }           
+    }else{
+        return;
+    }
 }
 /*function mpsr_emp_loaddata (id,btn='btn-detalles, btn-imprimir'){
     $('#main-emp-active').html('');

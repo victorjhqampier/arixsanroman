@@ -3,15 +3,29 @@
     <div class="col-xl-12 col-md-12 mt-2">
         <div class="card mb-1">
             <div class="card-body">   
-                <form id="driver-form-base">                    
+                <form id="driver-form-base">
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="driver-licenseid">Número de Licencia</label>
-                            <input type="text" class="form-control" id="driver-licenseid" name="txtdriverlicense" placeholder="Número de licencia">
+                        <div class="form-group col-md-5">
+                            <label for="driver-driverresol">N° Resolucion de habilitación</label>
+                            <input type="text" class="form-control" id="driver-driverresol" name="txtdriverresol" placeholder="Número de Resolución">
+                        </div>                        
+                    </div>                   
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="driver-licenseid">Número de Licencia (MTC)</label>
+                            <input type="text" class="form-control form-control-sm" id="driver-licenseid" name="txtdriverlicense" placeholder="Número de licencia">
                         </div>
-                        <div class="form-group col-md-8">                                
+                        <div class="form-group col-md-7">
+                            <label for="driver-catclass">Categoría y Clasificación</label>
+                            <select id="driver-catclass" name="txtdrivercatclass" class="form-control form-control-sm">
+                                <option selected>Cargarndo...</option>
+                            </select>
+                        </div>                        
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">                                
                                 <label for="driver-ownerdoc">Conductor</label>
-                                <div class="input-group">
+                                <div class="input-group input-group-sm">
                                     <input type="text" class="form-control" id="driver-ownerdoc" name="txtdriverownerdoc" placeholder="DNI del conductor">
                                     <input type="text" class="form-control d-none" id="driver-ownerdescribe" name="txtdriverownerdescribe" readonly>
                                     <div class="input-group-append">                                        
@@ -21,15 +35,14 @@
                                     <input type="hidden" class="d-none" id="driver-ownerid" name="txtdriverownerid" readonly>
                                 </div>
                         </div>
+
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="driver-catclass">Categoría y Clasificación</label>
-                            <select id="driver-catclass" name="txtdrivercatclass" class="form-control form-control-sm">
-                                <option selected>Cargarndo...</option>
-                            </select>
-                        </div>
-                        <div class="form-group input-group-sm col-md-4">
+                        <div class="form-group input-group-sm col-md-5">
+                            <label for="driver-viginicio">Vigente desde</label>
+                            <input type="text" class="form-control" id="driver-viginicio" name="txtdriverviginicio" placeholder="Día/mes/año">
+                        </div>                       
+                        <div class="form-group input-group-sm col-md-5">
                             <label for="driver-vigencia">Vigente hasta</label>
                             <input type="text" class="form-control" id="driver-vigencia" name="txtdrivervigencia" placeholder="Día/mes/año">
                         </div>
@@ -56,15 +69,21 @@
              return;
          }
     }
+    $(thisFormDriver+'#driver-viginicio').mask('99/99/9999');
     $(thisFormDriver+'#driver-vigencia').mask('99/99/9999');
     $(thisFormDriver+'#driver-ownerdoc').mask('99999999');
     $(thisFormDriver+'#driver-licenseid').mask('AAA99999999', {reverse: true});
 
-    $(thisFormDriver+'#driver-licenseid').focus();
+    $(thisFormDriver+'#driver-driverresol').focus();
     arixshell_cargar_opciones(thisFormDriver+'#driver-catclass','mpsrlicencias/mpsr_get_class_licencia');
     $(thisFormDriver).validate({
         errorClass: "text-danger",
         rules: {
+            txtdriverresol: {
+                required: true,
+                maxlength: 70,
+                minlength: 7
+            },
             txtdriverlicense: {
                 required: true,
                 maxlength: 11,
@@ -91,17 +110,22 @@
             txtdrivervigencia: {
                 required: true,
                 maxlength: 10,
-                minlength: 4
+                minlength: 9
+            },
+            txtdriverviginicio: {
+                required: true,
+                maxlength: 10,
+                minlength: 9
             }
         }
     }); 
 	$("#btn-enviar-driveradd").click(function () {
         if($(thisFormDriver).valid()){
              let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_driveradd', $(thisFormDriver).serialize());
-             if(request['status']===true){
+             if(request.status==true){
                 let data = $(thisFormDriver+'#driver-licenseid').val()+' - '+$(thisFormDriver+'#driver-catclass option:selected').text()+' '+$(thisFormDriver+' #driver-vigencia').val();
                 $('#first-dom-driver').html('<div class="col-xl-12 col-md-12"><table class="table table-striped"> <tbody> <tr> <th scope="row">Licencia</th><td>'+data+'</td></tr><tr> <th scope="row">Conductor</th> <td>'+$(thisFormDriver+'#driver-ownerdescribe').val()+'</td></tr></tbody></table></div>');
-                arixshell_write_cache_serial("mpsr0x005477newDriver",request['id'],data);//Pide 1= nombre clave de identificacion 2: (id)= alguna informacion y 3:(data) alguna descripcion
+                arixshell_write_cache_serial("mpsr0x005477newDriver",request.id,data);//Pide 1= nombre clave de identificacion 2: (id)= alguna informacion y 3:(data) alguna descripcion
              }else{
                 //alert('todo mal');
                 console.log('DRIVER_add -> NO GUARDAR');             

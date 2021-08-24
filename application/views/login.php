@@ -138,7 +138,8 @@ $(document).ready(function () {
     rules: {
       txtinputUsernameEmail: {
         required: !0,
-        email: !0
+        email: !0,
+        maxlength: 100,
       },
       txtinputPassword: {
         required: !0,

@@ -11,7 +11,7 @@
    <div class="tab-pane fade show active" id="hrefreno-emp-activos" role="tabpanel" aria-labelledby="reno-emp-activos">
       <div class="row">
          <div class="col-xl-12 col-md-12 mt-2">
-            <div class="table-responsive-md">
+            <div class="table-responsive-xl">
                <table class="table table-sm" id="table-data-empone">
                   <thead>
                         <tr>
