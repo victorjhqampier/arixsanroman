@@ -27,12 +27,17 @@ function mpsr_message_color(cert){
         return '<span class="badge badge-warning">Pendiente</span>';
     }
 }
-function mpsr_message_color_data(message,cert){
-    if(cert == true){
-        return message;
-    }else{
-        return '<span class="text-danger">'+message+'</span>';
-    }
+function mpsr_message_color_data(num = 1,message='Pendiente'){
+    switch (num) {
+        case 1:
+            return '<span class="text-danger">'+message+'</span>';
+        case 2:
+            return '<span class="text-warning">'+message+'</span>';
+        case 3:
+            return '<span class="text-success">'+message+'</span>';
+        default:
+            return '<span class="text-info">'+message+'</span>';
+      }
 }
 /*
 function mpsr_autoload_datatable(){
@@ -96,7 +101,7 @@ function mpsr_load_table_activevehicle(ubication,data,long){
         $(ubication+'#dataTable_emp_activos tbody').html('');
         for( i = 0; i<Object.keys(request).length-1; i++){
             $(ubication+' tbody').append('<tr odd="'+
-                request[i].axuidemp+'"><td>'+
+                request[i].axuidemp+'"><th scope="row">'+(i+1)+'</th><td>'+
                 request[i].placa+'</td><td>'+
                 request[i].hmarca+'</td><td>'+
                 request[i].modelo+'</td><td>'+

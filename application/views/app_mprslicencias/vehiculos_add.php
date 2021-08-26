@@ -89,6 +89,7 @@
                     <table class="table table-hover table-sm" id="dataTable_emp_activos">
                         <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Placa</th>
                                 <th scope="col">Marca</th>
                                 <th scope="col">Modelo</th>

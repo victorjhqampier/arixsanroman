@@ -77,7 +77,7 @@
             <div class="col-xl-4 col-md-4">
                 <div class="card bg-light border-light mb-4">
                     <div class="card-body">
-                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Datos de aprobación</h6>
+                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Datos de la Autorización</h6>
                         <div class="table-responsive-sm">
                             <table class="table table-sm" id="sub-table-resol">
                                 <tbody>
@@ -113,6 +113,7 @@
                     <table class="table table-hover table-sm" id="dataTable_emp_activos">
                         <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Placa</th>
                                 <th scope="col">Marca</th>
                                 <th scope="col">Modelo</th>
