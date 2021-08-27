@@ -70,10 +70,10 @@
             //console.log(request)
             if(request.status ==true){
                 mpsr_vehiadd_basevar=request;//certificados_add_show
-                arixshell_cargar_contenido("mpsrlicencias/certificados_add_show",request.ruc+' - '+request.nombre);
+                arixshell_cargar_contenido("mpsrlicencias/recertificados_add_show",request.ruc+' - '+request.nombre);
             }else{
                 arixshell_alert_notification('error','No encontramos resultados. Por favor, verifique el estado de la renovación');
-                $('#recertif-href-second #in-recertificaction-byruc').val('');
+                //$('#recertif-href-second #in-recertificaction-byruc').val('');
             }
         }else{
             return;

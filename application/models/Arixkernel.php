@@ -257,7 +257,7 @@ class Arixkernel extends CI_Model{
 		}
 	}
 	//arixkernel_actualizar_simple_data(array(), string, array())
-	public function arixkernel_arixjob_update_data($data,$table,$condition){
+	public function arixkernel_update_data_noanswer($data,$table,$condition){
 		$this->db->trans_start();			
 			$this->db->where($condition);
 			$this->db->update($table, $data);

@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="row">
-    <div class="col-xl-12 col-md-12 mt-2" id="main-content-certif-show">
+    <div class="col-xl-12 col-md-12 mt-2" id="main-content-recertif-show">
         <div class="row">
             <div class="col-xl-8 col-md-8">
                 <div class="card bg-light border-light mb-4">
@@ -63,17 +63,17 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-12 col-md-12 mt-2" id="load-certif-show">
+    <div class="col-xl-12 col-md-12 mt-2" id="load-recertif-show">
         <div class="card bg-light border-light mb-4">
             <div class="card-header d-flex align-items-left justify-content-between">
                 <h6 class="d-flex align-items-center mt-2"><i class="material-icons text-info mr-2">assignment</i><span>Certificación Vehicular</span></h6>
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-info" id="btn-restart-certifi">Actualizar</button>
+                    <button type="button" class="btn btn-warning" id="btn-restart-recertifi">Renovar</button>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive-md">
-                    <table class="table table-hover table-sm" id="dataTable-certif-real">
+                    <table class="table table-hover table-sm" id="dataTable-recertif-real">
                         <!-- LOS CERTIFICADOS RENOVADOS YA NO SE VERÁN AQUI, SINO EN RENOVACIONES. HASTA QUE ENTRA EN VIGENCIA ALÑ PROXMI AÑO-->
                         <thead>
                             <tr>
@@ -96,7 +96,7 @@
 </div>
 
 <script type="text/javascript">
-    arixshell_iniciar_llaves_locales("#btn_id_certificadoas_addshow");
+    arixshell_iniciar_llaves_locales("#btn_id_recertificadoas_addshow");
     arixshell_cargar_botones_menu('btn-cerrar');
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-cerrar", function() {
         arixshell_hacer_pagina_atras();
@@ -115,14 +115,14 @@
         $("#sub-table-resol").find('td:eq(1)').text(mpsr_vehiadd_basevar.aufin);
         $("#sub-table-resol").find('td:eq(2)').text(mpsr_vehiadd_basevar.code+' '+mpsr_vehiadd_basevar.servicio);
         $("#sub-table-resol").find('td:eq(3)').text(mpsr_vehiadd_basevar.numv);
-        $("#load-certif-show").find('span').html('Certificacion Vehicular <strong>(Para el año '+mpsr_vehiadd_basevar.anio+')</strong>');
-        $("#main-content-certif-show #certif-empid").val(mpsr_vehiadd_basevar.axuidemp);
-        //$("#main-content-certif-show #certif-placa").val(mpsr_vehiadd_basevar.axuidemp)
+        $("#load-recertif-show").find('span').html('Certificacion Vehicular <strong>(Para el año '+mpsr_vehiadd_basevar.anio+')</strong>');
+        $("#main-content-recertif-show #certif-empid").val(mpsr_vehiadd_basevar.axuidemp);
+        //$("#main-content-recertif-show #certif-placa").val(mpsr_vehiadd_basevar.axuidemp)
         
-        $('#dataTable-certif-real').DataTable({
+        $('#dataTable-recertif-real').DataTable({
                 "language": {
                   "lengthMenu": "Mostrar _MENU_ registros por página",
-                  "zeroRecords": "No se ha encontrado nada, (verificar Renovación o Asociacion)",
+                  "zeroRecords": "No se ha encontrado nada, (Click en renovar)",
                   "info": "Mostrando página _PAGE_ de _PAGES_",
                   "infoEmpty": "No hay registros disponibles",
                   "infoFiltered": "(filtrado de _MAX_ registros totales)"
@@ -131,7 +131,7 @@
                   "url" : "mpsrlicencias/mpsr_get_certifiction_real",
                   "dataSrc":"",
                   "type": "POST",
-                  "data": {"txtdata" : mpsr_vehiadd_basevar.axuidemp,"txtdataextra":"10EC7A2B9686Eam52dmtxczZxeHRDRkNGNUhnR2pCUT09"}
+                  "data": {"txtdata" : mpsr_vehiadd_basevar.axuidemp,"txtdataextra":"E2F9DEA02F443TGpqeTBrZWQ5aERWdTdVbG15RDlPdz09"}
                },
                "columns":[
                     {"data": 'axuid'},
@@ -159,7 +159,6 @@
                   }
                ],
                "createdRow": function( row, data, dataIndex ) {
-                    //todo  =  Object.keys(data).length;
                     $(row).attr('odd', data.axuid);       
                }
       });   
@@ -172,29 +171,29 @@
     $('#dataTable_emp_activos tbody').on( 'click', '.btn-detalles', function () {
         return;
     });*/
-    $('#load-certif-show').on('click', '#btn-restart-certifi', function(){
-        let request = $('#main-content-certif-show #certif-empid').val();
-        request = arixshell_upload_datos('mpsrlicencias/mpsr_post_certification_create_real', 'txtdata='+request+'&');
-            $('#btn-restart-certifi').parent().html('');
-            if(request.status ==true){
-                arixshell_alert_notification('success','Se actualizó el registro de datos');
-                $('#dataTable-certif-real').DataTable().ajax.reload();
-            }else{
+    $('#load-recertif-show').on('click', '#btn-restart-recertifi', function(){
+        let request = $('#main-content-recertif-show #certif-empid').val();
+        request = arixshell_upload_datos('mpsrlicencias/mpsr_post_certification_create_renove', 'txtdata='+request+'&');
+        $('#btn-restart-recertifi').parent().html('');
+        if(request.status ==true){
+                arixshell_alert_notification('success','Se actualizó el registro de datos.');
+                $('#dataTable-recertif-real').DataTable().ajax.reload();
+        }else{
                 arixshell_alert_notification('error','Sin resultados. Por favor, Asocie vehículos a la empresa');
-            }         
+        }         
     });
-    $('#dataTable-certif-real tbody').on( 'click', '.btn-editar',function(){
+    $('#dataTable-recertif-real tbody').on( 'click', '.btn-editar',function(){
         let fila = $(this).closest("tr"), uid = fila.attr('odd');
         arixshell_write_cache_serial('mpsrevalcertification',uid, fila.find('td:eq(1)').text()+' - '+fila.find('td:eq(2)').text());
-        arixshell_abrir_modalbase('REVISAR CERTIFICADO N°: '+fila.find('td:eq(0)').text(),'mpsrlicencias/temp_certification_eval','btn-modal-real-cereval');
+        arixshell_abrir_modalbase('REVISAR CERTIFICADO N°: '+fila.find('td:eq(0)').text(),'mpsrlicencias/temp_certification_eval','btn-modal-certification-eval');
    });
    
-   $('#dataTable-certif-real tbody').on( 'click', '.btn-detalles',function(){
+   $('#dataTable-recertif-real tbody').on( 'click', '.btn-detalles',function(){
         let fila = $(this).closest("tr"), uid = fila.attr('odd');
         arixshell_write_cache_serial('mpsrevalcertification',uid, fila.find('td:eq(1)').text()+' - '+fila.find('td:eq(2)').text());
-        arixshell_abrir_modalbase('HISTORIAL DE CERTIFICADO N°: '+fila.find('td:eq(0)').text(),'mpsrlicencias/temp_historial_certif','btn-modal-real-cereval');
+        arixshell_abrir_modalbase('HISTORIAL DE CERTIFICADO N°: '+fila.find('td:eq(0)').text(),'mpsrlicencias/temp_historial_certif','btn-modal-certification-eval');
    });
-   $(document).on('click', '#btn-modal-real-cereval', function(){
+   $(document).on('click', '#btn-modal-certification-eval', function(){
         arixshell_cerrar_modalbase();
     });
 </script>
