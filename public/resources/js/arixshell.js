@@ -292,27 +292,30 @@ function arixshell_cargar_botones_auto(){
     }
 }
 function arix_search_btns(btns){
-    btns = btns.replace(/ /g, "");
+    btns = btns.replace(" ", "");
     btns = btns.split(",");
     let temp = [];
     for (var i = 0; i < btns.length; i++) {
         let name = arixshellmainvar.find(data => data.boton == btns[i]);
-        if (name !== null){
+        if (typeof(name) !== 'undefined'){
             temp.push(name); 
         }
     }
     return temp;
 }
 //trabajando en los botones locales
-function arixshell_cargar_botones_menu(botones='btn-refrescar, btn-borrar'){
-    botones = arix_search_btns(botones);
-    if (botones != false) {
-        for (i = 0; i < botones.length; i++) {           
+function arixshell_cargar_botones_menu(botones='btn-refrescar, btn-cerrar'){
+    botones = arix_search_btns(botones);    
+    for (i = 0; i < Object.keys(botones).length; i++) {           
+        $(arixshell_cargar_llave_local(0)).append('<button type="button" class="btn btn-secondary '+botones[i].boton+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i].titulo+'"><i class="'+botones[i].icono+'"></i></button>');//agregas al final
+    }
+    /*if (botones != false) {
+        for (i = 0; i < Object.keys(botones).length; i++) {           
             $(arixshell_cargar_llave_local(0)).append('<button type="button" class="btn btn-secondary '+botones[i]['boton']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"><i class="'+botones[i]['icono']+'"></i></button>');//agregas al final
         }
     }else{
         console.log('arixshell_cargar_botones_menu -> error');
-    }
+    }*/
 }
 /*function arixshell_cargar_boton_simple(botones='btn-detalles,btn-borrar'){//devuelve botones en bormato html
     botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
@@ -329,11 +332,20 @@ function arixshell_cargar_botones_menu(botones='btn-refrescar, btn-borrar'){
 
 function arixshell_cargar_botones(botones='btn-detalles,btn-borrar', attr=""){//devuelve botones en bormato html
     //botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
-    botones = arix_search_btns(botones);
+    botones = arix_search_btns(botones);    
     attr = attr.split(',');
-    if (botones != false) {
-        var list = '<div class="btn-group btn-group-sm">';
-        for (var i = 0; i < botones.length; i++) {
+        let list = '<div class="btn-group btn-group-sm">';
+        for (var i = 0; i < Object.keys(botones).length; i++) {
+            if(typeof(attr[i]) != "undefined"){
+                list+='<button type="button" '+attr[i]+' class="btn btn-secondary '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
+            }else{
+                list+='<button type="button" class="btn btn-secondary '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
+            }
+        }
+        return list+'</div>';
+    /*if (botones != false) {
+        let list = '<div class="btn-group btn-group-sm">';
+        for (var i = 0; i < Object.keys(botones).length; i++) {
             if(typeof(attr[i]) != "undefined"){
                 list+='<button type="button" '+attr[i]+' class="btn btn-secondary '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
             }else{
@@ -343,7 +355,7 @@ function arixshell_cargar_botones(botones='btn-detalles,btn-borrar', attr=""){//
         return list+'</div>';
     }else{
         console.log('arixshell_cargar_boton_simple -> error');
-    }
+    }*/
 }
 
 /*function arixshell_cargar_botones_tabla(botones='btn-detalles,btn-borrar'){//devuelve botones en bormato html

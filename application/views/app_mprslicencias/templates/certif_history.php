@@ -13,11 +13,11 @@
         </div>
     </div>
     <div class="col-xl-12 col-md-12" id="second-content-certif-hist">
-        <table class="table table-sm" id="table-data-empone">
-            <thead>
+        <table class="table table-sm table-striped" id="table-data-empone">
+            <thead class="thead-dark">
                 <tr>
                     <th scope="col">Fecha</th>
-                    <th scope="col">Acción Realizada</th>
+                    <th scope="col">Acción</th>
                     <th scope="col">Estado</th>
                     <th scope="col">Descripción</th>
                 </tr>

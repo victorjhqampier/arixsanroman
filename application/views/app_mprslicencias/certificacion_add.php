@@ -73,9 +73,9 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive-md">
-                    <table class="table table-hover table-sm" id="dataTable-certif-real">
+                    <table class="table table-hover table-sm" id="dataTable-recertif-real">
                         <!-- LOS CERTIFICADOS RENOVADOS YA NO SE VERÁN AQUI, SINO EN RENOVACIONES. HASTA QUE ENTRA EN VIGENCIA ALÑ PROXMI AÑO-->
-                        <thead>
+                        <thead class="thead-dark">
                             <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Fecha</th>
@@ -119,7 +119,7 @@
         $("#main-content-certif-show #certif-empid").val(mpsr_vehiadd_basevar.axuidemp);
         //$("#main-content-certif-show #certif-placa").val(mpsr_vehiadd_basevar.axuidemp)
         
-        $('#dataTable-certif-real').DataTable({
+        $('#dataTable-recertif-real').DataTable({
                 "language": {
                   "lengthMenu": "Mostrar _MENU_ registros por página",
                   "zeroRecords": "No se ha encontrado nada, (verificar Renovación o Asociacion)",
@@ -178,18 +178,18 @@
             $('#btn-restart-certifi').parent().html('');
             if(request.status ==true){
                 arixshell_alert_notification('success','Se actualizó el registro de datos');
-                $('#dataTable-certif-real').DataTable().ajax.reload();
+                $('#dataTable-recertif-real').DataTable().ajax.reload();
             }else{
                 arixshell_alert_notification('error','Sin resultados. Por favor, Asocie vehículos a la empresa');
             }         
     });
-    $('#dataTable-certif-real tbody').on( 'click', '.btn-editar',function(){
+    $('#dataTable-recertif-real tbody').on( 'click', '.btn-editar',function(){
         let fila = $(this).closest("tr"), uid = fila.attr('odd');
         arixshell_write_cache_serial('mpsrevalcertification',uid, fila.find('td:eq(1)').text()+' - '+fila.find('td:eq(2)').text());
         arixshell_abrir_modalbase('REVISAR CERTIFICADO N°: '+fila.find('td:eq(0)').text(),'mpsrlicencias/temp_certification_eval','btn-modal-real-cereval');
    });
    
-   $('#dataTable-certif-real tbody').on( 'click', '.btn-detalles',function(){
+   $('#dataTable-recertif-real tbody').on( 'click', '.btn-detalles',function(){
         let fila = $(this).closest("tr"), uid = fila.attr('odd');
         arixshell_write_cache_serial('mpsrevalcertification',uid, fila.find('td:eq(1)').text()+' - '+fila.find('td:eq(2)').text());
         arixshell_abrir_modalbase('HISTORIAL DE CERTIFICADO N°: '+fila.find('td:eq(0)').text(),'mpsrlicencias/temp_historial_certif','btn-modal-real-cereval');

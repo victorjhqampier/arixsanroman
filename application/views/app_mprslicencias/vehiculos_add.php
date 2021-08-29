@@ -86,8 +86,8 @@
             <div class="col-xl-12 col-md-12 mt-2">
                 <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Vehículos Asociados</h6>
                 <div class="table-responsive-md">
-                    <table class="table table-hover table-sm" id="dataTable_emp_activos">
-                        <thead>
+                    <table class="table table-hover table-sm table-striped" id="dataTable_emp_activos">
+                        <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Placa</th>

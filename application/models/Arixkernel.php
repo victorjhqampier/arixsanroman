@@ -131,13 +131,14 @@ class Arixkernel extends CI_Model{
 		}			
 	}
 	//1: arixkernel_obtener_complex_data(exe_contruir_consulta(array()), 0, array('sucursal_id >'=>0), array('sucursal_id','DESC'));
-	public function arixkernel_obtener_complex_data($array_tabla_tupla, $offset = 0, $array_condition = '', $array_orderby = ''){
+	public function arixkernel_obtener_complex_data($array_tabla_tupla, $offset = 0, $array_condition = '', $array_orderby = '',$array_groupby = ''){//orderby en evaluacion
 		$array_orderby = (null == $array_orderby) ? array('','') : $array_orderby;//PENDIENTE--- SOLO ACCESO A TABLAS PERMITIDAS
         $this->db->select(implode(",", $array_tabla_tupla[0]));
         $this->db->from($array_tabla_tupla[1][0]);
         for ($i=1; $i < count($array_tabla_tupla[1]); $i++) { 
             $this->db->join($array_tabla_tupla[1][$i], $array_tabla_tupla[2][$i],'inner');
-        }
+		}
+		$this->db->group_by($array_groupby);
         $this->db->order_by($array_orderby[0], $array_orderby[1]);
         $this->db->limit(150, $offset);
         if($array_condition!=null){

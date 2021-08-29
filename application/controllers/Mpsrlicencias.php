@@ -211,6 +211,13 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	public function temp_programe_certif(){//OK
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_mprslicencias/templates/certif_programe');
+		}else{
+			show_404();
+		}
+	}
 	public function temp_vehicleadd(){//OK
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_mprslicencias/templates/vehicle_add');
@@ -809,6 +816,34 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
+	public function mpsr_get_programe_inspect(){
+		//if ($this->input->is_ajax_request()){
+			$consulta = array(
+				array(
+					'emp.empresa_id axuidemp, emp.ruc, emp.direccion',
+					"concat (emp.nombre,', ',substring(emp.rsocial,0,30),'...') empresa"
+				 ),
+				array(
+					'public.certificados cer',
+					'public.asociaciones aso',
+					'public.empresas emp'
+				 ),
+				array(
+					'NULL',
+					'cer.asociacion_id = aso.asociacion_id',
+					'aso.empresa_id = emp.empresa_id',
+				 )
+			);
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cer.ccondicion_id'=>2,'cer.estado'=>true,'cer.fechaisp is null'=>null),'',array('emp.empresa_id'));			
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
+			}
+			echo json_encode($consulta);
+							
+		/*}else{
+			show_404();
+		}*/
+	}
 	//---------------------*****POST - DUPLICATE_CHECK SECTION****************-----------------
 	
 	public function mpsr_post_renovacion(){// OK
@@ -1124,7 +1159,7 @@ class Mpsrlicencias extends CI_Controller {
 					'factualizacion'=>date('Y-m-d H:i:s')
 				),array(
 					'certificado_id'=>$cert_id,
-					'affectedrow'=>'CONDICIÓN',
+					'affectedrow'=>'Certificación Vehicular',
 					'rowafter'=>$datos->status,
 					'axdescribe'=>$this->input->post('txtevalobserbations'),
 					'axlog'=>$this->serv_administracion_usuarios->use_obtener_actual_usuario().' -> CREADO -> EL '.date('d-m-Y H:i'),

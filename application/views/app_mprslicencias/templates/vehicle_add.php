@@ -90,7 +90,7 @@
 </div>
 <script type="text/javascript">
     var thisForm = '#vehi-form-base ';
-    function vehicle_autoCache_start(){
+    /*function vehicle_autoCache_start(){
         let infor = arixshell_read_cache_serial('mpsr0x005477newVehicle');       
             if(infor!=null){
                 infor=infor['id'];
@@ -102,18 +102,22 @@
         }else{
             return;
         }
-    }
-    function vehicle_autoLoad_data(placa){//en construccion
-         request = arixshell_download_datos('');
-         if (request['dni']==placa){
-             $(thisForm+"#per-names").val(request.nombres);
-             $(thisForm+"#per-lastname").val(request.apellidoPaterno);
-             $(thisForm+"#per-firstname").val(request.apellidoMaterno);
-         }else{
-             return;
-         }
-    }
-    vehicle_autoCache_start();
+    }*/
+    (function (){
+        let infor = arixshell_read_cache_serial('mpsr0x005477newVehicle');       
+            if(infor!=null){
+                infor=infor['id'];
+                if(infor.length==6){
+                    $(thisForm+'#vehi-matreal').val(infor).attr('readonly',true);
+                }else{
+                    return;
+                }
+        }else{
+            return;
+        }
+    }  
+    )();
+    //vehicle_autoCache_start();
     $(thisForm+'#vehi-year').mask('9999');
     $(thisForm+'#vehi-seats').mask('99');
     $(thisForm+'#vehi-weigth').mask('99999');
@@ -263,6 +267,7 @@
             request = arixshell_upload_datos('mpsrlicencias/mpsr_post_duplicatevehi', 'txtdata='+request+'&');
             if(request['status']==false){
                 $(thisForm+"#vehi-matreal").addClass('is-valid').attr('readonly',true);
+                mpsradd_get_mpsrvehicle(placa);
                 //vehicle_autoLoad_data();//PARA CARGAR AUTOMATICAMENTE LOS DATOS de PERSONAS
             }else{
                $(thisForm+"#vehi-matreal").val("").removeClass('is-valid').removeAttr('readonly');           

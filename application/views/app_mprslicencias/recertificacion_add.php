@@ -73,9 +73,9 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive-md">
-                    <table class="table table-hover table-sm" id="dataTable-recertif-real">
+                    <table class="table table-hover table-sm table-striped" id="dataTable-recertif-real">
                         <!-- LOS CERTIFICADOS RENOVADOS YA NO SE VERÁN AQUI, SINO EN RENOVACIONES. HASTA QUE ENTRA EN VIGENCIA ALÑ PROXMI AÑO-->
-                        <thead>
+                        <thead class="thead-dark">
                             <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Fecha</th>

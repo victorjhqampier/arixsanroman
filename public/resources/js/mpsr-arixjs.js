@@ -27,7 +27,14 @@ function mpsr_message_color(cert){
         return '<span class="badge badge-warning">Pendiente</span>';
     }
 }
-function mpsr_message_color_data(num = 1,message='Pendiente'){
+function mpsr_message_color_data(message,status){
+    if(status == false){
+        return '<span class="badge badge-danger">'+message+'</span>';        
+    }else{
+        return message;
+    }
+}
+function mpsr_message_color_multiple(num = 1,message='Pendiente'){
     switch (num) {
         case 1:
             return '<span class="text-danger">'+message+'</span>';
@@ -86,6 +93,24 @@ function mpsradd_get_emp(ruc){
          $("#form-empr-new-add #emp-rsocial").val(request.razonSocial);
          $("#form-empr-new-add #emp-nombre").val(request.nombreComercial);
          $("#form-empr-new-add #emp-direccion").val(request.direccion+' '+request.distrito+' '+request.provincia+' '+request.departamento);
+     }else{
+         return;
+     }
+}
+function mpsradd_get_mpsrvehicle(placa){
+    let request = arixshell_upload_datos('arixapi/arixapi_ger_vehicles','txtdata='+arixshell_verify_data(placa)+'&');
+    //console.log(request);
+     if (request.status== true){
+         $("#vehi-form-base #vehi-matpre").val(request[0].plac_ant);
+         $("#vehi-form-base #vehi-serial").val(request[0].serie);
+         $("#vehi-form-base #vehi-engine").val(request[0].motor);
+         $("#vehi-form-base #vehi-brand option:contains("+request[0].marca+")").attr('selected', 'selected');
+         $("#vehi-form-base #vehi-model").val(request[0].modelo);
+         $("#vehi-form-base #vehi-color").val(request[0].color);
+         $("#vehi-form-base #vehi-seats").val(request[0].asient);
+         $("#vehi-form-base #vehi-year").val(request[0].anio);
+         $("#vehi-form-base #vehi-weigth").val(request[0].peso);
+         $("#vehi-form-base #vehi-descript").val(request[0].clase);         
      }else{
          return;
      }

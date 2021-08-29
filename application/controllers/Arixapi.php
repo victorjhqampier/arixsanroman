@@ -235,6 +235,19 @@ class Arixapi extends CI_Controller {
 			show_404();
 		}
 	}
+	public function arixapi_ger_vehicles(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata') && $this->serv_administracion_usuarios->use_probar_session()){	
+			$vehicle = strrev($this->input->post('txtdata'));		
+			$vehicle =  $this->arixkernel->arixkernel_obtener_simple_data('plac_ant,serie,motor,marca,modelo,color,asient,anio,peso,clase', 'mpsrvehicles',0, array('placa'=>$vehicle));
+			if(!empty($vehicle)){
+				echo json_encode(array_merge($vehicle,array('status'=>true)));
+			}else{
+				echo json_encode(array('status'=>false));
+			}			
+		}else{
+			show_404();
+		}
+	}
 	public function arixapi_post_personas(){//post
 		if($this->input->is_ajax_request() && $this->input->post('txtperdni') && $this->serv_administracion_usuarios->use_probar_session()){
 			$data = array(
@@ -257,8 +270,8 @@ class Arixapi extends CI_Controller {
 			show_404();
 		}
 	}
-	public function probar_arixapi(){
-		$data = $this->arixapi_cargar_botones();//$this->serv_administracion_usuarios->use_obtener_sucursales();
-		print_r($data);
+	public function probar_arixapi($text){
+		$this->load->library('serv_barcode');
+        $this->serv_barcode->ax_barcode_c39($text,"170",false, 4);
 	}
 }

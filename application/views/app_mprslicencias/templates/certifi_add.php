@@ -24,7 +24,7 @@
                             <label for="eval-claseeval">¿Presenta todos los requisitos?</label>
                             <select id="eval-claseeval" name="txtevalclase" class="form-control">                                
                                 <option value="E2F9DEA02F443NWNRUVVmWGphRWZuRUVmNmhEc3VsUT09">No, Esperar regularización</option>
-                                <option value="78A8A91824B27cFlFMlRPVFJBcHFQMWt0eVhvRXd0Zz09" selected>Si, listo para inspección</option>
+                                <option value="78A8A91824B27cFlFMlRPVFJBcHFQMWt0eVhvRXd0Zz09" selected>Si, listo para programación</option>
                             </select>                            
                         </div>
                         <div class="form-group col-md-8">
