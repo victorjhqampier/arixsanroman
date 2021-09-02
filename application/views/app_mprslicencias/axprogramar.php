@@ -10,7 +10,7 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">RUC</th>
-                        <th scope="col">Emporesa</th>
+                        <th scope="col">Empresa</th>
                         <th scope="col">Dirección</th>
                         <th scope="col">Programar</th>
                     </tr>

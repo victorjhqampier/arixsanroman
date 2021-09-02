@@ -66,7 +66,7 @@
     <div class="col-xl-12 col-md-12 mt-2" id="load-recertif-show">
         <div class="card bg-light border-light mb-4">
             <div class="card-header d-flex align-items-left justify-content-between">
-                <h6 class="d-flex align-items-center mt-2"><i class="material-icons text-info mr-2">assignment</i><span>Certificación Vehicular</span></h6>
+                <h6 class="d-flex align-items-center mt-2"><i class="material-icons text-info mr-2">assignment</i><span>Certificación Vehicular</span><small> Sí no se muestra la lista de vehículos, haga click en Renovar para iniciar el proceso de renovación de TUC.</small></h6>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-warning" id="btn-restart-recertifi">Renovar</button>
                 </div>

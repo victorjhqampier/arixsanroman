@@ -66,7 +66,7 @@
     <div class="col-xl-12 col-md-12 mt-2" id="load-certif-show">
         <div class="card bg-light border-light mb-4">
             <div class="card-header d-flex align-items-left justify-content-between">
-                <h6 class="d-flex align-items-center mt-2"><i class="material-icons text-info mr-2">assignment</i><span>Certificación Vehicular</span></h6>
+                <h6 class="d-flex align-items-center mt-2"><i class="material-icons text-info mr-2">assignment</i><span>Certificación Vehicular</span><small>Sí no se muestra la lista de vehículos, haga click en Actualizar.</small></h6>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-info" id="btn-restart-certifi">Actualizar</button>
                 </div>
