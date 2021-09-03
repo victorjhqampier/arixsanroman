@@ -338,6 +338,47 @@ class Mpsrlicencias extends CI_Controller {
 				return array('status'=>false);//no esta asociado
 		}
 	}
+
+	private function mpsr_get_cronograme_details($array_to_add){
+		//1: Conductor dni
+		$conductor = array(
+			array(
+				"concat(per.nombres,', ',per.paterno,' ',per.materno) con_persona",
+				'per.documento con_dni,con.nlicencia con_licencia,lcl.lclasecategoria con_categoria'					
+			),
+			array('public.conductores con','private.personas per','public.lclasecategorias lcl'),
+			array('NULL','con.persona_id = per.persona_id','con.lclasecategoria_id = lcl.lclasecategoria_id')
+		);
+		//2: Propietario dni
+		$propietario = array(
+			array(
+				'per.documento prop_dni, per.telefono prop_telefono',
+				"concat(per.nombres,', ',per.paterno,' ',per.materno) prop_persona",
+				"concat(per.direccion,' - ',dis.distrito) prop_direccion"								
+			),
+			array('public.x_propietarios xpr','private.personas per','private.distritos dis'),
+			array('NULL','xpr.persona_id = per.persona_id','per.distrito_id = dis.distrito_id')
+		);
+		//4: Servicio
+		$servicio = array(
+			array('ser.descripcion serv_servicio'),
+			array('public.autorizaciones aut','public.servicios ser'),
+			array('NULL','aut.servicio_id = ser.servicio_id')
+		);
+
+		$servicio = $this->arixkernel->arixkernel_obtener_complex_data($servicio,0,array('aut.expirated'=>false,'aut.estado'=>true,'aut.empresa_id'=>$array_to_add[0]->empresa_id));
+		$representante = $this->arixkernel->arixkernel_obtener_data_by_id("documento repre_dni,concat(nombres,', ',paterno,' ',materno) repre_persona", 'private.personas', false, array('persona_id'=>$array_to_add[0]->administrador_id));
+		
+		$servicio = (array)$servicio[0];
+		$representante = (array)$representante;
+
+		for($i=0;$i<count($array_to_add);$i++){
+			$temp1 = $this->arixkernel->arixkernel_obtener_complex_data($conductor,0,array('con.conductor_id'=>$array_to_add[$i]->conductor_id));
+			$temp2 = $this->arixkernel->arixkernel_obtener_complex_data($propietario,0,array('xpr.estado'=>true,'xpr.vehiculo_id'=>$array_to_add[$i]->vehiculo_id));
+			$array_to_add[$i]=array_merge((array)$array_to_add[$i],(array)$temp1[0],(array)$temp2[0],$servicio, $representante);
+		}
+		return $array_to_add;
+	}
 	/*private function mpsr_private_check_ruc($ruc, $year){//OK verifica si un vehiculo(placa) tiene una asociacion vigente a alguna empresa
 		$consulta = array(
 			array (
@@ -880,51 +921,39 @@ class Mpsrlicencias extends CI_Controller {
 			show_404();
 		}
 	}
-	public function mpsr_get_cronograme_print(){
-		//if ($this->input->is_ajax_request()){			
-			$consulta = array(
-				array(
-					'cer.ncertificado,cer.lugarisp,cer.fechaisp',
-					'aso.conductor_id',
-					'veh.placa,veh.modelo,veh.color,veh.fanio,veh.clase',
-					'hma.hmarca',
-					'emp.empresa_id,emp.administrador_id,emp.ruc,emp.nombre,emp.rsocial',
-					//'aut.autorizacion_id',
-					//'ser.descripcion'
-				),
-				array(
-					'public.certificados cer',
-					'public.asociaciones aso',
-					'public.vehiculos veh',
-					'public.hmarcas hma',
-					'public.empresas emp'
-					//'public.autorizaciones aut',
-					//'public.servicios ser'
-				),
-				array(
-					'NULL',
-					'cer.asociacion_id = aso.asociacion_id',
-					'aso.vehiculo_id = veh.vehiculo_id',
-					'veh.hmarca_id = hma.hmarca_id',
-					'aso.empresa_id = emp.empresa_id',
-					//'emp.autorizacion_id = aut.autorizacion_id',
-					//'aut.servicio_id = ser.servicio_id'
-				)
-			);
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cer.ccondicion_id'=>3,'cer.estado'=>true,'cer.fechaisp'=>date('Y-m-d',strtotime('2021-09-03')),'aso.empresa_id'=>3));			
-			print_r($consulta);
-			/*for ($i=0; $i < count($consulta); $i++) {
-				if($consulta[$i]->axuidemp != $empresa_id){
-					$empresa_id = $consulta[$i]->axuidemp;
-					$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
-					array_push($temp,$consulta[$i]);
-				}				
+	public function dQSmo1c2RoUFhzMXE3SHVhdz(){
+		//$empresa_id = 3;
+		//$fecha = date('Y-m-d',strtotime('03-09-2021'));
+		$empresa_id = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
+		$fecha = date("Y-m-d", strtotime(str_replace('/', '-',$this->input->post('txtdate'))));	
+		$consulta = array(
+			array(
+				'cer.ncertificado,cer.lugarisp,cer.fechaisp',
+				'aso.conductor_id',
+				'veh.vehiculo_id,veh.placa',
+				'emp.empresa_id,emp.administrador_id,emp.ruc,emp.nombre,emp.rsocial',
+				"substring(concat(hma.hmarca,' ',veh.modelo,' ',veh.fanio,', ',veh.color),0,40) vehiculo"				
+			),
+			array('public.certificados cer','public.asociaciones aso','public.vehiculos veh','public.hmarcas hma','public.empresas emp'),
+			array('NULL','cer.asociacion_id = aso.asociacion_id','aso.vehiculo_id = veh.vehiculo_id','veh.hmarca_id = hma.hmarca_id','aso.empresa_id = emp.empresa_id')
+		);
+		$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cer.ccondicion_id'=>3,'cer.estado'=>true,'cer.fechaisp'=>$fecha,'aso.empresa_id'=>$empresa_id));
+		if (!empty($consulta)){			
+			$consulta = $this->mpsr_get_cronograme_details($consulta);
+			//print_r($consulta);
+
+			$this->load->library('serv_pdf_certification');
+			$this->serv_pdf_certification->SetTitle("TUC San Roman Juliaca AxCorp");
+			$this->serv_pdf_certification->AliasNbPages();
+
+			for ($i=0; $i <count($consulta) ; $i++) {
+				$this->serv_pdf_certification->AddPage(); 
+				$this->serv_pdf_certification->tableDatos($consulta[$i]);
 			}
-			echo json_encode($temp);*/
-										
-		/*}else{
+			$this->serv_pdf_certification->Output("TUC-SanRoman-at_".date('d-m-Y H:i:s'), 'I');
+		}else{
 			show_404();
-		}*/
+		}
 	}
 	//---------------------*****POST - DUPLICATE_CHECK SECTION****************-----------------
 	

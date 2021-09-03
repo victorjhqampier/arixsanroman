@@ -164,55 +164,57 @@ class Serv_pdf_certification extends FPDF{
         $this->Cell(0,5,$this->PageNo().'/{nb}',0,0,'R');
     }
 
-    function tableDatos($array_data=0){
+    function tableDatos($array_data){
         $this->SetXY(10, 51);
         $this->SetFont('Arial', '', 10);
         $this->SetDrawColor(155, 155, 155);
         $this->SetFillColor(224, 235, 255);
         
-        $this->Image(base_url('arixapi/probar_arixapi/22AS27E9919607A'),150,51,52,10,'PNG');//x,y,long
+        $this->Image(base_url('arixapi/probar_arixapi/'.$array_data['ncertificado']),150,58,52,8,'PNG');//x,y,long
         
         $this->Cell(25, 5.5, 'LUGAR', 1, 0, 'C', true);        
-        $this->Cell(115, 5.5, '', 1, 1, 'L', false);        
+        $this->Cell(0, 5.5, utf8_decode($array_data['lugarisp']), 1, 1, 'L', false);       
 
         $this->Cell(25, 5.5, 'FECHA', 1, 0, 'C', true);     
-        $this->Cell(115, 5.5, '12-25-2562', 1, 1, 'L', false);        
+        $this->Cell(55, 5.5, date('d/m/Y',strtotime($array_data['fechaisp'])), 1, 0, 'L', false);
+        $this->Cell(25, 5.5, 'N. Certificado', 1, 0, 'R', true);
+        $this->Cell(35, 5.5, $array_data['ncertificado'], 1, 1, 'C', false);      
 
         $this->Cell(25, 5.5, 'EMPRESA', 1, 0, 'C', true);
         $this->Cell(25, 5.5, 'RUC', 1, 0, 'R', true);
-        $this->Cell(90, 5.5, '12345678911', 1, 0, 'L', false);
-        $this->Cell(0, 5.5, '22AS27E9919607A', 0, 1, 'C', false);
-        $this->Cell(0, 5.5, '', 1, 1, 'L', false);
+        $this->Cell(90, 5.5, $array_data['ruc'], 1, 1, 'C', false);
+        //$this->Cell(0, 5.5, $array_data['ncertificado'], 0, 1, 'C', false);
+        $this->Cell(0, 5.5, utf8_decode($array_data['rsocial']), 1, 1, 'C', false);
 
         $this->Cell(25, 5.5, 'DNI', 1, 0, 'C', true); 
         $this->Cell(0, 5.5, 'REPRESENTANTE DE LA EMPRESA', 1, 1, 'C', true);
-        $this->Cell(25, 5.5, '74148080', 1, 0, 'C', false); 
-        $this->Cell(0, 5.5, 'KELY KARINA, PARICAHUA ACHATA', 1, 1, 'L', false); 
+        $this->Cell(25, 5.5, $array_data['repre_dni'], 1, 0, 'C', false); 
+        $this->Cell(0, 5.5, utf8_decode($array_data['repre_persona']), 1, 1, 'L', false); 
 
         $this->Cell(25, 5.5, 'DNI', 1, 0, 'C', true);
         $this->Cell(115, 5.5, 'PROPIETARIO', 1, 0, 'C', true);
         $this->Cell(0, 5.5, utf8_decode('N° de Celular'), 1, 1, 'C', true);
-        $this->Cell(25, 5.5, '74148080', 1, 0, 'C', false); 
-        $this->Cell(0, 5.5, 'KELY KARINA, PARICAHUA ACHATA', 1, 1, 'L', false);
-        $this->Cell(140, 5.5, utf8_decode('Jr. Amazonas 123 perú lima lima'), 1, 0, 'C', false); 
-        $this->Cell(0, 5.5, '968991415', 1, 1, 'C', false);
+        $this->Cell(25, 5.5, $array_data['prop_dni'], 1, 0, 'C', false); 
+        $this->Cell(0, 5.5, utf8_decode($array_data['prop_persona']), 1, 1, 'L', false);
+        $this->Cell(140, 5.5, utf8_decode($array_data['prop_direccion']), 1, 0, 'C', false); 
+        $this->Cell(0, 5.5, $array_data['prop_telefono'], 1, 1, 'C', false);
 
         $this->Cell(25, 5.5, 'DNI', 1, 0, 'C', true);
         $this->Cell(115, 5.5, 'CONDUCTOR', 1, 0, 'C', true);
         $this->Cell(30, 5.5, utf8_decode('N" LICENCIA'), 1, 0, 'C', true);
         $this->Cell(0, 5.5, utf8_decode('CAT.'), 1, 1, 'C', true);
-        $this->Cell(25, 5.5, '74148080', 1, 0, 'C', false); 
-        $this->Cell(115, 5.5, 'KELY KARINA, PARICAHUA ACHATA', 1, 0, 'L', false);
-        $this->Cell(30, 5.5, 'MPS48207106', 1, 0, 'C', false);
-        $this->Cell(0, 5.5, 'A-IIa', 1, 1, 'C', false);
+        $this->Cell(25, 5.5, $array_data['con_dni'], 1, 0, 'C', false); 
+        $this->Cell(115, 5.5, utf8_decode($array_data['con_persona']), 1, 0, 'L', false);
+        $this->Cell(30, 5.5, $array_data['con_licencia'], 1, 0, 'C', false);
+        $this->Cell(0, 5.5, $array_data['con_categoria'], 1, 1, 'C', false);
 
         $this->Cell(25, 5.5, 'PLACA', 1, 0, 'C', true);
         $this->Cell(80, 5.5, utf8_decode('VEHÍCULO'), 1, 0, 'C', true);
         $this->Cell(65, 5.5, utf8_decode('SERVICIO'), 1, 0, 'C', true);
         $this->Cell(0, 5.5, utf8_decode('CÓDIGO'), 1, 1, 'C', true);
-        $this->Cell(25, 5.5, 'A1A456', 1, 0, 'C', false); 
-        $this->Cell(80, 5.5, 'FORD RAPTOR 2020', 1, 0, 'L', false);
-        $this->Cell(65, 5.5, 'Serticio de transporte interhurbano', 1, 0, 'C', false);
+        $this->Cell(25, 5.5, $array_data['placa'], 1, 0, 'C', false); 
+        $this->Cell(80, 5.5, $array_data['vehiculo'], 1, 0, 'L', false);
+        $this->Cell(65, 5.5, utf8_decode($array_data['serv_servicio']), 1, 0, 'C', false);
         $this->Cell(0, 5.5, '', 1, 1, 'C', false);
 
         $this->Cell(25, 5.5, 'DISTRITO', 1, 0, 'R', true);
