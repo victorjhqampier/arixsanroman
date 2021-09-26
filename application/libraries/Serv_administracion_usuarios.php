@@ -101,7 +101,7 @@ class Serv_administracion_usuarios {
         }    
     }
     public function cargar_sucursal_session($sucursal){
-        $sucursal = $this->ci->arixkernel->select_one_content('sucursal_id','config.cuentasucursal', array('cuenta_id' => $this->ci->session->userdata('usuario'), 'sucursal_id' => $sucursal, 'estado'=> true));
+        $sucursal = $this->ci->arixkernel->select_one_content('sucursal_id','config.cuentasucursal', array('cuenta_id' => $this->ci->session->userdata('usuario'), 'sucursal_id' => $sucursal, 'estado'=> true,'acceso'=> true/* sucu_added 'acceso'=> true*/));
         if (!is_null($sucursal)) {
             if ($this->ci->session->userdata('sucursal') != $sucursal->sucursal_id) {
                 $this->ci->session->set_userdata('sucursal', $sucursal->sucursal_id);

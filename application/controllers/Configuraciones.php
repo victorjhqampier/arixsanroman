@@ -21,7 +21,7 @@ class Configuraciones extends CI_Controller {
 		$this->load->model('arixkernel');
 		$this->load->library('serv_administracion_usuarios');
 		$css = $this->serv_ejecucion_app->exe_cargar_axcss(array('axcss-dataTables'));
-		$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('axjs-dataTables','axjs-validate-p1','axjs-validate-p2','axjs-mask','configuraciones-arixjs'));
+		$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('axjs-dataTables','axjs-validate-p1','axjs-validate-p2','axjs-mask','axjs-crypto-md5','configuraciones-arixjs'));
 		$js = array($js,$css);
 		$this->load->view('arixshellbase',compact('js'));
 	}
@@ -136,6 +136,30 @@ class Configuraciones extends CI_Controller {
 			show_404();
 		}
 	}
+
+	public function axconfig_get_approlsucu(){
+		if ($this->input->is_ajax_request()){
+			$temp=[];
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('rol_id axuid,rol', 'private.roles',0, '', array('rol_id','desc'));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuid);
+			}
+			array_push($temp, $consulta);
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('app_id axaid,app', 'private.apps',0, array('id_app is not null'=>null), array('app_id','asc'));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axaid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axaid);
+			}
+			array_push($temp, $consulta);
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("sucursal_id axuidemp,concat(numero,' - ',nombre) datas", 'config.sucursales',0,array('estado'=>true));
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axuidemp= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuidemp);
+			}
+			array_push($temp, $consulta);
+			echo json_encode($temp);
+		}else{
+			show_404();
+		}
+	}
 	public function axconfig_get_areas_bysuc(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$sucu = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
@@ -161,6 +185,21 @@ class Configuraciones extends CI_Controller {
 			show_404();
 		}
 	}
+	public function axconfig_get_account(){
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$correo = strrev($this->input->post('txtdata'));
+			//$correo =  'user-2@gmail.com';	
+			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id('correo', 'config.cuentas',false,array('correo'=>$correo));
+			//print_r($consulta);		
+			if(is_null($consulta)){// NO HAY PROBLEMA CONTINUA
+				echo json_encode(array('status'=>false));
+			}else{
+				echo json_encode(array('status'=>true));
+			}
+		}else{
+			show_404();
+		}
+	}
 	public function axconfig_get_puestos(){
 		if ($this->input->is_ajax_request()){
 			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("puesto_id axuidemp, puesto", 'config.puestos');
@@ -172,7 +211,6 @@ class Configuraciones extends CI_Controller {
 			show_404();
 		}
 	}
-
 	public function axconfig_get_areas(){
 		if ($this->input->is_ajax_request()){
 			//$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
@@ -252,27 +290,30 @@ class Configuraciones extends CI_Controller {
 	}
 	public function axconfig_duplicate_user(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
-			$doc = strrev($this->input->post('txtdata'));	
+			$doc = strrev($this->input->post('txtdata'));
+			//$doc = '74879050';
 			$consulta = array(
 				array(
-				   "per.documento"
+				   "con.contrato_id axuid, concat(per.documento,' - ', per.nombres,', ', per.paterno,' ', per.materno) datas, per.correo"
 				),
 				array(
-					'config.cuentas cu',
+					//'config.cuentas cu',
 				   	'config.contratos con',
 				   	'private.personas per'
 				),
 				array(
 				   'NULL',
-				   'cu.contrato_id = con.contrato_id',
+				   //'cu.contrato_id = con.contrato_id',
 				   'con.persona_id = per.persona_id'
 				)
 			 );
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cu.estado'=>true, 'per.documento'=>$doc));
-			if(empty($consulta)){//SI ESTA VACIO (NO TIENE CUENTA)
-				echo json_encode($this->serv_ejecucion_app->exe_get_people_data($doc));
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('con.estado'=>true,'per.documento'=>$doc));
+			if(!empty($consulta)){//SI ES EMPLEADO
+				//echo json_encode($this->serv_ejecucion_app->exe_get_people_data($doc))
+				$consulta[0]->axuid = $this->serv_cifrado->cod_cifrar_cadena($consulta[0]->axuid);;
+				echo json_encode(array_merge((array)$consulta[0],array('status'=>true)));
 			}else{
-				echo json_encode(array('status'=>null));//TIENE YA UNA CUENTA
+				echo json_encode(array('status'=>false));//NO ES EMPLEADO				
 			}
 		}else{
 			show_404();
@@ -358,6 +399,64 @@ class Configuraciones extends CI_Controller {
 	}
 
 	/*++++++++++++++++++POS_AREA++++++++++++++++++++++++++*/
+	public function axconfig_post_axuser_add(){
+		if($this->input->is_ajax_request() && $this->input->post()){
+			$cont = $this->serv_administracion_usuarios->use_crear_password_no_return(substr(md5($this->input->post('txtuseraccountpass')), 3, 26));
+			$cuenta = array(
+				'contrato_id'=>intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtuseremployeeid'))),
+				'permiso_id'=>bindec('1'.$this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtuserread')).$this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtuserupdate')).$this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtuserdelete'))),
+				'correo'=>$this->input->post('txtuseraccountid'),
+				'pass'=>$cont,
+				'passini'=>$cont,
+				'axlog'=>'> Creado por '.$this->serv_administracion_usuarios->use_obtener_actual_usuario().' > en '.date('d-m-Y H:i')
+			);	
+			
+			$cont = 0;
+			$cuentaapprol = array(array("cuenta_id"=> 0,"app_id"=> 1001,"rol_id"=> 1));//app de inicio por defecto
+			while(empty($this->input->post('txtuserappid_'.$cont)==false)){//entras si no esta vacio
+				$temp = array(
+					'cuenta_id'=>0,
+					'app_id'=>intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtuserappid_'.$cont))),
+					'rol_id'=>intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtuserapprolid_'.$cont)))
+				);
+				array_push($cuentaapprol,$temp);
+				$cont++;
+			}
+			$cont = 0;
+			$cuentasucursal = array();
+			while(empty($this->input->post('txtusersucuid_'.$cont)==false)){//entras si no esta vacio
+				$temp = array(
+					'cuenta_id'=>0,
+					'sucursal_id'=>intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtusersucuid_'.$cont))),
+					'acceso'=>boolval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtusersucuacssid_'.$cont)))
+				);
+				array_push($cuentasucursal,$temp);
+				$cont++;
+			}
+			$this->db->trans_start();			
+				try{
+					$cont = $this->arixkernel->arixkernel_guargar_simple_data_nontransaction($cuenta, 'config.cuentas');//recupear el id ingresado
+					for($i=0;$i<count($cuentaapprol);$i++){$cuentaapprol[$i]['cuenta_id'] = $cont;}
+					for($i=0;$i<count($cuentasucursal);$i++){$cuentasucursal[$i]['cuenta_id'] = $cont;}
+					$this->arixkernel->arixkernel_actualizar_or_guardar_data_nontransaction($cuentaapprol, 'config.cuentaapprol',array('cuenta_id','app_id'));
+					$this->arixkernel->arixkernel_actualizar_or_guardar_data_nontransaction($cuentasucursal, 'config.cuentasucursal',array('cuenta_id','sucursal_id'));
+
+				}catch (PDOException $e){
+					$this->db->rollback();
+				}
+			$this->db->trans_complete();
+			if($this->db->trans_status()===FALSE){
+				$cont = false;
+			}else{
+				$cont = true;
+			}
+			echo json_encode(array("status"=>$cont));
+			//echo json_encode($cuentasucursal);
+		}else{
+			show_404();
+		}
+	}
+	
 	public function axconfig_post_employee(){
 		if($this->input->is_ajax_request() && $this->input->post('txtcontnumber')){			
 			$datos = array(
@@ -457,8 +556,50 @@ class Configuraciones extends CI_Controller {
         ), array(1,0,0,1));
 		print_r($array_tabla_tupla);
 		*/
-		echo ($this->serv_cifrado->cod_cifrar_cadena(0));
+		//echo ($this->serv_cifrado->cod_decifrar_cadena("54F747562B763N0twL3NoSXp0ZmJaSElYYVM5Mi9SUT09"));
+		echo (true && true);
 		/*$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('axjs-validate-p1','axjs-validate-p2'));
 		print_r($js);	*/	
 	}
 }
+
+			/*$cuenta = array(
+				'axlog'=> "> Creado por *min@***@Arix-Corp_ARIX_ROOT > en 25-09-2021 22:12",
+				'correo'=> "kellykarina123@gmail.com",
+				'pass'=> "$2y$12$9lTisPLJh3uYt3XO1GVOK.il.J.QvVIXI3ADGnJbOFoKjnPua4.Uy",
+				'passini'=> "$2y$12$9lTisPLJh3uYt3XO1GVOK.il.J.QvVIXI3ADGnJbOFoKjnPua4.Uy",
+				'permiso_id'=> 15,
+				'contrato_id'=> 9
+			);*/
+			/*$cuentaapprol = array(
+					array(
+						"cuenta_id"=> 0,
+						"app_id"=> 1001,
+						"rol_id"=> 1
+					),
+					array(
+						"cuenta_id"=> 0,
+						"app_id"=> 1002,
+						"rol_id"=> 2
+					),
+					array(
+						"cuenta_id"=> 0,
+						"app_id"=> 1004,
+						"rol_id"=> 4
+					)
+				);*/
+
+			/*$cuentasucursal = array(
+				array(
+				  "cuenta_id"=> 0,
+				  "sucursal_id"=> 1,
+				  "acceso"=> true
+				),
+				array(
+				  "cuenta_id"=> 0,
+				  "sucursal_id"=> 2,
+				  "acceso"=> true
+				)
+				);*/
+			/* ---EMPIEZA LA TRASNACCION */
+			//$this->load->database('pdoarixdatabase');

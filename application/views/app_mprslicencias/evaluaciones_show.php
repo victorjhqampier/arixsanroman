@@ -50,8 +50,8 @@
         </div>
     </div>
     <div class="col-xl-12 col-md-12">
-        <div class="card bg-light border-secondary mb-4">
-            <div class="card-header text-center">EVALUAR ÉSTE CERTIFICADO</div>
+        <div class="card text-white bg-info mb-4">
+            <div class="card-header text-center"><strong>EVALUAR INSPECCIÓN VEHICULAR</div>
             <div class="card-body">               
                 <form id="form-evaluation">
                     <div class="form-row">
@@ -102,7 +102,7 @@
                 $('#main-content-evaluation #eval-search-certif').focus();
                 arixshell_alert_notification('success','Guardado correctamente...');                
              }else{
-                console.log('EVALUATION_SHOW -> NO GUARDAR');
+                //console.log('EVALUATION_SHOW -> NO GUARDAR');
                 $("#second-content-evaluation .card-body").last().addClass('text-center').html('<i class="material-icons" style="color: red; font-size:7rem">cancel</i>');
                 $('#main-content-evaluation #eval-search-certif').focus();
                 arixshell_alert_notification('error','Algo salió mal, no guardamos los datos');

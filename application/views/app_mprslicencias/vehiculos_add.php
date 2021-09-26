@@ -130,7 +130,7 @@
                 $("#sub-table-emp").find('td:eq(1)').text(request.nombre);
                 $("#sub-table-emp").find('td:eq(2)').text(request.rsocial);
                 $("#sub-table-emp").find('td:eq(3)').text('('+request.telefono+') - '+request.direccion);
-                mpsr_vehiadd_basevar=[request.axuidemp,request.axuiaut,request.code,request.numv];
+                mpsr_vehiadd_basevar=[request.axuidemp,request.axuiaut,request.code,request.numv];                
                 $("#sub-table-resol").find('td:eq(0)').text(request.nresolucion);
                 $("#sub-table-resol").find('td:eq(1)').text(request.aufin);
                 $("#sub-table-resol").find('td:eq(2)').text(request.code+' '+request.servicio);

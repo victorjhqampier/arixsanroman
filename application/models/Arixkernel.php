@@ -218,6 +218,31 @@ class Arixkernel extends CI_Model{
 			return array('status'=>false);
 		}
 	}
+	//arixkernel_actualizar_guardar_data(array(=>actualizar),array(=>guardar),array(=>condiciones de actualizacion))
+	//esto puede reemplazar al de arriva  = arixkernel_actualizar_guardar_data
+	public function arixkernel_actualizar_guardar_multiple($datas, $tables,$update_con){//solo el primero puede actualizarse $datas[0] el rrsto se inserta
+		$this->db->trans_start();			
+			try{
+				$this->db->where($update_con);
+				$this->db->update($tables[0], $datas[0]);
+				if($this->db->affected_rows()){
+					for($i=1;$i<count($datas);$i++){
+						$this->db->insert($tables[$i], $datas[$i]);
+					}					
+				}else{
+					throw new Exception('No affected rows');
+				}				
+			}catch (PDOException $e){
+				$this->db->rollback();
+			}
+		$this->db->trans_complete();
+		if($this->db->trans_status()===FALSE){
+			return array('status'=>false);
+		}else{
+			return array('status'=>true);
+		}
+	}
+	
 	//arixkernel_actualizar_simple_data(array(), string, array())
 	public function arixkernel_actualizar_simple_data($data, $table,$condition){
 		$this->db->trans_start();			
@@ -257,6 +282,8 @@ class Arixkernel extends CI_Model{
 			return array('status'=>true);
 		}
 	}
+
+	/***--------------------ARIX JOB--------USABLE */
 	//arixkernel_actualizar_simple_data(array(), string, array())
 	public function arixkernel_update_data_noanswer($data,$table,$condition){
 		$this->db->trans_start();			
@@ -269,4 +296,21 @@ class Arixkernel extends CI_Model{
 			return array('status'=>true);
 		}
 	}
+
+	/* ------------------------------NON TRANSACTIONS---------------------------------- */
+	public function arixkernel_guargar_simple_data_nontransaction($data, $table){
+		$this->db->insert($table, $data);
+		return $this->db->insert_id();
+		
+	}
+	public function arixkernel_actualizar_or_guardar_data_nontransaction($datas, $table,$update_con){//solom acepta dos condiciones
+		for($i=0;$i<count($datas);$i++){
+			$this->db->where(array($update_con[0]=>$datas[$i][$update_con[0]],$update_con[1]=>$datas[$i][$update_con[1]]));
+			$this->db->update($table, $datas[$i]);
+			if(!$this->db->affected_rows()){
+				$this->db->insert($table, $datas[$i]);
+			}
+		}
+	}
+	
 }

@@ -559,12 +559,12 @@ async function arixshell_subir_opciones(location,url,data,html=''){
     }
 }
 //perfecto par BLUR
-async function  arixshell_check_duplicate(location,url,request){
+async function  arixshell_check_duplicate(location,url,request,message='El dato ingresado se encuentra registrado ...'){
         request = await arixshell_upload_datos(url, 'txtdata='+request+'&');
-        if(request['status']==false){
+        if(request.status==false){
             $(location).addClass('is-valid');
         }else{
-            arixshell_alert_notification('warning','El dato ingresado se encuentra registrado ...');
+            arixshell_alert_notification('warning',message);
             $(location).val("");
             $(location).removeClass('is-valid');            
         }

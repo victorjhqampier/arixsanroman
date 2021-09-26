@@ -19,7 +19,7 @@
 </div>
 <script type="text/javascript">
     arixshell_iniciar_llaves_locales("#btn_evaluaciones_check");
-    var mpsr_eval_basevar;       
+    //var mpsr_eval_basevar;       
     $('#main-content-evaluation #eval-search-certif').focus();    
     $('#main-content-evaluation #eval-search-certif').keypress(function (a) {
         13 == a.which && $("#main-content-evaluation #btn-search-evalcertif").click();
@@ -28,12 +28,12 @@
         let request = $('#main-content-evaluation #eval-search-certif').val();
         if(request.length==15){
             request = arixshell_upload_datos('mpsrlicencias/mpsr_get_vehicle_bycertif', 'txtdata='+verifyMpsr(request)+'&');
-            if(typeof(request['axidcert']) !== 'undefined'){
+            if(request.status==true){
                 mpsr_eval_basevar=request;
                 $('#main-content-evaluation #eval-search-certif').val(''); 
                 arixshell_cargar_subpaginas("mpsrlicencias/evaluations_show","#main-content-evaluation #second-content-evaluation");                             
             }else{
-                arixshell_alert_notification('error','No encontramos resultados. Por favor, verifique el número de certificación');
+                arixshell_alert_notification('error','No encontramos resultados. Por favor, verifique el número de certificado');
                 //$('#main-content-evaluation #eval-search-certif').val('');
                 $("#main-content-evaluation #second-content-evaluation").html("");
             }

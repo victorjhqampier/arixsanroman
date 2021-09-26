@@ -35,7 +35,7 @@
                                 </div>
                                 <input type="hidden" class="d-none" id="certif-vehiplacaid" name="txtcertifvehiplacaid" readonly />
                                 <input type="hidden" class="d-none" id="certif-empid" name="txtcertifempid" readonly />
-                                <input type="hidden" class="d-none" id="certif-autid" name="txtcertifautid" readonly />
+                                <!--input type="hidden" class="d-none" id="certif-autid" name="txtcertifautid" readonly /-->
                                 <input type="hidden" class="d-none" id="certif-driverid" name="txtcertifdriverid" readonly />
                                 <div class="form-group col-md-12">
                                     <label for="certif-driverdoc">Conductor</label>
@@ -75,7 +75,7 @@
     $('#form-vehicertif-newadd #certif-driverdoc').mask('99999999');
     $('#form-vehicertif-newadd #certif-vehiplacadoc').mask('AAA999', {reverse: true}).focus();
     $('#form-vehicertif-newadd #certif-empid').val(mpsr_vehiadd_basevar[0]);
-    $('#form-vehicertif-newadd #certif-autid').val(mpsr_vehiadd_basevar[1]);
+    //$('#form-vehicertif-newadd #certif-autid').val(mpsr_vehiadd_basevar[1]);
     //$('#form-vehicertif-newadd #certif-place').val(mpsr_vehiadd_basevar[4]);
     $('#form-vehicertif-newadd').validate({
         errorClass: "text-danger",
@@ -84,24 +84,23 @@
             txtcertifvehiplacadescribe: {required: true, maxlength: 200, minlength: 11},
             txtcertifvehiplacaid: {required: true, maxlength: 200, minlength: 13},
             txtcertifempid: {required: true, maxlength: 200, minlength: 9},
-            txtcertifempid: {required: true, maxlength: 200, minlength: 9},
+            //txtcertifautid: {required: true, maxlength: 200, minlength: 9},
             txtcertifdriverdoc: {required: true, maxlength: 8, minlength: 8},
             txtcertifdriverdescribe: {required: true, maxlength: 200, minlength: 11},
             txtcertifdriverid: {required: true, maxlength: 200, minlength: 11}
-            //txtcertifplace: {required: true, maxlength: 80, minlength: 9},
-            //txtcertifdate: {required: true, maxlength: 16, minlength: 16}
         }
     }); 
-    $('#btn-add-veh2certif').click(function() {        
+    $('#btn-add-veh2certif').click(function() {
         if($('#form-vehicertif-newadd').valid()){
             let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_asociacion_add', $('#form-vehicertif-newadd').serialize());
+            //console.log(request);
              if(request.status==true){
                 //$('#btn-cancel-veh2certif').click();
                 $('#load-vehiculos-addform').html(''); //cambiar de poscion
                 arixshell_alert_notification('success','Guardado correctamente...');                            
                 mpsr_load_table_activevehicle('#dataTable_emp_activos',mpsr_vehiadd_basevar[0],mpsr_vehiadd_basevar[3]);        
              }else{
-                console.log('certif_add_vehi -> NO GUARDAR');
+                //console.log('certif_add_vehi -> NO GUARDAR');
                 $('#btn-cancel-veh2certif').click();
                 arixshell_alert_notification('error','No pudimos guardar los datos, verifique la fota del vehiculo');
             }

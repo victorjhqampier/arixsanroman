@@ -29,3 +29,37 @@ arixshell_cargar_llave_local(0-1-2)
 }*/
 
 //sucursales
+function config_pass_random(numero){
+    //let abecedario = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9",".","-","_","$","&","#","@"];
+    let abecedario = ["a","Z","0","b","Y","1","c","X","2","d","W","3","e","V","4","f","U","5","g","T","6","h","S","7","i","R","8","j","Q",,"9","k","P","l","O","m","N","n","M","o","L","p","K","q","J","r","I","s","H","t","G","u","F","v","E","w","D","x","C","y","B","z","A"];
+    let numeroAleatorio = '';
+	for(var i = 0; i<numero; i++){
+		numeroAleatorio += abecedario[parseInt(Math.random()*abecedario.length)];         
+    }
+    return numeroAleatorio;
+}
+function config_showHidePwd(location,btnEye) {
+    var input = document.getElementById(location);
+    if (input.type === "password") {
+        input.type = "text";
+        document.getElementById(btnEye).className = "far fa-eye";
+    } else {
+        input.type = "password";
+        document.getElementById(btnEye).className = "far fa-eye-slash";
+    }
+}
+
+function config_loadPwd(location) {
+    $(location).val(config_pass_random(15));
+}
+function config_sucursales_check(location="#user-sucursales select"){
+    let data = $("#user-sucursales").find('option:selected');
+    data = data.filter(function(){return this.value=="54F747562B763N0twL3NoSXp0ZmJaSElYYVM5Mi9SUT09"}).length;    
+    if(data == 0){        
+        //$(location).first().find("option:contains('Permitir')").attr('selected', 'selected');
+        $("#user-sucursales").find('select').first().find("option:contains('Permitir')").prop('selected', true);
+        //$("#user-sucursales").find('select').first().val("54F747562B763N0twL3NoSXp0ZmJaSElYYVM5Mi9SUT09");//.find("option:contains('Permitir')").attr('selected', true);
+    }else{
+        return;
+    }
+}

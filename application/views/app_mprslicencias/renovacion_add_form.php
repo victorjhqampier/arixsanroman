@@ -149,10 +149,10 @@
     })();
 
     arixshell_cargar_opciones('#form-empr-renew-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad').then(function(){
-        $("#aut-modalidad option:contains("+mpsr_vehiadd_basevar.servicio+")").attr('selected', 'selected');
+        $("#aut-modalidad option:contains("+mpsr_vehiadd_basevar.servicio+")").prop('selected', true);
     });    
     arixshell_cargar_opciones('#form-empr-renew-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad').then(function(){
-        $("#aut-tunidad option:contains("+mpsr_vehiadd_basevar.clasificacion+")").attr('selected', 'selected');
+        $("#aut-tunidad option:contains("+mpsr_vehiadd_basevar.clasificacion+")").prop('selected', true);
     });   
    
     mpsr_subir_fechas('#form-empr-renew-add #aut-ffinal',6,1);
