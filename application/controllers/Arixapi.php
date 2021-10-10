@@ -26,6 +26,20 @@ class Arixapi extends CI_Controller {
 		}
 		
 	}// OJO OJO COMO SABEN quien cierra la sesion
+
+	public function arixapi_save_img(){
+		if ($this->input->is_ajax_request() && $this->input->post('image')){			
+			$data = $this->input->post('image');			
+			$image_array_1 = explode(";", $data);
+			$image_array_2 = explode(",", $image_array_1[1]);
+			$data = base64_decode($image_array_2[1]);
+			$image_name = 'axproduct'.uniqid().'.png';
+			file_put_contents('public/apps/img/'.$image_name, $data);
+			echo json_encode(array('status'=>true,'img'=>$image_name));			
+		}else{
+			show_404();
+		}
+	}
 	////---------------------*****ARIXAPI_ARIXJOB****************-----------------
 	public function arixapi_arixjob_mpsr(){
 		$this->load->model('arixkernel');
@@ -216,6 +230,13 @@ class Arixapi extends CI_Controller {
 	public function arixapi_get_form_person(){
 		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {
 			$this->load->view('templates/person_add');
+		}else{
+			show_404();
+		}
+	}
+	public function arixapi_get_form_image(){
+		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {
+			$this->load->view('templates/image_add');
 		}else{
 			show_404();
 		}

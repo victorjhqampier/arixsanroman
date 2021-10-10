@@ -6073,7 +6073,7 @@ a.close.disabled {
 }
 
 .bg-primary {
-  background-color: #007bff !important;
+  background-color: #233e8b !important;/*#810034*/
 }
 
 a.bg-primary:hover, a.bg-primary:focus,
@@ -10163,7 +10163,7 @@ body {
 }
 
 .sb-sidenav-dark {
-  background-color: #212529;
+  background-color: #52057B;/*#212529*/
   color: rgba(255, 255, 255, 0.5);
 }
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
@@ -10188,7 +10188,7 @@ body {
   color: #fff;
 }
 .sb-sidenav-dark .sb-sidenav-footer {
-  background-color: #343a40;
+  background-color: #892CDC;/*#343a40*/
 }
 
 .sb-sidenav-light {

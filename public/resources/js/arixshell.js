@@ -579,10 +579,11 @@ async function  arixshell_check_duplicate(location,url,request,message='El dato 
         return false;           
     }
 }*/
-function arixshell_abrir_modalbase(titulo,loadurl,btnkey){    
+function arixshell_abrir_modalbase(titulo,loadurl,btnkey=null){//btn- personalizado    
     $('#arixgeneralmodal .modal-title').text(titulo);
     arixshell_cargar_subpaginas(loadurl,'#arixgeneralmodal .modal-body');
-    $('#arixgeneralmodal .modal-footer').html('<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Salir</button>');
+    btnkey = btnkey==null?'':'<button type="button" class="btn btn-primary btn-sm" id="'+btnkey+'">Salir</button>';    
+    $('#arixgeneralmodal .modal-footer').html(btnkey);
     $('#arixgeneralmodal').modal({
         keyboard: false,
         backdrop: "static",

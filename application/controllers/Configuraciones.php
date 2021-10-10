@@ -25,6 +25,9 @@ class Configuraciones extends CI_Controller {
 		$js = array($js,$css);
 		$this->load->view('arixshellbase',compact('js'));
 	}
+	public function confdashboard(){
+		$this->load->view('app_configuraciones/xxdashboard');
+	}
 	public function sucursales(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_configuraciones/sucursales');
@@ -558,9 +561,18 @@ class Configuraciones extends CI_Controller {
 		*/
 		//echo ($this->serv_cifrado->cod_decifrar_cadena("54F747562B763N0twL3NoSXp0ZmJaSElYYVM5Mi9SUT09"));
 		echo (true && true);
+
 		/*$js = $this->serv_ejecucion_app->exe_cargar_axjs(array('axjs-validate-p1','axjs-validate-p2'));
 		print_r($js);	*/	
 	}
+	public function axconfig_generate_ticket() {
+		$this->load->library('serv_ticket');
+		$this->serv_ticket->SetTitle("Arix Ticket Layout");
+		$this->serv_ticket->AliasNbPages();
+		//$this->serv_ticket->AddPage(); 
+		$this->serv_ticket->tableDatos();		
+		$this->serv_ticket->Output("Arix Tiket".date('d-m-Y H:i:s').'.pdf', 'I');
+    }
 }
 
 			/*$cuenta = array(

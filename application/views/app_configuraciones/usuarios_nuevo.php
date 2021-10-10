@@ -181,7 +181,7 @@
         config_sucursales_check();
         if($("#form-axuser-add").valid()){
             let request = arixshell_upload_datos('configuraciones/axconfig_post_axuser_add', $('#form-axuser-add').serialize());
-            console.log(request);
+            
             if(request.status==true){
                 arixshell_alert_notification('success','El usuario fue creado exitosamente...!');
                 arixshell_hacer_pagina_atras();
