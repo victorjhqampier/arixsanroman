@@ -6,7 +6,7 @@
                 <table class="table table-hover d-none" id="per-form-base-result">
                     <thead>
                         <tr>
-                            <th scope="col">Nueva Persona Registrada</th>
+                            <th scope="col">Nueva Entidad Registrada</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -17,23 +17,30 @@
                 </table>                       
                 <form id="per-form-base">
                     <div class="form-row">
-                        <div class="form-group input-group-sm col-md-4">
+                        <div class="form-group input-group-lg col-md-4">
                             <label for="per-dni">Número de Documento</label>
                             <input type="text" class="form-control" id="per-dni" name="txtperdni" placeholder="DNI">
+                        </div>
+                        <div class="form-group input-group-lg col-md-4">
+                            <label for="per-type">Tipo</label>
+                            <select id="per-type" name="txtpertype" class="form-control">                                
+                                <option value="1" selected>Persona</option>
+                                <option value="0">Empresa</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-names">Nombres</label>
-                            <input type="text" class="form-control" id="per-names" name="txtpername" placeholder="Nombres">
+                            <input type="text" class="form-control" id="per-names" name="txtpername" placeholder="Nombre">
                         </div>
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-lastname">Apellido Paterno</label>
-                            <input type="text" class="form-control" id="per-lastname" name="txtperlasname" placeholder="Apellido Paterno">
+                            <input type="text" class="form-control" id="per-lastname" name="txtperlasname" placeholder="Primero">
                         </div>
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-firstname">Apellido Materno</label>
-                            <input type="text" class="form-control" id="per-firstname" name="txtfirstname" placeholder="Apellido Materno">
+                            <input type="text" class="form-control" id="per-firstname" name="txtfirstname" placeholder="Segundo">
                         </div>
                     </div>
                     <div class="form-row">
@@ -100,10 +107,10 @@
 </div>
 <script type="text/javascript">
     (function(){
-        let infor = arixshell_read_cache_serial('e0x005477arixNewUser');       
+        let infor = arixshell_read_cache_serial('e0x005477arixNewUser');              
             if(infor!=null){
                 infor=infor['id'];
-                if(infor.length==8){
+                if(infor.length==8 || infor.length==11){
                     $('#per-form-base #per-dni').val(infor);
                     $('#per-form-base #per-dni').attr('readonly',true);
                     $('#per-form-base #per-dni').focus();
@@ -115,6 +122,21 @@
             return;
         }
     })();
+    $("#per-form-base #per-type").change(function(){
+        let request = parseInt($(this).val());      
+        if(request == 0){
+            //$("#per-names").siblings()[0].textContent('Nombre de empresa');
+            $("label[for='per-names']").text("Nombre de empresa");
+            $("label[for='per-borndate']").text('Fecha de creación');
+            $("label[for='per-lastname']").text('Razón Social');
+            $("label[for='per-firstname']").text('Otros');
+        }else{
+            $("label[for='per-names']").text('Nombres');
+            $("label[for='per-borndate']").text('Fecha de nacimiento');
+            $("label[for='per-lastname']").text('Apellido Paterno');
+            $("label[for='per-firstname']").text('Apellido Materno');
+        }
+    });
     /*function mpsr_form_auto_start(){
         var infor = arixshell_read_cache_serial('e0x005477arixNewUser');       
             if(infor!=null){
@@ -132,7 +154,7 @@
         }
     }
     mpsr_form_auto_start();*/
-    $('#per-form-base #per-dni').mask('99999999');
+    $('#per-form-base #per-dni').mask('99999999999');
     $('#per-form-base #per-borndate').mask('00/00/0000');    
 
     arixshell_cargar_opciones('#per-form-base #per-departament', 'arixapi/arixapi_get_departamentos').then(function(){
@@ -158,22 +180,22 @@
         rules: {
             txtperdni: {
                 required: true,
-                maxlength: 8,
+                maxlength: 11,
                 minlength: 8
             },
             txtpername: {
                 required: true,
-                maxlength: 60,
+                maxlength: 100,
                 minlength: 3
             },
             txtperlasname: {
                 required: true,
-                maxlength: 60,
+                maxlength: 100,
                 minlength: 3
             },
             txtfirstname: {
-                required: true,
-                maxlength: 60,
+                required: false,
+                maxlength: 100,
                 minlength: 3
             },
             txtborndate: {
@@ -227,25 +249,15 @@
         else{
             return;
         }
-    });
-    function mpsradd_get_pers(dni){
-        request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/dni/'+dni+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
-        if (request['dni']== dni){
-            $("#per-form-base #per-names").val(request.nombres);
-            $("#per-form-base #per-lastname").val(request.apellidoPaterno);
-            $("#per-form-base #per-firstname").val(request.apellidoMaterno);
-        }else{
-            return;
-        }
-    }    
+    });     
     $("#per-form-base #per-dni").blur(function(){
         var dni = request = $(this).val();
         //var entero = parseInt(request).toString();
-        if(request.length == 8){           
+        if(request.length == 8 || request.length==11){           
             request = arixshell_upload_datos('arixapi/arixapi_check_duplicate_person', 'txtdata='+request+'&');
             if(request['status']==false){
                 $("#per-form-base #per-dni").addClass('is-valid');
-                mpsradd_get_pers(dni);//PARA CARGAR AUTOMATICAMENTE LOS DATOS de PERSONAS
+                arixshell_get_entities(dni);//PARA CARGAR AUTOMATICAMENTE LOS DATOS de PERSONAS
             }else{
                 $("#per-form-base #per-dni").val("");
                 $("#per-form-base #per-dni").removeClass('is-valid');            

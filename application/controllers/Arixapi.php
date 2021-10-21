@@ -145,6 +145,22 @@ class Arixapi extends CI_Controller {
 			echo json_encode(array('status' => 403));//acceso denedo
 		}
 	}
+	public function entidades_get_duplicate(){
+		if ($this->input->is_ajax_request() && $this->input->post() && $this->serv_administracion_usuarios->use_probar_session()){
+			$doc = strrev($this->input->post('txtdata'));
+			//$doc = '48207109';
+			//solo buscamos en la db personas y ya está queda			
+			$consulta = $this->arixkernel->arixkernel_obtener_data_by_id("persona_id axid, concat(documento,' - ', nombres,', ', paterno,' ', materno) as data", 'private.personas', false, array('documento'=>$doc));
+			if(!is_null($consulta)){
+				$consulta->axid= $this->serv_cifrado->cod_cifrar_cadena($consulta->axid);
+				echo json_encode(array_merge((array)$consulta,array('status'=>true)));
+			}else{
+				echo json_encode(array('status'=>false));//ya esta registrado
+			}
+		}else{
+			show_404();
+		}
+	}
 	public function arixapi_mostrar_sucursales(){
 		if ($this->input->is_ajax_request() && $this->serv_administracion_usuarios->use_probar_session()) {
 			$sucursal = $this->serv_administracion_usuarios->use_obtener_otros_sucursales();
@@ -256,6 +272,7 @@ class Arixapi extends CI_Controller {
 			show_404();
 		}
 	}
+
 	public function arixapi_ger_vehicles(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata') && $this->serv_administracion_usuarios->use_probar_session()){	
 			$vehicle = strrev($this->input->post('txtdata'));		
@@ -277,11 +294,12 @@ class Arixapi extends CI_Controller {
 				'paterno'=>$this->input->post('txtperlasname'),
 				'materno'=>$this->input->post('txtfirstname'),
 				'nacimiento'=>date("Y-m-d", strtotime(str_replace('/', '-',$this->input->post('txtborndate')))),
-				'sexo'=>$this->input->post('txtpersexe'),
+				'sexo'=>intval($this->input->post('txtpersexe')),
 				'direccion'=>$this->input->post('txtperaddress'),
 				'distrito_id'=>$this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtperdistrite')),
 				'correo'=>$this->input->post('txtperemail'),
 				'telefono'=>$this->input->post('txtperphone'),
+				'tipo'=>boolval($this->input->post('txtpertype')),
 				'fotografia'=>'public/images/users/tu39hnri84fhe2.png'
 			);
 			$data = $this->arixkernel->arixkernel_guargar_simple_data($data, 'private.personas');

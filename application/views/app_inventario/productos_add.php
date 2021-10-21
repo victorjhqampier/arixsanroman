@@ -8,84 +8,87 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="form-group col-md-9">
-                                <label for="prod-barcode">Código de Barras</label>
+                                <label for="product-barcode">Código de Barras</label>
                                 <div class="input-group input-group-lg">
-                                    <input type="text" class="form-control" id="prod-barcode" name="txtcontnumber" placeholder="Código Barras" />
+                                    <input type="text" class="form-control" id="product-barcode" name="txtcontnumber" placeholder="Código Barras" />
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="button" onclick="config_loadPwd('#form-axuser-add #user-accountpass');">
+                                        <button class="btn btn-secondary" type="button">
                                             <i class="fa fa-random"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="cont-finicio">Stock Inicial</label>
-                                <input type="number" class="form-control form-control-lg" id="cont-finicio" name="txtcontfinicio" placeholder="Fecha de inicio de vigencia" value="0" />
+                                <label for="product-stock">Stock Inicial</label>
+                                <input type="number" class="form-control form-control-lg" id="product-stock" name="txtproductstock" placeholder="Stock" value="0" />
                             </div>
                             <!--div class="form-group col-md-8">
-                                <label for="cont-employee-doc">Nombre</label>
+                                <label for="pro-proveedor-doc">Nombre</label>
                                 <div class="input-group input-group-prepend">
-                                    <input type="text" class="form-control" id="cont-employee-doc" name="txtcontemployeedoc" placeholder="DNI del empleado" />
-                                    <input type="text" class="form-control d-none" id="cont-employee-dscrb" name="txtcontemployeedscrb" readonly />
+                                    <input type="text" class="form-control" id="pro-proveedor-doc" name="txtproveedordoc" placeholder="DNI del empleado" />
+                                    <input type="text" class="form-control d-none" id="cont-proveedor-dscrb" name="txtproveedordscrb" readonly />
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="btn-search-contEmployee"><i class="fa fa-search"></i></button>
-                                        <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-contEmployee"><i class="fa fa-times"></i></button>
+                                        <button class="btn btn-outline-secondary" type="button" id="btn-search-proveedor"><i class="fa fa-search"></i></button>
+                                        <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-proveedor"><i class="fa fa-times"></i></button>
                                     </div>
-                                    <input type="hidden" class="d-none" id="cont-employee-id" name="txtcontemployeeid" readonly />
+                                    <input type="hidden" class="d-none" id="cont-proveedor-id" name="txtproveedorid" readonly />
                                 </div>
                             </div-->
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-9">
-                                <label for="cont-finicio">Nombre del producto</label>
-                                <input type="text" class="form-control" id="cont-finicio" name="txtcontfinicio" placeholder="Nombre del producto" />
+                                <label for="product-name">Nombre del producto</label>
+                                <input type="text" class="form-control" id="product-name" name="txtproductname" placeholder="Nombre del producto" />
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="cont-finicio">Precio U.</label>
-                                <input type="text" class="form-control" id="cont-finicio" name="txtcontfinicio" placeholder="Precio Unitario" value="1.0" />
+                                <label for="product-preciounit">P. Venta</label>
+                                <input type="text" class="form-control" id="product-preciounit" name="txtproductpriseunit" placeholder="Precio" value="1.50" />
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="cont-finicio">Descripción</label>
-                                <input type="text" class="form-control form-control-sm" id="cont-finicio" name="txtcontfinicio" placeholder="Escriba alguna descripción" />
+                            <div class="form-group col-md-9">
+                                <label for="product-description">Descripción</label>
+                                <input type="text" class="form-control form-control-sm" id="product-description" name="txtproductdescription" placeholder="Escriba alguna descripción" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="product-compraunit">P. Compra</label>
+                                <input type="text" class="form-control form-control-sm" id="product-compraunit" name="txtproductcompraunit" placeholder="Compra" value="0.0" readonly/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card text-white bg-primary">
-                    <div class="card-header text-center"><strong>Responsabilidad</strong></div>
+                    <div class="card-header text-center"><strong>ORIGEN</strong></div>
                     <div class="card-body">
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label for="cont-employee-doc">Proveedor</label>
+                                <label for="pro-proveedor-doc">Proveedor (*)</label>
                                 <div class="input-group input-group-lg">
-                                    <input type="text" class="form-control" id="cont-employee-doc" name="txtcontemployeedoc" placeholder="Documento del Proveedor" />
-                                    <input type="text" class="form-control d-none" id="cont-employee-dscrb" name="txtcontemployeedscrb" readonly />
+                                    <input type="text" class="form-control" id="pro-proveedor-doc" name="txtproveedordoc" placeholder="Documento del Proveedor" />
+                                    <input type="text" class="form-control d-none" id="cont-proveedor-dscrb" name="txtproveedordscrb" readonly />
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="button" id="btn-search-contEmployee"><i class="fa fa-search"></i></button>
-                                        <button class="btn btn-secondary d-none" type="button" id="btn-restart-contEmployee"><i class="fa fa-times"></i></button>
+                                        <button class="btn btn-secondary" type="button" id="btn-search-proveedor"><i class="fa fa-search"></i></button>
+                                        <button class="btn btn-secondary d-none" type="button" id="btn-restart-proveedor"><i class="fa fa-times"></i></button>
                                     </div>
-                                    <input type="hidden" class="d-none" id="cont-employee-id" name="txtcontemployeeid" readonly />
-                                    <input type="text" class="" id="img-product-id" name="txtimgproductid" readonly />
+                                    <input type="hidden" class="d-none" id="cont-proveedor-id" name="txtproveedorid" readonly />
+                                    <input type="hidden" class="d-none" id="img-product-id" name="txtimgproductid" readonly />
                                 </div>
                             </div>
                         </div>
-                        <div class="row">                           
-
+                        <div class="row">
                             <div class="col-xl-9 col-md-9">
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
-                                        <label for="cont-area">Unidad De medida</label>
-                                        <select id="cont-area" name="txtcontarea" class="form-control">
+                                        <label for="product-unidadme">Unidad De medida</label>
+                                        <select id="product-unidadme" name="txtunidadme" class="form-control">
                                             <option value="Resolucion de tipo -R1" selected>Elija...</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
-                                        <label for="cont-area">Categoría</label>
-                                        <select id="cont-area" name="txtcontarea" class="form-control form-control-sm">
+                                        <label for="product-cat">Categoría</label>
+                                        <select id="product-cat" name="txtproductcat" class="form-control form-control-sm">
                                             <option value="Resolucion de tipo -R1" selected>Elija...</option>
                                         </select>
                                     </div>
@@ -123,7 +126,7 @@
                                             text-align: center;
                                         }
                                     </style>
-                                <label>Imagen</label>
+                                <label>Imagen (*)</label>
                                 <div class="ax-image_area">                                    
                                     <label for="ax-img-input">
                                         <img src="public/apps/img/axproduct616254ad988f2.png" id="uploaded_image" class="img-responsive img-thumbnail" style="display: block; max-width: 100%;" />
@@ -133,8 +136,7 @@
                                         <input type="file" name="image" class="image d-none" id="ax-img-input" />
                                     </label>
                                 </div>
-                            </div>                                                  
-                        
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,10 +168,87 @@
 			reader.readAsDataURL(files[0]);
 		}		
     });
+    $("#form-product-new-add #product-barcode").focus();
+    $('#form-product-new-add #product-barcode').keypress(function (a) {
+        13 == a.which && $("#product-name").focus();
+    });
+    $("#product-preciounit").mask("#####.00",{reverse:true});
+    $("#product-stock").mask("09999");
+    $('#form-product-new-add #pro-proveedor-doc').mask('99999999999');
     
+    arixshell_cargar_opciones('#form-product-new-add #product-unidadme','inventario/productos_get_metric');
+    arixshell_cargar_opciones('#form-product-new-add #product-cat','inventario/productos_get_category');
+    
+    $("#form-product-new-add #product-barcode").blur(function(){
+        let request = $(this).val();
+        //console.log(request);     
+        if(request.length > 5 && request.length < 20){
+            request = arixshell_upload_datos('inventario/productos_duplicate_check', 'txtdata='+request+'&');
+            if(request.status==false){                
+                $(this).addClass('is-valid');
+            }else{
+                arixshell_alert_notification('warning','El código de barras ya se encuentra asociado a un producto');
+                $(this).val("");
+                $(this).removeClass('is-valid');            
+            }
+        }else{
+            return;
+        }
+    });
+    $("#form-product-new-add #product-stock").change(function(){
+        let request = parseInt($(this).val());        
+        //console.log(request);     
+        if(request > 0){
+            $("#form-product-new-add #product-compraunit").prop('readonly',false);
+        }else{
+            $("#form-product-new-add #product-compraunit").prop('readonly',true).val("0.0");
+        }
+    });
+    //(1)PARA EL MODAL DE AGREGAR persona
+    $("#btn-search-proveedor").click(function () {     
+        let temp = $("#pro-proveedor-doc").val();
+        //console.log(temp);
+        if(temp.length == 8 || temp.length==11){
+            let request = arixshell_upload_datos('arixapi/entidades_get_duplicate', 'txtdata='+arixshell_verify_data(temp)+'&');//true or false
+            //console.log(request);
+            if(request.status==true){//ya existe en la base de datos
+                $('#cont-proveedor-dscrb').val(request.data).removeClass('d-none');                
+                $('#cont-proveedor-id').val(request.id);
+                $("#btn-restart-proveedor").removeClass('d-none');
+                $("#pro-proveedor-doc").addClass('d-none');
+                $(this).addClass('d-none');
+            }else {
+                arixshell_write_cache_serial('e0x005477arixNewUser',temp);//clave y dato
+                arixshell_abrir_modalbase('AGREGAR NUEVO PROVEEDOR','arixapi/arixapi_get_form_person','btn-modalNewUser-forprovvedor');
+            }
+        }else{
+            return;
+        } 
+    });
+    //(2)PARA EL MODAL DE AGREGAR persona
+    $(document).on('click', '#btn-modalNewUser-forprovvedor', function(){
+        let request = arixshell_read_cache_serial('e0x005477arixNewUser');
+        if(request!==null){
+            $('#cont-proveedor-dscrb').val(request['data']).removeClass('d-none');                
+            $('#cont-proveedor-id').val(request['id']);
+            $("#btn-restart-proveedor").removeClass('d-none');
+            $("#pro-proveedor-doc").addClass('d-none');
+            $('#btn-search-proveedor').addClass('d-none');
+            arixshell_cerrar_modalbase();    
+        }else{
+            arixshell_cerrar_modalbase();
+        }
+    });
+    //(3) boton reniciar
+    $("#btn-restart-proveedor").click(function () {
+        $(this).addClass('d-none');
+        $("#cont-proveedor-dscrb").val("").addClass('d-none');
+        $("#btn-search-proveedor").removeClass('d-none');
+        $("#pro-proveedor-doc").removeClass('d-none').val("").focus();
+    });
 
 
-    /*$('#form-product-new-add #cont-employee-doc').mask('99999999');
+    /*$('#form-product-new-add #pro-proveedor-doc').mask('99999999');
     $('#form-product-new-add #cont-finicio').mask('00/00/0000');
     $('#form-product-new-add #cont-fin').mask('00/00/0000');
     $('#form-product-new-add #prod-barcode').focus();
@@ -185,48 +264,48 @@
     });
 
     //(1)PARA EL MODAL DE AGREGAR persona
-    $("#btn-search-contEmployee").click(function () {     
-        let temp = $("#cont-employee-doc").val();
+    $("#btn-search-proveedor").click(function () {     
+        let temp = $("#pro-proveedor-doc").val();
         if(temp.length == 8){
             let request = arixshell_upload_datos('configuraciones/axconfig_duplicate_employee', 'txtdata='+arixshell_verify_data(temp)+'&');//true or false
             if(request.status==true){//ya existe en la base de datos
-                $('#cont-employee-dscrb').val(request.data).removeClass('d-none');                
-                $('#cont-employee-id').val(request.id);
-                $("#btn-restart-contEmployee").removeClass('d-none');
-                $("#cont-employee-doc").addClass('d-none');
+                $('#cont-proveedor-dscrb').val(request.data).removeClass('d-none');                
+                $('#cont-proveedor-id').val(request.id);
+                $("#btn-restart-proveedor").removeClass('d-none');
+                $("#pro-proveedor-doc").addClass('d-none');
                 $(this).addClass('d-none');
             }else if(request.status==false){
                 arixshell_write_cache_serial('e0x005477arixNewUser',temp);//clave y dato
-                arixshell_abrir_modalbase('AGREGAR NUEVO PERSONA','arixapi/arixapi_get_form_person','btn-modalNewUser-forDriver');
+                arixshell_abrir_modalbase('AGREGAR NUEVO PERSONA','arixapi/arixapi_get_form_person','btn-modalNewUser-forprovvedor');
             }
             else{
                 arixshell_alert_notification('warning','La persona se encuntra registrada ...'); 
-                $("#cont-employee-doc").val("");
+                $("#pro-proveedor-doc").val("");
             }
         }else{
             return;
         } 
     });
     //(2)PARA EL MODAL DE AGREGAR persona
-    $(document).on('click', '#btn-modalNewUser-forDriver', function(){
+    $(document).on('click', '#btn-modalNewUser-forprovvedor', function(){
         let request = arixshell_read_cache_serial('e0x005477arixNewUser');
         if(request!==null){
-            $('#cont-employee-dscrb').val(request['data']).removeClass('d-none');                
-            $('#cont-employee-id').val(request['id']);
-            $("#btn-restart-contEmployee").removeClass('d-none');
-            $("#cont-employee-doc").addClass('d-none');
-            $('#btn-search-contEmployee').addClass('d-none');
+            $('#cont-proveedor-dscrb').val(request['data']).removeClass('d-none');                
+            $('#cont-proveedor-id').val(request['id']);
+            $("#btn-restart-proveedor").removeClass('d-none');
+            $("#pro-proveedor-doc").addClass('d-none');
+            $('#btn-search-proveedor').addClass('d-none');
             arixshell_cerrar_modalbase();    
         }else{
             arixshell_cerrar_modalbase();
         }
     });
     //(3) boton reniciar
-    $("#btn-restart-contEmployee").click(function () {
+    $("#btn-restart-proveedor").click(function () {
         $(this).addClass('d-none');
-        $("#cont-employee-dscrb").val("").addClass('d-none');
-        $("#btn-search-contEmployee").removeClass('d-none');
-        $("#cont-employee-doc").removeClass('d-none').val("").focus();
+        $("#cont-proveedor-dscrb").val("").addClass('d-none');
+        $("#btn-search-proveedor").removeClass('d-none');
+        $("#pro-proveedor-doc").removeClass('d-none').val("").focus();
     });
     $("#form-product-new-add #prod-barcode").blur(function(){
         let request = $(this).val();
@@ -240,9 +319,9 @@
         errorClass: "text-danger",
         rules: {
             txtcontnumber:{required: true,maxlength: 15,minlength: 8},
-            txtcontemployeedoc:{required: true,maxlength: 8,minlength: 8},
-            txtcontemployeedscrb:{required: true,maxlength: 200,minlength: 11},
-            txtcontemployeeid:{required: true,maxlength: 120,minlength: 11},
+            txtproveedordoc:{required: true,maxlength: 8,minlength: 8},
+            txtproveedordscrb:{required: true,maxlength: 200,minlength: 11},
+            txtproveedorid:{required: true,maxlength: 120,minlength: 11},
             txtcontfinicio:{required: true,maxlength: 10,minlength: 10},
             txtcontfin:{required: true,maxlength: 10,minlength: 10},
             txtcontsucursal:{required: true},

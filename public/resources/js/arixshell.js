@@ -610,6 +610,30 @@ function arixshell_cerrar_modalbase(){
     $('#arixgeneralmodal .modal-body').html('');
     $('#arixgeneralmodal').modal('hide');
 }
+function arixshell_get_entities(dni){       
+    if (dni.length==8){//request['dni']== dni            
+        try {
+            request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/dni/'+dni+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
+            $("#per-form-base #per-names").val(request.nombres);
+            $("#per-form-base #per-lastname").val(request.apellidoPaterno);
+            $("#per-form-base #per-firstname").val(request.apellidoMaterno);            
+        } catch (error) {
+            console.error(error);            
+        }
+    }else if (dni.length==11){            
+        try {
+            request = arixshell_download_datos('https://dniruc.apisperu.com/api/v1/ruc/'+dni+'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvaG5hbGFtdXNAZ21haWwuY29tIn0.afUd28wIqmAoFV9CbIu9JZcIRynhCi1t1P--Sru3kRY');
+            $("#per-form-base #per-names").val(request.nombreComercial);
+            $("#per-form-base #per-lastname").val(request.razonSocial);
+            $("#per-form-base #per-address").val(request.direccion);            
+        } catch (error) {
+            console.error(error);        
+        }
+    }else{
+        
+        return;
+    }
+}
 
 /*----------------REDESARROLLAR MODULO DE TITULOS---------*/
 
