@@ -1,13 +1,13 @@
 ######################################################
-We are a company dedicated, among other things, to cloud-based services called Arix Corp.
+This Mini ERP developed in PHP (easy and intuitive to use) aims to automate small and medium-sized companies.
+We can add as many applications as the company needs or the client requires, without losing information or changing the system.
 ######################################################
 
-Our organization was founded by Victor JC and its developers are volunteers who do not expect to receive short-term profits, however, our aspiration is to have our own infrastructure, carry out and apply highly complex research. Our business model in providing cloud services (SaaS) to our clients.
+So far, the system is maintained by Victor JCaxi, my aspiration is to have an industrial infrastructure offering SaaS software as a service, with special importance in highly complex investigations.
 
 *******************
-Release Information
+Some Screamshots
+https://drive.google.com/file/d/1_HA9MR_8e-S9_Rwx6eUYVjsHOchSUOO9/view?usp=sharing
+https://drive.google.com/file/d/1o-ctVqxmy85aON3RKcylPBmxf757p4Jm/view?usp=sharing
 *******************
 
-On Arix MEE We use Coeigniter, so this repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
