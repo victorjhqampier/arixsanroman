@@ -378,7 +378,7 @@ class Configuraciones extends CI_Controller {
 					'con.persona_id = per.persona_id'
 				)
 			);
-			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cue.estado'=>true, 'con.estado'=>true, 'cue.cuenta_id>'=>1));
+			$consulta = $this->arixkernel->arixkernel_obtener_complex_data($consulta,0,array('cue.estado'=>true, 'con.estado'=>true, 'cue.cuenta_id>'=>1,'cue.cuenta_id !='=>$this->serv_administracion_usuarios->use_obtener_actual_cuenta_id()));
 			//print_r($consulta);
 			for ($i=0; $i < count($consulta); $i++) { 
 				$consulta[$i]->axuid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axuid);
@@ -514,6 +514,28 @@ class Configuraciones extends CI_Controller {
 		}else{
 			show_404();
 		}
+	}
+	public function axconfig_delete_account(){//validacion interna en delete/update
+		//if($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$account_id = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
+			//$account_id = 5;
+			$cuenta = $this->arixkernel->arixkernel_obtener_data_by_id('correo', 'config.cuentas', $account_id, ['estado'=>true]);
+			if(!is_null($cuenta)){
+				$temp = explode("@", $cuenta->correo);
+				$cuenta = [
+					'estado'=>false,
+					'fmodificacion'=>date('Y-m-d H:i:s'),
+					'correo'=>$temp[0].'@'.uniqid(),
+					'axlog' => $this->serv_administracion_usuarios->use_obtener_actual_usuario().' -> CREADO -> EL '.date('d-m-Y H:i')
+				];
+				$cuenta = $this->arixkernel->arixkernel_actualizar_simple_data($cuenta,'config.cuentas',['cuenta_id'=>$account_id]);
+				echo json_encode($cuenta);
+			}else{
+				echo json_encode(['status'=>false]);
+			}
+		/*}else{
+			show_404();
+		}*/
 	}
 
 	#REHACER TODO DESQUE AQUI CON EL NUEVO KERNEL Y SERVICIO DE EJECUCIÓN

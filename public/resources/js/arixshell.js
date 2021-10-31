@@ -305,30 +305,11 @@ function arix_search_btns(btns){
 }
 //trabajando en los botones locales
 function arixshell_cargar_botones_menu(botones='btn-refrescar, btn-cerrar'){
-    botones = arix_search_btns(botones);    
+    botones = arix_search_btns(botones);
     for (i = 0; i < Object.keys(botones).length; i++) {           
-        $(arixshell_cargar_llave_local(0)).append('<button type="button" class="btn btn-secondary '+botones[i].boton+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i].titulo+'"><i class="'+botones[i].icono+'"></i></button>');//agregas al final
+        $(arixshell_cargar_llave_local(0)).append('<button type="button" class="btn '+botones[i].clase+' '+botones[i].boton+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i].titulo+'"><i class="'+botones[i].icono+'"></i></button>');//agregas al final
     }
-    /*if (botones != false) {
-        for (i = 0; i < Object.keys(botones).length; i++) {           
-            $(arixshell_cargar_llave_local(0)).append('<button type="button" class="btn btn-secondary '+botones[i]['boton']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"><i class="'+botones[i]['icono']+'"></i></button>');//agregas al final
-        }
-    }else{
-        console.log('arixshell_cargar_botones_menu -> error');
-    }*/
 }
-/*function arixshell_cargar_boton_simple(botones='btn-detalles,btn-borrar'){//devuelve botones en bormato html
-    botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
-    if (botones != false) {
-        var list = '';
-        for (var i = 0; i < botones.length; i++) {
-            list+='<button type="button" class="btn btn-secondary '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
-        }
-        return list;
-    }else{
-        console.log('arixshell_cargar_boton_simple -> error');
-    }
-}*/
 
 function arixshell_cargar_botones(botones='btn-detalles,btn-borrar', attr=""){//devuelve botones en bormato html
     //botones = arixshell_upload_datos('arixapi/arixapi_cargar_botones', 'data='+botones+'&');
@@ -337,9 +318,9 @@ function arixshell_cargar_botones(botones='btn-detalles,btn-borrar', attr=""){//
         let list = '<div class="btn-group btn-group-sm">';
         for (var i = 0; i < Object.keys(botones).length; i++) {
             if(typeof(attr[i]) != "undefined"){
-                list+='<button type="button" '+attr[i]+' class="btn btn-secondary '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
+                list+='<button type="button" '+attr[i]+' class="btn '+botones[i]['clase']+' '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
             }else{
-                list+='<button type="button" class="btn btn-secondary '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
+                list+='<button type="button" class="btn '+botones[i]['clase']+' '+botones[i]['boton']+'"><i class="'+botones[i]['icono']+'" data-toggle="tooltip" data-placement="bottom" title="'+botones[i]['titulo']+'"></i></button>';
             }
         }
         return list+'</div>';
@@ -599,6 +580,37 @@ function arixshell_abrir_mainModal(titulo,loadurl,btnkey){
         backdrop: "static",
         show:true
     });
+}
+
+function arixshell_cargar_obigeo(depa,prov,dist,txtdist = false,txtprov=false,txtdepa=false){
+    if(txtdist == false){
+        arixshell_cargar_opciones(depa, 'arixapi/arixapi_get_departamentos').then(function(){
+            let dep = $(depa+" option:eq(20)").attr("selected", "selected").val();
+            arixshell_subir_opciones(prov,'arixapi/arixapi_get_provincias', 'txtdata='+dep+'&').then(function(){
+                dep = $(prov+" option:eq(10)").attr("selected", "selected").val();
+                arixshell_subir_opciones(dist,'arixapi/arixapi_get_distritos', 'txtdata='+dep+'&');
+            });        
+        });
+    }else{
+        arixshell_cargar_opciones(depa, 'arixapi/arixapi_get_departamentos').then(function(){
+            let dep = $(depa+" option:contains("+txtdepa+")").prop('selected', true).val();
+            arixshell_subir_opciones(prov,'arixapi/arixapi_get_provincias', 'txtdata='+dep+'&').then(function(){
+                dep = $(prov+" option:contains("+txtprov+")").prop('selected', true).val();
+                arixshell_subir_opciones(dist,'arixapi/arixapi_get_distritos', 'txtdata='+dep+'&').then(function(){
+                    $(dist+" option:contains("+txtdist+")").prop('selected', true);
+                });
+            });        
+        });
+    }/*
+    $(depa).change(function(){
+        var r = $(this).val();
+        $(dist).html('');
+        arixshell_subir_opciones('#per-form-base #per-province','arixapi/arixapi_get_provincias', 'txtdata='+r+'&');
+    });
+    $(prov).change(function(){
+        var r = $(this).val();
+        arixshell_subir_opciones(dist,'arixapi/arixapi_get_distritos', 'txtdata='+r+'&');
+    });*/
 }
 function arixshell_cerrar_mainModal(){
     $('#arixgeneralmodal2 .modal-footer').html('');

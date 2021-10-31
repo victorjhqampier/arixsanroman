@@ -273,6 +273,8 @@ class Arixapi extends CI_Controller {
 		}
 	}
 
+
+	/**OJOOOO DICE GER */
 	public function arixapi_ger_vehicles(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata') && $this->serv_administracion_usuarios->use_probar_session()){	
 			$vehicle = strrev($this->input->post('txtdata'));		

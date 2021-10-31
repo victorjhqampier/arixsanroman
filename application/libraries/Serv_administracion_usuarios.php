@@ -145,6 +145,9 @@ class Serv_administracion_usuarios {
     public function use_obtener_actual_usuario(){//solo recupera de la sesion
         return $this->ci->session->userdata('axlogin');//sucursal_id sid
     }
+    public function use_obtener_actual_cuenta_id(){//solo recupera de la sesion
+        return $this->ci->session->userdata('usuario');//sucursal_id sid
+    }
     public function use_obtener_sucursal_actual(){//solo recupera de la sesion
         $sucursal_actual = $this->ci->session->userdata('sucursal');//sucursal_id sid
         $usuario = $this->ci->arixkernel->select_one_content('numero, nombre','config.sucursales', array('sucursal_id' => $sucursal_actual));

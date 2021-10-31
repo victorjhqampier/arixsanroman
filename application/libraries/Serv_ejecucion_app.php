@@ -128,7 +128,7 @@ class Serv_ejecucion_app {
         for ($i=1; $i <= strlen($usuario_permiso); $i++) {
             if(substr($usuario_permiso, -$i,1)=='1'){
 				$binario = substr($usuario_permiso, -$i,1)."".str_repeat("0", $i-1);
-                $temp2 = $this->ci->serv_cifrado->cod_object_to_array($this->ci->arixkernel->arixkernel_obtener_simple_data('boton, icono, titulo','config.botones', false, array('permiso'=>bindec($binario))));
+                $temp2 = $this->ci->serv_cifrado->cod_object_to_array($this->ci->arixkernel->arixkernel_obtener_simple_data("boton, icono, titulo, clase",'config.botones', false, array('permiso'=>bindec($binario))));
                 $temp = array_merge($temp, $temp2);
             }            
         }

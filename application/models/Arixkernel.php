@@ -156,6 +156,7 @@ class Arixkernel extends CI_Model{
 	//FUNCION DE ROLLBACK
 	//FUNCION DE INSERT
 	//data = array(=>);
+	//vevuelve el id que se a ingresado
 	public function arixkernel_guargar_simple_data($data, $table){
 		$this->db->trans_start();
 			$this->db->insert($table, $data);
@@ -185,26 +186,52 @@ class Arixkernel extends CI_Model{
 				}
 			}
 			$this->db->trans_complete();
-			if($this->db->trans_status()!==FALSE){
-				return array('status'=>true, 'ids'=>$insert);
+			if($this->db->trans_status()===FALSE){
+				return array('status'=>false);
 			}else{
-				return false;
+				return array('status'=>true, 'ids'=>$insert);
 			}
 		}else{
 			return false;
 		}	
 	}
-	public function arixkernel_guargar_parallel_data($data, $table){
-		return;
+	//data = array=> table = array
+	//solo recibe tres tablas las dos primeras con relacion muchos  muchos, tercero es la relacions
+	public function arixkernel_guargar_arbol_data($datas, $tables){
+		//$insert = array();
+		$this->db->trans_start();
+			try{
+				$this->db->insert($tables[0], $datas[0]);
+				$ids[0] = $this->db->insert_id();
+				//array_push($insert,$ids);
+
+				$this->db->insert($tables[1], $datas[1]);
+				$ids[1] = $this->db->insert_id();
+				//array_push($insert,$ids);
+
+				$datas[2][$this->arixkernel_table_to_id($tables[0]).'_id'] = $ids[0];
+				$datas[2][$this->arixkernel_table_to_id($tables[1]).'_id'] = $ids[1];
+				$this->db->insert($tables[2], $datas[2]);
+			}catch (PDOException $e){
+				$this->db->rollback();
+			}
+		$this->db->trans_complete();
+		if($this->db->trans_status()===FALSE){
+			return array('status'=>false);
+		}else{
+			return array('status'=>true, 'ids'=>$ids);
+		}
 	}
 	//arixkernel_actualizar_guardar_data(array(=>actualizar),array(=>guardar),array(=>condiciones de actualizacion))
 	public function arixkernel_actualizar_guardar_data($datas, $tables,$update_con){
+		$ids = 0;		
 		$this->db->trans_start();			
 			try{
 				$this->db->where($update_con);
 				$this->db->update($tables[0], $datas[0]);
 				if($this->db->affected_rows()){
 					$this->db->insert($tables[1], $datas[1]);
+					$ids = $this->db->insert_id();
 				}else{
 					throw new Exception('No affected rows');
 				}				
@@ -212,10 +239,10 @@ class Arixkernel extends CI_Model{
 				$this->db->rollback();
 			}
 		$this->db->trans_complete();
-		if($this->db->trans_status()!==FALSE){
-			return array('status'=>true);
-		}else{
+		if($this->db->trans_status()===FALSE){
 			return array('status'=>false);
+		}else{
+			return array('status'=>true,'ids'=>$ids);
 		}
 	}
 	//arixkernel_actualizar_guardar_data(array(=>actualizar),array(=>guardar),array(=>condiciones de actualizacion))
@@ -227,7 +254,7 @@ class Arixkernel extends CI_Model{
 				$this->db->update($tables[0], $datas[0]);
 				if($this->db->affected_rows()){
 					for($i=1;$i<count($datas);$i++){
-						$this->db->insert($tables[$i], $datas[$i]);
+						$this->db->insert($tables[$i], $datas[$i]);						
 					}					
 				}else{
 					throw new Exception('No affected rows');

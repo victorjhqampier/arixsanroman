@@ -30,7 +30,10 @@
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-agregar", function() {
     	arixshell_cargar_contenido(window.location.href+'/usuarios_nuevo','Usuario Nuevo');
     });
-    btnss = arixshell_cargar_botones('btn-banear,btn-editar,btn-detalles');    
+    $(arixshell_cargar_llave_local(0)).on("click", ".btn-refrescar", function() {
+    	$('#dataTable-usuarios').DataTable().ajax.reload();
+    });
+    btnss = arixshell_cargar_botones('btn-borrar,btn-editar,btn-detalles');    
     $('#dataTable-usuarios').DataTable({
       "language": {
              "lengthMenu": "Mostrar _MENU_ registros por página",
@@ -62,5 +65,10 @@
         "createdRow": function( row, data, dataIndex ) {
             $(row).attr('odd', data.axuid);         
         }
+    });
+    $('#dataTable-usuarios tbody').on( 'click', '.btn-borrar',function(){
+        let fila = $(this).closest("tr");
+        let uid = fila.attr('odd');
+        arixshell_alert_delete('question','Desea eliminar la cuenta de ',fila.find('td:eq(2)').text(),'Si, Suspender','configuraciones/axconfig_delete_account','txtdata='+uid+'&',arixshell_cargar_llave_local(0)+' .btn-refrescar');
     });
 </script>
