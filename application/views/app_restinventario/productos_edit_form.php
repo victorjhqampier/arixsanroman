@@ -7,6 +7,10 @@
                     <div class="card-header text-center"><strong>PRODUCTO</strong></div>
                     <div class="card-body">
                         <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="product-stock">Sumar al stock</label>
+                                <input type="number" class="form-control form-control-lg" id="product-stock" name="txtproductstock" placeholder="Stock" value="0" />
+                            </div>
                             <div class="form-group col-md-9">
                                 <label for="product-barcode">Código de Barras</label>
                                 <div class="input-group input-group-lg">
@@ -17,11 +21,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="product-stock">Sumar a Stock</label>
-                                <input type="number" class="form-control form-control-lg" id="product-stock" name="txtproductstock" placeholder="Stock" value="0" />
-                            </div>
+                            </div>                            
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-9">
@@ -34,9 +34,13 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-9">
                                 <label for="product-description">Descripción</label>
                                 <input type="text" class="form-control form-control-sm" id="product-description" name="txtproductdescription" placeholder="Escriba alguna descripción" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="product-compraunit">P.U. Compra</label>
+                                <input type="text" class="form-control form-control-sm" id="product-compraunit" name="txtproductcompraunit" placeholder="Compra" value="0.00"/>
                             </div>
                         </div>
                     </div>
@@ -46,7 +50,7 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <input type="text" class="form-control" id="cont-producto-id" name="txtproductoid" readonly />
+                                <input type="hidden" class="d-none" id="cont-producto-id" name="txtproductoid" readonly />
                                 <label for="pro-proveedor-doc">Proveedor (*)</label>
                                 <div class="input-group input-group-lg">
                                     <input type="text" class="form-control" id="pro-proveedor-doc" name="txtproveedordoc" placeholder="Documento del Proveedor" />
@@ -114,7 +118,7 @@
                                 <label>Imagen (*)</label>
                                 <div class="ax-image_area">                                    
                                     <label for="ax-img-input">
-                                        <img src="public/apps/img/axproduct616254ad988f2.png" id="uploaded_image" class="img-responsive img-thumbnail" style="display: block; max-width: 100%;" />
+                                        <img src="" id="uploaded_image" class="img-responsive img-thumbnail" style="display: block; max-width: 100%;" />
                                         <div class="axoverlay">
                                             <div class="axtext">Agregar</div>
                                         </div>
@@ -137,24 +141,34 @@
         arixshell_hacer_pagina_atras();
     });
     //datos obligatorios y necesarios
-    var axEventUrl=null;
+    var axautoload=null;
     (function(){
         let autoload = arixshell_read_cache_serial('e0x005477arixNewUser');        
         if(autoload.id){
             $("#cont-producto-id").val(autoload.id);         
             autoload = arixshell_upload_datos('restinventario/productos_get_one', 'txtdata='+autoload.id+'&');
             if (autoload.status){
-                axEventUrl = autoload;
-                //console.log(axEventUrl);
-                $("#product-barcode").val(autoload.barcode);
-               // $("#pro-proveedor-doc").val(autoload.descripcion);
-               // $("#pro-proveedor-doc").val(autoload.image);
-               // $("#pro-proveedor-doc").val(autoload.producto);
-                //$("#pro-proveedor-doc").val(autoload.pventa);
+                axautoload = {'barcode':autoload.barcode,'unidad':autoload.unidad,'categoria':autoload.categoria};
+                //console.log(autoload);
+                $("#product-barcode").val(autoload.barcode).focus();
+                $("#product-description").val(autoload.descripcion);
+                $("#uploaded_image").prop("src","public/apps/img/"+autoload.image);
+                $("#img-product-id").val(autoload.image);                              
+                $("#product-name").val(autoload.producto);
+                $("#product-preciounit").val(autoload.pventa);
+                $("#product-compraunit").val(autoload.pcompra);
+                if(autoload.axid){
+                    $('#cont-proveedor-dscrb').val(autoload.proveedor).removeClass('d-none');             
+                    $('#cont-proveedor-id').val(autoload.axid);
+                    $("#btn-restart-proveedor").removeClass('d-none');
+                    $("#pro-proveedor-doc").addClass('d-none');
+                    $("#btn-search-proveedor").addClass('d-none');                    
+                }
             }
         }
     })();
-    //datos obligatorios y necesarios    
+    //datos obligatorios y necesarios 
+    var axEventUrl=null;  
     var saveInputData = '#form-product-new-add #img-product-id';
     var saveImgData = '#form-product-new-add #uploaded_image';
     var saveImgDirectory = 'public/apps/img/';
@@ -170,21 +184,24 @@
 			reader.readAsDataURL(files[0]);
 		}		
     });
-    $("#form-product-new-add #product-barcode").focus();
+    //$("#form-product-new-add #product-barcode").focus();
     $('#form-product-new-add #product-barcode').keypress(function (a) {
         13 == a.which && $("#product-name").focus();
     });
     $("#product-preciounit").mask("#####.00",{reverse:true});
-    $("#product-stock").mask("09999");
+    //$("#product-stock").mask("-09999");
     $('#form-product-new-add #pro-proveedor-doc').mask('99999999999');
     
-    arixshell_cargar_opciones('#form-product-new-add #product-unidadme','restinventario/productos_get_metric');
-    arixshell_cargar_opciones('#form-product-new-add #product-cat','restinventario/productos_get_category');
+    arixshell_cargar_opciones('#form-product-new-add #product-unidadme','restinventario/productos_get_metric').then(function(){
+        $("#form-product-new-add #product-unidadme option:contains("+axautoload.unidad+")").prop('selected', true);
+    });
+    arixshell_cargar_opciones('#form-product-new-add #product-cat','restinventario/productos_get_category').then(function(){
+        $("#form-product-new-add #product-cat option:contains("+axautoload.categoria+")").prop('selected', true);
+    });
     
     $("#form-product-new-add #product-barcode").blur(function(){
         let request = $(this).val();
-        //console.log(request);     
-        if(request.length > 5 && request.length < 20){
+        if(axautoload.barcode != request && request.length > 5 && request.length < 20){
             request = arixshell_upload_datos('restinventario/productos_duplicate_check', 'txtdata='+request+'&');
             if(request.status==false){                
                 $(this).addClass('is-valid');
@@ -281,7 +298,9 @@
         //$("#form-product-new-add").valid();
         //console.log($('#form-product-new-add').serialize());
         if($("#form-product-new-add").valid()){
-            let request = arixshell_upload_datos('restinventario/productos_post_add', $('#form-product-new-add').serialize());
+            console.log($('#form-product-new-add').serialize());
+            let request = arixshell_upload_datos('restinventario/productos_update', $('#form-product-new-add').serialize());
+            //console.log(request);
             if(request.status==true){//el servidor siempre responde con un obejeto
                 arixshell_alert_notification('success','Guardado correctamente...');
                 arixshell_hacer_pagina_atras();

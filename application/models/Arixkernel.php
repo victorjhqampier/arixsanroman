@@ -289,6 +289,29 @@ class Arixkernel extends CI_Model{
 			return array('status'=>true);
 		}
 	}
+	//selecciona una columna y le agrea lo deseado arr_columna [columna, cant a sumar ]
+	public function arixkernel_actualizar_sumar_data($data, $table,$condition,$arr_columna){
+		$this->db->trans_start();			
+			try{
+				$this->db->select($arr_columna[0].' axid');
+				$temp = $this->db->get_where($table, $condition)->row();
+				$data[$arr_columna[0]] = intval($temp->axid) + (intval($arr_columna[1]));
+
+				$this->db->where($condition);
+				$this->db->update($table, $data);
+				if(!$this->db->affected_rows()){
+					throw new Exception('No affected rows');
+				}				
+			}catch (PDOException $e){
+				$this->db->rollback();
+			}
+		$this->db->trans_complete();
+		if($this->db->trans_status()===FALSE){
+			return array('status'=>false);
+		}else{
+			return array('status'=>true);
+		}
+	}
 	public function arixkernel_actualizar_serial_data($datas, $tables,$conditions){
 		$this->db->trans_start();			
 			try{

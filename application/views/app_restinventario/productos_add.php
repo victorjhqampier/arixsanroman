@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="product-compraunit">P.U. Compra</label>
-                                <input type="text" class="form-control form-control-sm" id="product-compraunit" name="txtproductcompraunit" placeholder="Compra" value="0.0" readonly/>
+                                <input type="text" class="form-control form-control-sm" id="product-compraunit" name="txtproductcompraunit" placeholder="Compra" value="0.00"/>
                             </div>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
             return;
         }
     });
-    $("#form-product-new-add #product-stock").change(function(){
+    /*$("#form-product-new-add #product-stock").change(function(){
         let request = parseInt($(this).val());        
         //console.log(request);     
         if(request > 0){
@@ -203,7 +203,7 @@
         }else{
             $("#form-product-new-add #product-compraunit").prop('readonly',true).val("0.0");
         }
-    });
+    });*/
 
     $("#form-product-new-add #btn-search-barcode").click(function () {
         let request = arixshell_upload_datos('restinventario/ids_post_generator', 'txtdata=1&');//true or false
