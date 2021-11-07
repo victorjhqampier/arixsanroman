@@ -71,3 +71,23 @@ function rest_en_product_edit_close(htmlObject,btnInfo,rowCant = 5, rowPcompra =
         htmlObject.find("td:eq("+rowImporte+")").html(addPcompra);
     }
 }
+function rest_en_htmltable_object(htmlTableTr,rowId=1,rowVencin = 2,rowBarcode = 3, rowName=4,rowCant=5,rowPcompra=6,rowImporte=7){
+    let itemArray = {}, itemObject = [];
+    if (htmlTableTr.length > 0){
+        htmlTableTr.each(function(){//esto es es for
+            itemArray  = {
+                txtproductid : $(this).find('td').eq(rowId).text(),
+                txtproductvenc : $(this).find('td').eq(rowVencin).text(),
+                txtproductbarcode : $(this).find('td').eq(rowBarcode).text(),
+                txtproductname : $(this).find('td').eq(rowName).text(),
+                txtproductcant : $(this).find('td').eq(rowCant).text(),
+                txtproductpcompra : $(this).find('td').eq(rowPcompra).text(),
+                txtproductimporte : $(this).find('td').eq(rowImporte).text(),
+            }
+            itemObject.push(itemArray);
+        });
+        return itemObject; 
+    }else{
+        return [];
+    }               
+}

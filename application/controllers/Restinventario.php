@@ -152,6 +152,17 @@ class Restinventario extends CI_Controller {
 			show_404();
 		}
 	}
+	public function productos_get_comprobantes(){
+		if ($this->input->is_ajax_request()){							
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data("comprobante_id axid, comprobante", 'rest.comprobantes');
+			for ($i=0; $i < count($consulta); $i++) { 
+				$consulta[$i]->axid= $this->serv_cifrado->cod_cifrar_cadena($consulta[$i]->axid);
+			}
+			echo json_encode($consulta);
+		}else{
+			show_404();
+		}
+	}
 	public function productos_get_category(){
 		if ($this->input->is_ajax_request()){							
 			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('categoria_id axid, categoria', 'rest.categorias',0,'',array('categoria','desc'));
@@ -408,6 +419,14 @@ class Restinventario extends CI_Controller {
 			show_404();
 		}
 	}
+	public function enproductos_final_form(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_restinventario/templates/en_product_final');
+		}
+		else{
+			show_404();
+		}
+	}
 	public function entradas_productos_get_one(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$barcode = $this->input->post('txtdata');
@@ -417,11 +436,29 @@ class Restinventario extends CI_Controller {
 				$consulta[0]->axid= $this->serv_cifrado->cod_cifrar_cadena($consulta[0]->axid);
 				echo json_encode(array_merge((array)$consulta[0],['status'=>true]));
 			}else{
-				echo json_encode(['status'=>false]);
+				echo json_encode(['status'=>false,'error'=>true]);
 			}			
 		}else{
 			show_404();
 		}
+	}
+	public function en_productos_post_add(){
+		//if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			//$priductos = $this->input->post('txtproveedorid');
+			$data = '[{"txtproductid":"50A8E49532917a010bUprbVo2Q2NhSTM0ZkxwaEszQT09","txtproductvenc":"","txtproductbarcode":"2345353535","txtproductname":"Alcohol Medicinal 70° 1000mL","txtproductcant":"1","txtproductpcompra":"7.00","txtproductimporte":"7.00"}]';
+			echo json_decode($data);
+		/*}else{
+			show_404();
+		}*/
+	}
+
+
+
+
+
+	function rest_awaut(){
+		//sleep(5);
+		echo json_encode(['status'=>true]);
 	}
 	public function axconfig_generate_ticket() {
 		$this->load->library('serv_ticket');

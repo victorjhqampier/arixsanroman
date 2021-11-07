@@ -11,6 +11,8 @@
         <link rel="stylesheet" type="text/css" href="public/resources/css/styles.css"/>
         <link rel="stylesheet" type="text/css" href="public/resources/css/material-icons.css"/>        
         <link rel="stylesheet" type="text/css" href="public/resources/js/dist/sweetalert2.min.css"/>
+
+        <!--link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css"/-->
         <?php if(!empty($js[1])){for($i=0;$i<count($js[1]);$i++){echo '<link rel="stylesheet" type="text/css" href="'.$js[1][$i].'"/>'."\n";}}else{return;} ?>
    </head>
     <body class="sb-nav-fixed">
@@ -143,6 +145,8 @@
         <script type="text/javascript" src="public/resources/js/scripts.js"></script>
         <script type="text/javascript" src="public/resources/js/dist/sweetalert2.min.js"></script>
         <script type="text/javascript" src="public/resources/js/arixshell.js"></script>
+
+        <script type="text/javascript" src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
         <?php if(!empty($js[0])){for($i=0;$i<count($js[0]);$i++){echo '<script type="text/javascript" src="'.$js[0][$i].'" ></script>'."\n";}}else{return;} ?>
     </body>
 </html>

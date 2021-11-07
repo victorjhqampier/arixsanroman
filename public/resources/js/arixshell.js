@@ -38,6 +38,58 @@ function arixshell_upload_datos(urls, datas) { // si es uno solo archivo
     });
     return urls;
 }
+
+async function arixshell_async_upload_datos(urls,datas) { // si es uno solo archivo
+    try {
+        urls = await $.ajax({
+            type: 'POST',
+            url: urls,
+            async: true,
+            dataType: 'json',
+            data: datas
+        });
+        return urls;
+    }catch{
+        console.error('error -> arixshell_async_upload_datos');
+        return false;
+    }    
+}
+
+async function arixshell_async_download_datos(urls) { // si es uno solo archivo
+    try {
+        urls = await $.ajax({
+            type: 'GET',
+            url: urls,
+            async: true,
+            dataType: 'json'
+        });
+        return urls;
+    }catch{
+        console.error('error -> arixshell_async_download_datos');
+        return false;
+    }    
+}
+function arixshell_upload_json(urls, datas) { // si es uno solo archivo
+    $.ajax({
+        type: 'POST',
+        url: urls,
+        async: !1,
+        dataType: 'json',
+        data: {txtdata:datas},
+        success: function(data) {
+            if (!$.isEmptyObject(data)) {
+                urls = data;
+            } else {
+                urls = false;
+            }
+        },
+        error: function(e) {
+            urls = false;
+        }
+    });
+    return urls;
+}
+
 function arixshell_limpiar_string(s) {//elimina caracteres raros de un string *#$
     s = s.replace(/[^a-zA-Z0-9\_]/g,'');
     return s;
