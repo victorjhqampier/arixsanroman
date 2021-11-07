@@ -258,7 +258,8 @@
         let nombre1 = false;        
         if (tableTr.length > 0 && btnInfo > 0){
             arixshell_abrir_modalbase('Terminar entrada de productos','restinventario/enproductos_final_form','btn-modal-final-product');
-            tableTr = rest_en_htmltable_object(tableTr )
+            tableTr = rest_en_htmltable_object(tableTr );
+            var formData = JSON.stringify($("#myForm").serializeArray());
             //tableTr = tableTr.toString();
             //console.log(JSON.stringify(tableTr));
         }else{

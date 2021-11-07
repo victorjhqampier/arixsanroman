@@ -446,7 +446,7 @@ class Restinventario extends CI_Controller {
 		//if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			//$priductos = $this->input->post('txtproveedorid');
 			$data = '[{"txtproductid":"50A8E49532917a010bUprbVo2Q2NhSTM0ZkxwaEszQT09","txtproductvenc":"","txtproductbarcode":"2345353535","txtproductname":"Alcohol Medicinal 70° 1000mL","txtproductcant":"1","txtproductpcompra":"7.00","txtproductimporte":"7.00"}]';
-			echo json_decode($data);
+			echo $data;
 		/*}else{
 			show_404();
 		}*/
