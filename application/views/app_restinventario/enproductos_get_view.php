@@ -4,7 +4,7 @@
         <div class="form-row">
             <div class="form-group col-md-5">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="product-barcode" placeholder="Codigo de Barras" style="font-weight: bold;"/>
+                    <input type="text" class="form-control" id="product-barcode" placeholder="Codigo de Barras" style="font-weight: bold;" />
                     <div class="input-group-append">
                         <button class="btn btn-info" type="button" id="btn-product-barcode"><i class="fa fa-search"></i></button>
                     </div>
@@ -24,126 +24,93 @@
             </div>
             <div class="form-group col-md-3 text-right" id="product-finish-btn">
                 <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-secondary" odd="0">Cancelar</button>
-                        <button type="button" class="btn btn-success" odd="1">Terminar</button>
-                </div>                  
+                    <button type="button" class="btn btn-warning btn-cancelar" odd="0"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-success btn-finish" odd="1">Pagar</button>
+                </div>
             </div>
         </div>
-    </div>    
-    <div class="col-xl-7 col-md-7 mt-2">
-        <div class="overflow-auto" style="height: calc(100vh - 331px);">
-            <table class="table table-striped table-dark table-sm" id="en-productos-table">
-            <thead>
-                <tr>
-                    <th>Acciones</th>
-                    <th class="d-none">id</th>
-                    <th>Venc.</th>
-                    <th>Codigo</th>
-                    <th>Producto</th>
-                    <th class='text-center'>Cant</th>
-                    <th class='text-right'>P.Compra</th>
-                    <th class='text-right'>Importe</th>                
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            </table>
-        </div>
-        </table>
-        <form id="product-edit-form" class="p-1 bg-warning d-none">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <input type="number" class="form-control" id="product-cant-change" style="font-weight: bold;"/>        
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="number" class="form-control" id="product-compra-change" style="font-weight: bold;" step="0.01"/>
-                </div>
-            </div>
-            <div class="form-row">                
-                <div class="form-group col-md-6">                    
-                    <input type="date" class="form-control" id="product-dateven-change" style="font-weight: bold;"/>       
-                </div>
-                <div class="form-group col-md-6 text-right">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-secondary" odd="">Cancelar</button>
-                        <button type="button" class="btn btn-success" odd="1">Ok</button>
-                    </div>                  
-                </div>
-            </div>     
-        </form>
-        <table class="table table-sm" id="producto-show-all">
-            <tbody> 
-                <tr class='text-right'>                    
-                        <td colspan="4">Impuestos S/</td>
-                        <td>0</td>
-                </tr>
-                <tr class='text-right'>                    
-                        <td colspan="4" style="font-size:2em;">Total a pagar S/</td>
-                        <td style="font-size:2em;" id="axtotal">0</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <!--form id="product-edit-form" class="p-1 bg-warning d-none">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <input type="number" class="form-control" id="product-cant-change" style="font-weight: bold;"/>        
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="number" class="form-control" id="product-compra-change" style="font-weight: bold;" step="0.01"/>
-                </div>
-            </div>
-            <div class="form-row">                
-                <div class="form-group col-md-6">                    
-                    <input type="date" class="form-control" id="product-dateven-change" style="font-weight: bold;"/>       
-                </div>
-                <div class="form-group col-md-6 text-right">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-secondary" odd="">Cancelar</button>
-                        <button type="button" class="btn btn-success" odd="1">Ok</button>
-                    </div>                  
-                </div>
-            </div>     
-        </form>
-        <table class="table table-striped table-dark table-sm" id="en-productos-table">
-            <tr>
-                <th>Acciones</th>
-                <th class="d-none">id</th>
-                <th>Venc.</th>
-                <th>Codigo</th>
-                <th>Producto</th>
-                <th class='text-center'>Cant</th>
-                <th class='text-right'>P.Compra</th>
-                <th class='text-right'>Importe</th>                
-            </tr>
-        </table>
-            <table class="table table-sm" id="producto-show-all">
-                <tbody> 
-                    <tr class='text-right'>                    
-                        <td colspan="4">Impuestos S/</td>
-                        <td>0</td>
-                    </tr>
-                    <tr class='text-right'>                    
-                        <td colspan="4" style="font-size:2em;">Total a pagar S/</td>
-                        <td style="font-size:2em;" id="axtotal">0</td>
-                    </tr>
-                </tbody>
-            </table-->
     </div>
-    <div class="col-xl-5 col-md-5 mt-2">
-        <div class="overflow-auto" style="height: calc(100vh - 230px);"><!--style="height: 500px;"-->
-            <table class="table table-striped table-hover table-sm" id="datat-products-list"><!--  table-sm  table-dark-->
-                <thead class="thead-dark">
+    <div class="col-xl-7 col-md-7 mt-2">
+        <div class="overflow-auto" style="height: calc(100vh - 13rem);">
+            <table class="table table-striped table-dark table-sm shadow" id="en-productos-table" style="font-family: Tahoma,sans-serif;">
+                <thead>
                     <tr>
-                        <th scope="col">ProductImg</th>
-                        <th scope="col">Descripción</th>
+                        <th>Acciones</th>
+                        <th class="d-none">id</th>
+                        <th>Venc.</th>
+                        <th>Codigo</th>
+                        <th>Producto</th>
+                        <th class="text-center">Cant</th>
+                        <th class="text-right">P.Compra</th>
+                        <th class="text-right">Importe</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
+            <form id="product-edit-form" class="p-1 bg-warning d-none shadow">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="number" class="form-control" id="product-cant-change" style="font-weight: bold;" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="number" class="form-control" id="product-compra-change" style="font-weight: bold;" step="0.01" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="date" class="form-control" id="product-dateven-change" style="font-weight: bold;" />
+                    </div>
+                    <div class="form-group col-md-6 text-right">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary" odd="">Cancelar</button>
+                            <button type="button" class="btn btn-success" odd="1">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <table class="table table-sm" id="producto-show-all">
+            <tbody>
+                <tr class="text-right">
+                    <td colspan="4">Impuestos S/</td>
+                    <td>0</td>
+                </tr>
+                <tr class="text-right" style="font-size: 2em;">
+                    <td colspan="4">Total a pagar S/</td>
+                    <td id="axtotal">0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xl-5 col-md-5 mt-2">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <select id="product-list-cat" class="form-control form-control-sm">
+                    <option value="CDC84DE2700EEbjFUYmxzb0w4TWpGT2lMbGtBTm50QT09">Elija...</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <input type="text" class="form-control form-control-sm" id="seach-local-data" placeholder="Buscar producto"/>
+            </div>
+        </div>
+
+        <div class="row overflow-auto" style="height: calc(100vh - 10.5rem);" id="products-lists">
+            <!--div class="col-xl-4 col-md-6 mt-2">
+                <div class="card shadow">
+                    <img class="card-img" src="public/apps/img/axproduct61967ecc972a6.png" />
+                    <div class="card-body" style="margin: -0.3rem; margin-bottom: -0.3rem;">
+                        <h6 class="card-title">Card title</h6>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">This is a wider card with supportingnt is a little bit longer.</small>
+                    </div>
+                </div>
+            </div-->
         </div>
     </div>
 </div>
+
 
 <script type="text/javascript">
     arixshell_iniciar_llaves_locales("#btn-id-en-productod");
@@ -152,46 +119,16 @@
         //$('#datat-products'').DataTable().clear();
         $('#datat-products-list').DataTable().ajax.reload();
     });
-    $('#datat-products-list').DataTable({
-                //"destroy": true,
-                "language": {
-                        "lengthMenu": "Mostrar _MENU_",
-                        "zeroRecords": "No se ha encontrado nada, lo siento",
-                        "info": "Mostrando página _PAGE_ de _PAGES_",
-                        "infoEmpty": "No hay registros disponibles",
-                        "infoFiltered": "(filtrado de _MAX_ registros totales)"
-                },
-                "ajax": {
-                        "url" : "restinventario/productos_get_simple",
-                        "dataSrc":""
-                },                				
-                "columns":[                        
-                        //{"data": null, render: function ( data, type, row ) {return btns;}},
-                        {
-                            "render": function (data, type, JsonResultRow, meta) {
-                                return '<img src="public/apps/img/'+JsonResultRow.image+'" class="img-thumbnail" style="width: 7em;">';
-                            }
-                        },
-                        {
-                            "render": function (data, type, JsonResultRow, meta) {
-                                return '<p><span class="font-weight-bold">('+JsonResultRow.cant+') '+JsonResultRow.producto+' | '+JsonResultRow.barcode+' | </span>'+JsonResultRow.descripcion+' <small>('+JsonResultRow.categoria+')</small></p>';
-                            }
-                        }
-                        //{"data": 'descripcion'}
-                ],
-                /*"order": [
-                        [ 5, "asc" ]
-                ],
-                "columnDefs": [{
-                            "targets": [0],
-                            "visible": false,
-                            "searchable": true
-                }],*/
-                "createdRow": function( row, data, dataIndex ) {
-                        $(row).attr('odd', data.barcode);         
-                }
+    var request,txtIn;//= arixshell_upload_datos('restinventario/productos_get_simple', 'txtdata='+$('#product-list-cat').val()+'&');
+    arixshell_cargar_opciones('#product-list-cat','restinventario/productos_get_category').then(function(){
+        request = arixshell_upload_datos('restinventario/productos_get_simple', 'txtdata='+$('#product-list-cat').val()+'&');
+        txtIn = $("#seach-local-data").val();//document.querySelector('#seach-local-data');
+        rest_filtrar(request,txtIn.toLowerCase());      
     });
     
+    $("footer").addClass("d-none");
+    $("#nav-idont-know").parent().addClass("d-none");
+
     //función que realiza la busqueda
     var axGlibalEnVar = null;
     $('#product-barcode').keypress(function (a) {
@@ -239,7 +176,7 @@
         fila.addClass("table-dark");
         axGlibalEnVar = fila;//ambos son por refeencia
         rest_en_product_edit(fila);
-    }); 
+    });
     $('#product-edit-form').on( 'click', 'button',function(){
         let btnInfo = $(this).attr("odd");
         $("#product-barcode").val("").focus();        
@@ -252,38 +189,37 @@
         
     }); 
     
-    $('#product-finish-btn').on( 'click', 'button',function(){
-        let btnInfo = $(this).attr("odd");
-        let tableTr = $("#en-productos-table tbody tr");
-        let nombre1 = false;        
-        if (tableTr.length > 0 && btnInfo > 0){
-            arixshell_abrir_modalbase('Terminar entrada de productos','restinventario/enproductos_final_form','btn-modal-final-product');
-            tableTr = rest_en_htmltable_object(tableTr );
-            var formData = JSON.stringify($("#myForm").serializeArray());
-            //tableTr = tableTr.toString();
-            //console.log(JSON.stringify(tableTr));
+    //$('#product-finish-btn').on( 'click', 'button',function(){
+    $('#product-finish-btn').on( 'click', '.btn-finish',function(){
+              
+        if ($("#en-productos-table tbody tr").length > 0){            
+            arixshell_abrir_modalbase('Terminar entrada de productos','restinventario/enproductos_final_form','btn-modal-final-product'); 
         }else{
-            $("#en-productos-table tbody").html("");
-            rest_en_calcular_total($("#en-productos-table tr").find('td:eq(-1)'), "#producto-show-all #axtotal");
-            //arixshell_alert_notification('warning','No se ha registrado ningun producto');
+            return;
         }
-        //table = $('#en-productos-table');
-        //onclick="printJS('restinventario/axconfig_generate_ticket')"
-        //printJS('public/resources/arix.pdf');
-        //printJS({printable:'arixsanroman/restinventario/axconfig_generate_ticket', type:'pdf', showModal:false})
-        //printJS('en-productos-table', 'html');
-        
-        //let request = arixshell_async_upload_datos('restinventario/rest_awaut','txtdata=1&').then((data) => console.log(data));       
-         
     }); 
 
     $(document).on('click', '#btn-modal-final-product', function(){
         arixshell_cerrar_modalbase();
     });
-    $('#datat-products-list tbody').on( 'click', 'tr',function(){
+    $('#products-lists').on( 'click', '.card',function(){
         let fila = $(this).attr('odd');
         $("#product-barcode").val(fila).focus();
         $("#btn-product-barcode").click();
-    });   
+    });
+    $('#product-finish-btn').on( 'click', '.btn-cancelar',function(){
+        $("#en-productos-table tbody").html("");
+        rest_en_calcular_total($("#en-productos-table tr").find('td:eq(-1)'), "#producto-show-all #axtotal");
+        request = arixshell_upload_datos('restinventario/productos_get_simple', 'txtdata='+$("#product-list-cat").val()+'&');
+        rest_filtrar(request,txtIn.toLowerCase());     
+    });
+    $("#product-list-cat").change(function(){
+        request = arixshell_upload_datos('restinventario/productos_get_simple', 'txtdata='+$("#product-list-cat").val()+'&');
+        rest_filtrar(request,txtIn.toLowerCase());
+    });
+    $("#seach-local-data").keyup(function(){
+        $(this).val();
+        rest_filtrar(request,$(this).val().toLowerCase());
+    });
     
 </script>

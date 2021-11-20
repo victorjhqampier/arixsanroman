@@ -56,32 +56,50 @@ class Restinventario extends CI_Controller {
 		}
 	}
 	public function productos_get(){
-		if($this->input->is_ajax_request()){
+		//if($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			$catCondition = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
+			
 			$datos= array(
-				array("pro.producto_id axid,pro.barcode,pro.producto,pro.descripcion,pro.cant, concat('S/ ',pro.pcompra) pcompra, concat('S/ ',pro.pventa) pventa,pro.updated_at,cat.categoria"),
-				array('rest.productos pro','rest.categorias cat'),
-				array('NULL', 'pro.categoria_id = cat.categoria_id')
-			 );
-			$datos = $this->arixkernel->arixkernel_obtener_complex_data($datos,0,['pro.estado'=>true],['pro.cant','asc']);
-			//$datos = $this->arixkernel->arixkernel_obtener_simple_data('producto_id axid,barcode,producto,descripcion,cant,pventa,updated_at', 'rest.productos', 0, ['estado'=>true],['cant','desc']);
-			for ($i=0; $i < count($datos); $i++) { 
-				$datos[$i]->updated_at = date('d/m/Y', strtotime($datos[$i]->updated_at));
+				array("pro.producto_id axid,pro.barcode,pro.producto,pro.descripcion,xps.cant, concat('S/ ',pro.pcompra) pcompra, concat('S/ ',pro.pventa) pventa,cat.categoria"),
+				array(
+					'rest.x_productosucursal xps',
+					'rest.productos pro',
+					'rest.categorias cat'),
+				array('NULL',
+					'xps.producto_id = pro.producto_id',
+					'pro.categoria_id = cat.categoria_id')
+			);
+			$suc_id = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			$catCondition  = $catCondition == 0?['pro.estado'=>true,'xps.sucursal_id'=>$suc_id]:['pro.estado'=>true,'pro.categoria_id'=>$catCondition,'xps.sucursal_id'=>$suc_id];
+			
+			$datos = $this->arixkernel->arixkernel_obtener_complex_data($datos,0,$catCondition,['xps.cant','asc']);
+			for ($i=0; $i < count($datos); $i++) {
 				$datos[$i]->axid = $this->serv_cifrado->cod_cifrar_cadena($datos[$i]->axid);
 			}
 			echo json_encode($datos);							
-		}else{
+		/*}else{
 			show_404();
-		}
+		}*/
 	}
 	public function productos_get_simple(){
-		if($this->input->is_ajax_request()){
+		if($this->input->is_ajax_request()){			
+			$catCondition = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
+			//$catCondition = 1;
 			$datos= array(
-				array("pro.image,pro.barcode,pro.producto,pro.descripcion,pro.cant, cat.categoria"),
-				array('rest.productos pro','rest.categorias cat'),
-				array('NULL', 'pro.categoria_id = cat.categoria_id')
-			 );
-			$datos = $this->arixkernel->arixkernel_obtener_complex_data($datos,0,'',['pro.barcode','asc']);
-			echo json_encode($datos);							
+				array("pro.barcode,concat('(',xps.cant,') ',pro.descripcion) descripcion, concat(pro.producto,' - S/',pro.pventa) producto,pro.image"),
+				array(
+					'rest.x_productosucursal xps',
+					'rest.productos pro'),
+				array(
+					'NULL',
+					'xps.producto_id = pro.producto_id')
+			);
+			$suc_id = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			$catCondition  = $catCondition == 0?['pro.estado'=>true,'xps.sucursal_id'=>$suc_id]:['pro.estado'=>true,'pro.categoria_id'=>$catCondition,'xps.sucursal_id'=>$suc_id];
+			
+			$datos = $this->arixkernel->arixkernel_obtener_complex_data($datos,0,$catCondition,['pro.producto','asc']);
+			echo json_encode($datos);
+
 		}else{
 			show_404();
 		}
@@ -188,16 +206,17 @@ class Restinventario extends CI_Controller {
 	}
 	public function productos_post_add(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtcontnumber')){
-			//$datos = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtproveedorid')));
+
 			$proveedor = $this->input->post('txtproveedorid');
 			$proveedor = $proveedor==""?null:intval($this->serv_cifrado->cod_decifrar_cadena($proveedor));
 			$pcompra = floatval($this->input->post('txtproductcompraunit'));//compra ???
 			$cant = intval($this->input->post('txtproductstock'));//cant
 			$cat = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtproductcat'))); //categoria
-			//$proveedor = $datos>0?$datos:null;			
+						
 			$datas[0] = [
 				'barcode' => $this->input->post('txtcontnumber'),//barcode
-				'cant' => $cant,//cant
+				//'cant' => $cant,//cant
+				//'cantvirtual' => $cant,//cant
 				'producto' => $this->input->post('txtproductname'),//name
 				'pventa' => floatval($this->input->post('txtproductpriseunit')),//venta
 				'pcompra' => $pcompra,
@@ -210,14 +229,28 @@ class Restinventario extends CI_Controller {
 				'updated_at' => date("Y-m-d H:i:s"),
 				'created_at' => date("Y-m-d H:i:s")
 			];
+			$cat = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			$manyDatas[0] = [
+				'sucursal_id' => $cat,		
+				'cant' => $cant,
+				'cantvirtual' => $cant
+			];
+			$consulta = $this->arixkernel->arixkernel_obtener_simple_data('sucursal_id', 'config.sucursales',0,['sucursal_id !='=>$cat]);
+			for ($i=0; $i < count($consulta); $i++) {
+				$manyDatas[$i+1] = [
+					'sucursal_id' => $consulta[$i]->sucursal_id,		
+					'cant' => 0,
+					'cantvirtual' => 0
+				];
+			}
 			if ($cant > 0){//contar como ingresos ->  ingresar productos -> ingresar x_entradas
 				$datas[1] = [
 					'proveedor_id'=>$proveedor,
-					'sucursal_id'=>$this->serv_administracion_usuarios->use_obtener_sucursal_id_actual(),
+					'sucursal_id'=>$cat,
 					'cuenta_id'=> $this->serv_administracion_usuarios->use_obtener_actual_cuenta_id(),
 					'comprobante_id'=>2,
-					'comprobserie'=> 'init'.uniqid(),
-					'fecha' => date("Y-m-d H:i:s"),
+					'comprobserie'=> 'axini'.uniqid(),
+					'fecha' => date("Y-m-d"),
 					'axlog' => $this->serv_administracion_usuarios->use_obtener_actual_usuario().' -> CREADO -> EL '.date('d-m-Y H:i'),
 					'updated_at' => date("Y-m-d H:i:s"),
 					'created_at' => date("Y-m-d H:i:s")
@@ -232,12 +265,11 @@ class Restinventario extends CI_Controller {
 					'created_at' => date("Y-m-d H:i:s")
 				];
 				unset($pcompra,$cant,$cat,$proveedor);
-				//echo json_encode($datas);
-				$datas = $this->arixkernel->arixkernel_guargar_arbol_data($datas, ['rest.productos','rest.entradas','rest.x_entradas']);
+				$datas = $this->arixkernel->arixkernel_guargar_arbol_batch($datas, $manyDatas,['rest.productos','rest.entradas','rest.x_entradas','rest.x_productosucursal']);
 				echo json_encode(['status'=>$datas['status']]);
 			}else{
 				unset($pcompra,$cant,$cat,$proveedor);
-				$datas = $this->arixkernel->arixkernel_guargar_simple_data($datas[0], 'rest.productos');
+				$datas = $this->arixkernel->arixkernel_guargar_sequencial_batch($datas[0], $manyDatas,['rest.productos','rest.x_productosucursal']);
 				echo json_encode(['status'=> $datas['status']]);
 			}
 		}else{
@@ -247,7 +279,6 @@ class Restinventario extends CI_Controller {
 
 	public function productos_update(){
 		if ($this->input->is_ajax_request() && $this->input->post('txtcontnumber')){
-			//$datos = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtproveedorid')));
 			$producto_id = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtproductoid')));
 			$proveedor = $this->input->post('txtproveedorid');
 			$proveedor = $proveedor==""?null:intval($this->serv_cifrado->cod_decifrar_cadena($proveedor));
@@ -255,7 +286,7 @@ class Restinventario extends CI_Controller {
 			$cat = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtproductcat'))); //categoria
 			$datas = [
 				'barcode' => $this->input->post('txtcontnumber'),//barcode
-				'cant' => $cant,//esto debe agregar al stok actual
+				//'cant' => $cant,//esto debe agregar al stok actual
 				'producto' => $this->input->post('txtproductname'),//name
 				'pventa' => floatval($this->input->post('txtproductpriseunit')),//venta
 				'pcompra' => floatval($this->input->post('txtproductcompraunit')),//compra
@@ -267,7 +298,8 @@ class Restinventario extends CI_Controller {
 				'categoria_id' => $cat,
 				'updated_at' => date("Y-m-d H:i:s")
 			];
-			$datas = $this->arixkernel->arixkernel_actualizar_sumar_data($datas, 'rest.productos',["producto_id"=>$producto_id],["cant",$cant]);
+			$cat = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();
+			$datas = $this->arixkernel->arixkernel_actualizar_producto_data($datas, ['rest.productos','rest.x_productosucursal'],["producto_id"=>$producto_id],['producto_id' =>$producto_id, 'sucursal_id'=>$cat],$cant);
 			echo json_encode($datas);
 		}else{
 			show_404();
@@ -393,7 +425,7 @@ class Restinventario extends CI_Controller {
 		}
 	}
 	public function cajas_get(){
-		//if($this->input->is_ajax_request()){
+		if($this->input->is_ajax_request()){
 			$datos= array(
 				array("caj.updated_at,caj.caja_id axid, caj.caja, caj.num,caj.base,caj.sesion,concat(suc.numero,' ',suc.nombre) sucur"),
 				array('rest.cajas caj','config.sucursales suc'),
@@ -405,9 +437,9 @@ class Restinventario extends CI_Controller {
 				$datos[$i]->axid = $this->serv_cifrado->cod_cifrar_cadena($datos[$i]->axid);
 			}
 			echo json_encode($datos);							
-		/*}else{
+		}else{
 			show_404();
-		}*/
+		}
 	}
 	
 	/*****------------- ENTRADAS,PRODUCTOS ------------** */
@@ -443,22 +475,99 @@ class Restinventario extends CI_Controller {
 		}
 	}
 	public function en_productos_post_add(){
-		//if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
-			//$priductos = $this->input->post('txtproveedorid');
-			$data = '[{"txtproductid":"50A8E49532917a010bUprbVo2Q2NhSTM0ZkxwaEszQT09","txtproductvenc":"","txtproductbarcode":"2345353535","txtproductname":"Alcohol Medicinal 70° 1000mL","txtproductcant":"1","txtproductpcompra":"7.00","txtproductimporte":"7.00"}]';
-			echo $data;
-		/*}else{
+		if ($this->input->is_ajax_request() && $this->input->post('txtdata')){
+			//$alldata = json_decode('[{"name":"txtproveedordoc","value":"48207109"},{"name":"txtproveedordscrb","value":"48207109 - VICTOR JHAMPIER, CAXI MAQUERA"},{"name":"txtproveedorid","value":"7F775B1A70BE2RWt1QXBDNkU3dWtEZnVIbW5DdWNOQT09"},{"name":"txtunidadme","value":"7F775B1A70BE2MnFEVGhDR2RIRHI1MlpvVVlMRHgrUT09"},{"name":"txtproductnumcompro","value":"01234556"},{"name":"txtproductvenci","value":"2021-11-19"},[{"txtproductid":"F9B3B5F2A8B08NjNqSWh6UHZCdkFsV2U5cG9kVm5adz09","txtproductvenc":"","txtproductbarcode":"PR2100031","txtproductname":"Vodka RUSSKAYA Botella 750ml","txtproductcant":"1","txtproductpcompra":"0.00","txtproductimporte":"0.00"},{"txtproductid":"42B1F54D1306Dc085c3Bna2loNmFWY2RWTGtrcjEwUT09","txtproductvenc":"","txtproductbarcode":"45677584345","txtproductname":"JOHNNIE WALKER Red Label 750ml + Gaseo + Vaso","txtproductcant":"1","txtproductpcompra":"30.00","txtproductimporte":"30.00"}]]');
+			$alldata = json_decode($this->input->post('txtdata'));
+			$entradas = [
+				'proveedor_id'=>$alldata[2]->value ==""?null:intval($this->serv_cifrado->cod_decifrar_cadena($alldata[2]->value)),
+				'sucursal_id'=>intval($this->serv_administracion_usuarios->use_obtener_sucursal_id_actual()),
+				'cuenta_id'=> $this->serv_administracion_usuarios->use_obtener_actual_cuenta_id(),
+				'comprobante_id'=>intval($this->serv_cifrado->cod_decifrar_cadena($alldata[3]->value)),
+				'comprobserie'=> $alldata[4]->value,
+				'fecha' => $alldata[5]->value,
+				'axlog' => $this->serv_administracion_usuarios->use_obtener_actual_usuario().' -> CREADO -> EL '.date('d-m-Y H:i'),
+				'updated_at' => date("Y-m-d H:i:s"),
+				'created_at' => date("Y-m-d H:i:s")
+			];
+
+			$alldata = $alldata[6];
+			for($i=0;$i<count($alldata);$i++){
+				$alldata[$i]->txtproductid = $this->serv_cifrado->cod_decifrar_cadena($alldata[$i]->txtproductid);
+			}
+			$alldata = $this->arixkernel->arixkernel_guargar_actualizar_entradas($entradas, $alldata,['rest.entradas','rest.productos','rest.x_entradas','rest.x_productosucursal'],$this->serv_administracion_usuarios->use_obtener_sucursal_id_actual());
+			$alldata['ids'] = $this->serv_cifrado->cod_cifrar_cadena($alldata['ids']);
+			echo json_encode($alldata);
+		}else{
 			show_404();
-		}*/
+		}
 	}
 
-
+	public function en_productos_get_ticket($ids) {
+		//if(intval($this->serv_cifrado->cod_decifrar_cadena($ids))){
+			//$arrDa =	[1,2,3];
+			//echo round(count($arrDa)*10.15) + 1;
+		$ids = intval($this->serv_cifrado->cod_decifrar_cadena($ids));
+		if(intval($ids)){
+			$datos= array(
+				['ent.entrada_id, ent.proveedor_id proveedor, ent.fecha, ent.updated_at',
+				"suc.numero,CONCAT(UPPER(suc.rsocial),' - RUC: ',suc.ruc) rsocial,suc.nombre, CONCAT(suc.direccion,' - ',dis.distrito) direccion",
+				"CONCAT(UPPER(com.comprobante),' No. ',ent.comprobserie) comprobante, concat(per.nombres,' ',per.paterno,' ',per.materno) responsable"
+				],
+				['rest.entradas ent',
+					'config.sucursales suc',
+					'private.distritos dis',
+					'rest.comprobantes com',
+					'config.cuentas cue',
+					'config.contratos con',
+					'private.personas per'
+				],
+				['NULL',
+					'ent.sucursal_id = suc.sucursal_id',
+					'suc.distrito_id = dis.distrito_id',
+					'ent.comprobante_id = com.comprobante_id',
+					'ent.cuenta_id = cue.cuenta_id',
+					'cue.contrato_id = con.contrato_id',
+					'con.persona_id = per.persona_id',
+				]//,
+				//['NULL','inner','inner','inner','inner','inner','inner']	
+			);
+			$datos = $this->arixkernel->arixkernel_obtener_complex_data($datos,0,['ent.entrada_id'=>$ids]);		
+			if(!is_null($datos[0]->proveedor)){
+				$prov = array(
+					["concat(per.documento,' - ',per.nombres,' ',per.paterno,' ',per.materno,' (',per.telefono,')') proveedor"],
+					['rest.proveedores pro','private.personas per'],
+					['NULL','pro.persona_id=per.persona_id']
+				);			
+				$prov = $this->arixkernel->arixkernel_obtener_complex_data($prov,0,['pro.proveedor_id'=>$datos[0]->proveedor]);
+				$datos[0]->proveedor = $prov[0]->proveedor;
+			}
+			$listPro = array(
+				["right(pro.barcode,9) barcode, upper(pro.producto) producto,xen.expire,xen.cant,xen.punit,(xen.cant*xen.punit) importe"],
+				['rest.x_entradas xen','rest.productos pro'],
+				['NULL','xen.producto_id=pro.producto_id']
+			);			
+			$listPro = $this->arixkernel->arixkernel_obtener_complex_data($listPro,0,['xen.entrada_id'=>$ids]);
+			
+			array_push($datos,$listPro);
+			
+			$this->load->library('serv_ticket_rest_entradas',$datos);
+			$this->serv_ticket_rest_entradas->SetTitle("Arix Ticket Entrada");
+			
+			$this->serv_ticket_rest_entradas->AliasNbPages();
+			//$this->serv_ticket->AddPage(); 
+			$this->serv_ticket_rest_entradas->tableDatos();
+			$this->serv_ticket_rest_entradas->Output("Entradas".date('d-m-Y H:i:s').'.pdf', 'I');
+		}else{
+			show_404();
+		}
+    }
 
 
 
 	function rest_awaut(){
 		//sleep(5);
-		echo json_encode(['status'=>true]);
+		//echo json_encode(['status'=>true]);
+		echo ($this->serv_cifrado->cod_cifrar_cadena('3'));
 	}
 	public function axconfig_generate_ticket() {
 		$this->load->library('serv_ticket');

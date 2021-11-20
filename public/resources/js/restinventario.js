@@ -91,3 +91,81 @@ function rest_en_htmltable_object(htmlTableTr,rowId=1,rowVencin = 2,rowBarcode =
         return [];
     }               
 }
+
+
+function rest_load_datatable_producto(location,datas){
+    let btns = arixshell_cargar_botones('btn-banear,btn-editar,btn-detalles');
+    $(location).DataTable({                
+                //"destroy": true,
+                "language":{
+                    "processing": "Procesando...",
+                    "lengthMenu": "_MENU_ registros",
+                    "zeroRecords": "No se encontraron resultados",
+                    "emptyTable": "Ningún dato disponible en esta tabla",
+                    "info": "Total _MAX_, página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "search": "Buscar:",
+                    "loadingRecords": "Cargando...",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
+                 /*{
+                        "lengthMenu": "Mostrar _MENU_ registros por página",
+                        "zeroRecords": "No se ha encontrado nada, lo siento",
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "No hay registros disponibles",
+                        "infoFiltered": "(filtrado de _MAX_ registros totales)"
+                },*/
+                //"scrollX": true,
+                "ajax": {
+                        "url" : "restinventario/productos_get",
+                        "type": "POST",
+                        "data": {"txtdata" : datas},
+                        "dataSrc":""
+                },                				
+                "columns":[
+                        
+                        {"data": 'barcode'},
+                        {"data": 'producto'},
+                        {"data": 'descripcion'},
+                        {"data": 'categoria'},
+                        {"data": 'cant'},
+                        {"data": 'pcompra'},
+                        {"data": 'pventa'},
+                        {"data": null, render: function ( data, type, row ) {return btns;}}
+                ],
+                "order": [
+                        [ 5, "asc" ]
+                ],
+                "createdRow": function( row, data, dataIndex ) {
+                        $(row).attr('odd', data.axid);      
+                }
+    })
+}
+function rest_card_product_show(location,barcode,title,descripcion,img){    
+    $(location).append('<div class="col-xl-4 col-md-6">'+
+                '<div class="card shadow" odd="'+barcode+'">'+
+                    '<img class="card-img" src="'+img+'"/>'+
+                    '<div class="card-body" style="margin: -0.3rem; margin-bottom: -0.3rem;">'+
+                        '<small class="font-weight-bold">'+title+'</small>'+
+                    '</div>'+
+                    '<div class="card-footer">'+
+                        '<small class="text-muted">'+descripcion+'</small>'+
+                    '</div>'+
+                '</div>'+
+            '</div>');
+}
+const rest_filtrar = (request,text) =>{    
+    $('#products-lists').html("");
+    for(let producto of request){
+        let nombre = producto.barcode +' '+producto.producto+' '+producto.descripcion;
+        nombre = nombre.toLowerCase();
+        if(nombre.indexOf(text) !==-1){
+            rest_card_product_show("#products-lists",producto.barcode,producto.producto,producto.descripcion,"public/apps/img/"+producto.image);
+        }        
+    }
+}

@@ -182,8 +182,9 @@
     $("#form-product-new-add #product-barcode").blur(function(){
         let request = $(this).val();
         //console.log(request);     
-        if(request.length > 5 && request.length < 20){
+        if(request.length > 6 && request.length < 31){
             request = arixshell_upload_datos('restinventario/productos_duplicate_check', 'txtdata='+request+'&');
+            //console.log(request);
             if(request.status==false){                
                 $(this).addClass('is-valid');
             }else{
@@ -260,12 +261,12 @@
     $("#form-product-new-add").validate({
         errorClass: "text-danger",
         rules: {
-            txtcontnumber :{required: true,maxlength: 25,minlength:7},//barcode
+            txtcontnumber :{required: true,maxlength: 30,minlength:7},//barcode
             txtproductpriseunit :{required: true,number:true},
             txtproductcompraunit :{required: true,number:true},
             txtproductstock :{required: true,number:true},
-            txtproductname :{required: true,maxlength:40 ,minlength: 4},            
-            txtproductdescription :{required: false,maxlength: 50,minlength: 4},            
+            txtproductname :{required: true,maxlength:50 ,minlength: 4},            
+            txtproductdescription :{required: false,maxlength: 200,minlength: 4},            
             txtproveedordoc :{required: false,maxlength: 11,minlength: 8},
             txtproveedordscrb :{required: false,maxlength: 80,minlength: 8},
             txtproveedorid :{required: false,maxlength: 120,minlength: 8},

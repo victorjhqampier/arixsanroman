@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<div class="row">
+<div class="row bg-info">
     <div class="col-xl-8 col-md-8">
         <form id="form-product-new-add">
             <div class="form-row">
@@ -41,16 +41,15 @@
         </form>
     </div>
     <div class="col-xl-4 col-md-4">
-        <div class="d-flex justify-content-between" id="btn-to-save">
+        <div class="d-flex justify-content-between mt-4" id="btn-to-save">
             <button type="button" class="btn btn-warning btn-cancelar"><i class="fa fa-times" aria-hidden="true"></i></button>
             <button type="button" class="btn btn-success btn-guardar"><i class="fa fa-check" aria-hidden="true"></i></button>        
-            <button type="button" class="btn btn-info btn-imprimir"><i class="fa fa-print" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-primary btn-imprimir"><i class="fa fa-print" aria-hidden="true"></i></button>
         </div>
     </div>
 </div>
 
-<script type="text/javascript">
-    
+<script type="text/javascript">    
     $("#form-product-new-add #pro-proveedor-doc").focus();
     $('#form-product-new-add #pro-proveedor-doc').keypress(function (a) {
         13 == a.which && $("#btn-search-proveedor").click();
@@ -108,7 +107,7 @@
         errorClass: "text-danger",
         rules: {
             txtproveedordoc:{required: false,maxlength: 11,minlength: 8},
-            txtproveedordscrb:{required: false,maxlength: 11,minlength: 8},
+            txtproveedordscrb:{required: false,maxlength: 110,minlength: 8},
             txtproveedorid :{required: false,maxlength: 120,minlength: 8},
             txtunidadme:{required: true},
             txtproductnumcompro:{required: true,maxlength: 20,minlength: 5},
@@ -116,30 +115,40 @@
         }
     });
 
-    $('#btn-to-save').on("click", ".btn-guardar", function() {
-        //$("#form-product-new-add").valid();
-        let request = $('#form-product-new-add').serialize()+'&txtdata='+JSON.stringify(rest_en_htmltable_object($("#en-productos-table tbody tr")));
+    $('#btn-to-save').on("click", ".btn-guardar", function() {        
        if($("#form-product-new-add").valid()){
-            request = arixshell_upload_datos('restinventario/en_productos_post_add', request);
-            /*if(request.status==true){//el servidor siempre responde con un obejeto
-                arixshell_alert_notification('success','Guardado correctamente...');
-                arixshell_hacer_pagina_atras();
-            }
-            else{
+            let request = $('#form-product-new-add').serializeArray(); 
+            request.push(rest_en_htmltable_object($("#en-productos-table tbody tr")));                  
+            request = arixshell_upload_datos('restinventario/en_productos_post_add', 'txtdata='+JSON.stringify(request)+'&');
+            ///console.log(request);
+            if(request.status==true){//el servidor siempre responde con un obejeto
+                arixshell_cerrar_modalbase();
+                $('#product-finish-btn .btn-cancelar').click();
+                $(arixshell_cargar_llave_local(0)+" .btn-refrescar").click();
+                arixshell_alert_notification('success','Guardado correctamente...');                
+            }else{
                 //alert('Lo sentimos, los datos no fueron guardados ...!');
-                arixshell_alert_notification('error','Lo sentimos, no pudimos guardar los datos...');
-                arixshell_hacer_pagina_atras();
-            }*/
+                arixshell_cerrar_modalbase();
+                $('#product-finish-btn .btn-cancelar').click();
+                $(arixshell_cargar_llave_local(0)+" .btn-refrescar").click();
+                arixshell_alert_notification('error','Lo sentimos, no pudimos guardar los datos...');                
+            }
+            printJS({printable:'arixsanroman/restinventario/en_productos_get_ticket/'+request.ids, type:'pdf', showModal:false})
         }
         else{
             return;
         }
     });
-    $('#btn-to-save').on("click", ".btn-imprimir", function() {
+   /* $('#btn-to-save').on("click", ".btn-imprimir", function() {
+        
         //$("#form-product-new-add").valid();
         console.log($('#form-product-new-add').serialize());
         printJS({printable:'arixsanroman/restinventario/axconfig_generate_ticket', type:'pdf', showModal:false})
-        //let request = arixshell_async_upload_datos('restinventario/rest_awaut','txtdata=1&').then((data) => console.log(data));       
+       //let request = arixshell_async_upload_datos('restinventario/rest_awaut','txtdata=1&').then((data) => console.log(data));       
          
+    });*/
+    $('#btn-to-save').on("click", ".btn-cancelar", function() {
+
+        arixshell_cerrar_modalbase();
     });
 </script>

@@ -75,7 +75,7 @@
                   <form role="form" id="formuserloginarixmee">
                      <div class="form-group">
                         <label for="inputUsernameEmail" class="label">Usuario</label>
-                        <input type="text" class="form-control" name="txtinputUsernameEmail" id="inputUsernameEmail" placeholder="Email ...">
+                        <input type="email" class="form-control" name="txtinputUsernameEmail" id="inputUsernameEmail" placeholder="Email ...">
                      </div>
                      <div class="form-group">
                         <label for="inputPassword">Contraseña</label>
@@ -139,11 +139,11 @@ $(document).ready(function () {
       txtinputUsernameEmail: {
         required: !0,
         email: !0,
-        maxlength: 100,
+        maxlength: 200,
       },
       txtinputPassword: {
         required: !0,
-        maxlength: 32,
+        maxlength: 200,
         minlength: 7
       }
     }

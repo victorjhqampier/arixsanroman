@@ -106,13 +106,13 @@ class Arixkernel extends CI_Model{
 	//public function arixkernel_obtener_datos($tupla, $tabla, $limit = 100, $offset = 0, $array_condition = '', $array_orderby = '', $array_groupby = ''){
 
 	//1: arixkernel_obtener_simple_data('submenu_id, submenu', 'config.v_menu_subapp', 0, 'app_id = 1003 AND rol >= 4', array('submenu_id','ASC'),array('submenu_id','submenu')
-	public function arixkernel_obtener_simple_data($tupla, $tabla, $offset = 0, $array_condition = '', $array_orderby = '', $array_groupby = ''){//PENDIENTE REVISAR SI TIENE ACCESO A TABLA 
+	public function arixkernel_obtener_simple_data($tupla, $tabla, $offset = 0, $array_condition = '', $array_orderby = '', $array_groupby = '',$limit=150){//PENDIENTE REVISAR SI TIENE ACCESO A TABLA 
 		$array_condition = (null == $array_condition) ? array() : $array_condition;
 		$array_orderby = (null == $array_orderby) ? array('','') : $array_orderby;
 		$this->db->select($tupla);
 		$this->db->group_by($array_groupby);
 		$this->db->order_by($array_orderby[0],$array_orderby[1]);
-		return $this->db->get_where($tabla, $array_condition, 150, $offset)->result();
+		return $this->db->get_where($tabla, $array_condition, $limit, $offset)->result();
 	}
 
 	//public function arixkernel_obtener_id_dato($tupla, $tabla, $array_condicion){
@@ -131,7 +131,7 @@ class Arixkernel extends CI_Model{
 		}			
 	}
 	//1: arixkernel_obtener_complex_data(exe_contruir_consulta(array()), 0, array('sucursal_id >'=>0), array('sucursal_id','DESC'));
-	public function arixkernel_obtener_complex_data($array_tabla_tupla, $offset = 0, $array_condition = '', $array_orderby = '',$array_groupby = ''){//orderby en evaluacion
+	public function arixkernel_obtener_complex_data($array_tabla_tupla, $offset = 0, $array_condition = '', $array_orderby = '',$array_groupby = '',$limit=150){//orderby en evaluacion
 		$array_orderby = (null == $array_orderby) ? array('','') : $array_orderby;//PENDIENTE--- SOLO ACCESO A TABLAS PERMITIDAS
         $this->db->select(implode(",", $array_tabla_tupla[0]));
         $this->db->from($array_tabla_tupla[1][0]);
@@ -140,7 +140,30 @@ class Arixkernel extends CI_Model{
 		}
 		$this->db->group_by($array_groupby);
         $this->db->order_by($array_orderby[0], $array_orderby[1]);
-        $this->db->limit(150, $offset);
+        $this->db->limit($limit, $offset);
+        if($array_condition!=null){
+        	$clave = array_keys ($array_condition);
+        	$valor = array_values ($array_condition);
+        	for ($i=0; $i < count($array_condition); $i++) {
+            	$this->db->where($clave[$i], $valor[$i]);
+        	}
+        	return $this->db->get()->result();
+        }
+        else{
+        	return $this->db->get()->result();
+        }        
+	}
+
+	public function arixkernel_obtener_complex($array_tabla_tupla, $offset = 0, $array_condition = '', $array_orderby = '',$array_groupby = '',$limit=150){//orderby en evaluacion
+		$array_orderby = (null == $array_orderby) ? array('','') : $array_orderby;//PENDIENTE--- SOLO ACCESO A TABLAS PERMITIDAS
+        $this->db->select(implode(",", $array_tabla_tupla[0]));
+        $this->db->from($array_tabla_tupla[1][0]);
+        for ($i=1; $i < count($array_tabla_tupla[1]); $i++) { 
+            $this->db->join($array_tabla_tupla[1][$i], $array_tabla_tupla[2][$i],$array_tabla_tupla[3][$i]);
+		}
+		$this->db->group_by($array_groupby);
+        $this->db->order_by($array_orderby[0], $array_orderby[1]);
+        $this->db->limit($limit, $offset);
         if($array_condition!=null){
         	$clave = array_keys ($array_condition);
         	$valor = array_values ($array_condition);
@@ -289,29 +312,8 @@ class Arixkernel extends CI_Model{
 			return array('status'=>true);
 		}
 	}
-	//selecciona una columna y le agrea lo deseado arr_columna [columna, cant a sumar ]
-	public function arixkernel_actualizar_sumar_data($data, $table,$condition,$arr_columna){
-		$this->db->trans_start();			
-			try{
-				$this->db->select($arr_columna[0].' axid');
-				$temp = $this->db->get_where($table, $condition)->row();
-				$data[$arr_columna[0]] = intval($temp->axid) + (intval($arr_columna[1]));
+	
 
-				$this->db->where($condition);
-				$this->db->update($table, $data);
-				if(!$this->db->affected_rows()){
-					throw new Exception('No affected rows');
-				}				
-			}catch (PDOException $e){
-				$this->db->rollback();
-			}
-		$this->db->trans_complete();
-		if($this->db->trans_status()===FALSE){
-			return array('status'=>false);
-		}else{
-			return array('status'=>true);
-		}
-	}
 	public function arixkernel_actualizar_serial_data($datas, $tables,$conditions){
 		$this->db->trans_start();			
 			try{
@@ -360,6 +362,131 @@ class Arixkernel extends CI_Model{
 			if(!$this->db->affected_rows()){
 				$this->db->insert($table, $datas[$i]);
 			}
+		}
+	}
+
+	/***********  CONSULTAS PERSONALIZADAS POR REST******* */
+	//selecciona una columna y le agrea lo deseado arr_columna [columna, cant a sumar ] ['producto_id' =>0, 'sucursal_id'=>0]
+	public function arixkernel_actualizar_producto_data($data, $table,$arrConOne, $arrContwo,$inCant){
+		$this->db->trans_start();			
+			try{
+				$this->db->select('cant, cantvirtual');
+				$temp = $this->db->get_where($table[1], $arrContwo)->row();
+				$xdata['cant'] = intval($temp->cant) + (intval($inCant));
+				$xdata['cantvirtual'] = intval($temp->cantvirtual) + (intval($inCant));
+
+				$this->db->where($arrConOne);
+				$this->db->update($table[0], $data);
+
+				$this->db->where($arrContwo);
+				$this->db->update($table[1], $xdata);
+				if(!$this->db->affected_rows()){
+					throw new Exception('No affected rows');
+				}				
+			}catch (PDOException $e){
+				$this->db->rollback();
+			}
+		$this->db->trans_complete();
+		if($this->db->trans_status()===FALSE){
+			return array('status'=>false);
+		}else{
+			return array('status'=>true);
+		}
+	}
+	// data[0]=entradas, data[1]=productos || [entradas,productos,x_entradas] || --- || [canttidad, , $var]
+	public function arixkernel_guargar_actualizar_entradas($entrada, $productos, $tables,$sucuId){
+		$this->db->trans_start();			
+			try{
+
+				$this->db->insert($tables[0], $entrada);
+				$entrada_id = $this->db->insert_id();
+				$xProducto= [];
+				for($i=0;$i<count($productos);$i++){
+
+					$producto_id = $productos[$i]->txtproductid;
+					$productCompra['pcompra'] = floatval($productos[$i]->txtproductpcompra);
+
+					$this->db->select('cant,cantvirtual');
+					$arrProSuc = $this->db->get_where($tables[3], ['producto_id'=>$producto_id])->row();					
+					$xProducto['cant'] = intval($arrProSuc->cant) + (intval($productos[$i]->txtproductcant));
+					$xProducto['cantvirtual'] = intval($arrProSuc->cantvirtual) + (intval($productos[$i]->txtproductcant));
+								
+					$this->db->where(['producto_id'=>$producto_id]);
+					$this->db->update($tables[1], $productCompra);
+
+					$this->db->where(['producto_id'=>$producto_id,'sucursal_id'=>$sucuId]);
+					$this->db->update($tables[3], $xProducto);
+					if(!$this->db->affected_rows()){
+						throw new Exception('No affected rows');
+					}else{
+						$xentradas = [
+							'entrada_id'=>$entrada_id,
+							'producto_id'=>$producto_id,
+							'cant'=> intval($productos[$i]->txtproductcant),
+							'punit'=>$productos[$i]->txtproductpcompra,
+							'expire'=>$productos[$i]->txtproductvenc==""?null:$productos[$i]->txtproductvenc
+						];
+						$this->db->insert($tables[2], $xentradas);
+					}
+				}				
+			}catch (PDOException $e){
+				$this->db->rollback();
+			}
+		$this->db->trans_complete();
+		if($this->db->trans_status()===FALSE){
+			return array('status'=>false);
+		}else{
+			return array('status'=>true,'ids'=>$entrada_id);
+		}
+	}
+	public function arixkernel_guargar_sequencial_batch($data,$manyDatas, $tables){
+		
+		$this->db->trans_start();
+		try{
+			$this->db->insert($tables[0], $data);
+			$entrada_id = $this->db->insert_id();
+			for ($i=0; $i < count($manyDatas); $i++) {
+				$manyDatas[$i][$this->arixkernel_table_to_id($tables[0]).'_id'] = $entrada_id;
+			}
+			$this->db->insert_batch($tables[1], $manyDatas);			
+		}catch (PDOException $e){
+			$this->db->rollback();
+		}
+		$this->db->trans_complete();
+		if($this->db->trans_status()===FALSE){
+			return array('status'=>false);
+		}else{
+			return array('status'=>true);
+		}	
+	}
+	public function arixkernel_guargar_arbol_batch($datas,$manyDatas,$tables){
+		//$insert = array();
+		$this->db->trans_start();
+			try{
+				$this->db->insert($tables[0], $datas[0]);
+				$ids[0] = $this->db->insert_id();
+				//array_push($insert,$ids);
+
+				for ($i=0; $i < count($manyDatas); $i++) {
+					$manyDatas[$i][$this->arixkernel_table_to_id($tables[0]).'_id'] = $ids[0];
+				}
+				$this->db->insert_batch($tables[3], $manyDatas);
+
+				$this->db->insert($tables[1], $datas[1]);
+				$ids[1] = $this->db->insert_id();
+				//array_push($insert,$ids);
+
+				$datas[2][$this->arixkernel_table_to_id($tables[0]).'_id'] = $ids[0];
+				$datas[2][$this->arixkernel_table_to_id($tables[1]).'_id'] = $ids[1];
+				$this->db->insert($tables[2], $datas[2]);
+			}catch (PDOException $e){
+				$this->db->rollback();
+			}
+		$this->db->trans_complete();
+		if($this->db->trans_status()===FALSE){
+			return array('status'=>false);
+		}else{
+			return array('status'=>true, 'ids'=>$ids);
 		}
 	}
 	
