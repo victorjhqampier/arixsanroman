@@ -125,7 +125,8 @@
                 arixshell_cerrar_modalbase();
                 $('#product-finish-btn .btn-cancelar').click();
                 $(arixshell_cargar_llave_local(0)+" .btn-refrescar").click();
-                arixshell_alert_notification('success','Guardado correctamente...');                
+                arixshell_alert_notification('success','Guardado correctamente...');
+                printJS({printable:'arixsanroman/restinventario/en_productos_get_ticket/'+request.ids, type:'pdf', showModal:false});               
             }else{
                 //alert('Lo sentimos, los datos no fueron guardados ...!');
                 arixshell_cerrar_modalbase();
@@ -133,7 +134,6 @@
                 $(arixshell_cargar_llave_local(0)+" .btn-refrescar").click();
                 arixshell_alert_notification('error','Lo sentimos, no pudimos guardar los datos...');                
             }
-            printJS({printable:'arixsanroman/restinventario/en_productos_get_ticket/'+request.ids, type:'pdf', showModal:false})
         }
         else{
             return;

@@ -38,7 +38,7 @@ class Serv_ticket_rest_entradas extends FPDF{
         //$this->MultiCell(0, 3, "BAJO BOLETA DE VENTA ELECTRONICA No. 002022488",  0, 'C');
         $this->ln(3);
         $this->SetFont('bahnschrift', '', 9);
-        $this->Cell(0, 4, utf8_decode('REGISTRO DE ENTRADA No. '.self::$arrData[0]->entrada_id,), 0, 1, 'C');
+        $this->Cell(0, 4, utf8_decode('REGISTRO DE ENTRADA No. '.self::$arrData[0]->entrada_id), 0, 1, 'C');
         $this->SetFont('bahnschrift', '', 8);
         $this->MultiCell(0, 4, utf8_decode("BAJO ".self::$arrData[0]->comprobante),  0, 'C');
         $this->ln(3);
