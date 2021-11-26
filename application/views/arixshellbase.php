@@ -146,7 +146,7 @@
         <script type="text/javascript" src="public/resources/js/dist/sweetalert2.min.js"></script>
         <script type="text/javascript" src="public/resources/js/arixshell.js"></script>
 
-        <script type="text/javascript" src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+        <script type="text/javascript" src="public/resources/js/print.min.js"></script>
         <?php if(!empty($js[0])){for($i=0;$i<count($js[0]);$i++){echo '<script type="text/javascript" src="'.$js[0][$i].'" ></script>'."\n";}}else{return;} ?>
     </body>
 </html>
