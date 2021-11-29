@@ -38,7 +38,7 @@ class Restinventario extends CI_Controller {
 		else{
 			show_404();
 		}
-	}
+	}	
 	public function productos_add(){
 		if ($this->input->is_ajax_request()) {
 			$this->load->view('app_restinventario/productos_add');
@@ -55,8 +55,16 @@ class Restinventario extends CI_Controller {
 			show_404();
 		}
 	}
+	public function consultar(){
+		if ($this->input->is_ajax_request()) {
+			$this->load->view('app_restinventario/pruebas');
+		}
+		else{
+			show_404();
+		}
+	}
 	public function productos_get(){
-		//if($this->input->is_ajax_request() && $this->input->post('txtdata')){
+		if($this->input->is_ajax_request() && $this->input->post('txtdata')){
 			$catCondition = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
 			
 			$datos= array(
@@ -77,12 +85,12 @@ class Restinventario extends CI_Controller {
 				$datos[$i]->axid = $this->serv_cifrado->cod_cifrar_cadena($datos[$i]->axid);
 			}
 			echo json_encode($datos);							
-		/*}else{
+		}else{
 			show_404();
-		}*/
+		}
 	}
 	public function productos_get_simple(){
-		if($this->input->is_ajax_request()){			
+		if($this->input->is_ajax_request() && $this->input->post('txtdata')){			
 			$catCondition = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
 			//$catCondition = 1;
 			$datos= array(
@@ -494,7 +502,7 @@ class Restinventario extends CI_Controller {
 			for($i=0;$i<count($alldata);$i++){
 				$alldata[$i]->txtproductid = $this->serv_cifrado->cod_decifrar_cadena($alldata[$i]->txtproductid);
 			}
-			$alldata = $this->arixkernel->arixkernel_guargar_actualizar_entradas($entradas, $alldata,['rest.entradas','rest.productos','rest.x_entradas','rest.x_productosucursal'],$this->serv_administracion_usuarios->use_obtener_sucursal_id_actual());
+			$alldata = $this->arixkernel->arixkernel_guargar_actualizar_entradas($entradas, $alldata,$this->serv_administracion_usuarios->use_obtener_sucursal_id_actual());
 			$alldata['ids'] = $this->serv_cifrado->cod_cifrar_cadena($alldata['ids']);
 			echo json_encode($alldata);
 		}else{

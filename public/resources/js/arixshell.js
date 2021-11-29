@@ -698,6 +698,9 @@ function arixshell_get_entities(dni){
         return;
     }
 }
+function arixshell_print_get_pdf(url,data){
+    printJS({printable:location.href+'/'+url+'/'+data, type:'pdf', showModal:true});
+}
 
 /*----------------REDESARROLLAR MODULO DE TITULOS---------*/
 

@@ -313,7 +313,7 @@ class Arixkernel extends CI_Model{
 		}
 	}
 	
-
+	//arixkernel_actualizar_serial_data(array([],[]), [],array([],[]));
 	public function arixkernel_actualizar_serial_data($datas, $tables,$conditions){
 		$this->db->trans_start();			
 			try{
@@ -393,12 +393,12 @@ class Arixkernel extends CI_Model{
 			return array('status'=>true);
 		}
 	}
-	// data[0]=entradas, data[1]=productos || [entradas,productos,x_entradas] || --- || [canttidad, , $var]
-	public function arixkernel_guargar_actualizar_entradas($entrada, $productos, $tables,$sucuId){
+	// data[0]=entradas, data[1]=productos || [entradas,productos,x_entradas, x_producsucu] || --- || [canttidad, , $var]
+	public function arixkernel_guargar_actualizar_entradas($entrada, $productos, $sucuId){
 		$this->db->trans_start();			
 			try{
 
-				$this->db->insert($tables[0], $entrada);
+				$this->db->insert('rest.entradas', $entrada);
 				$entrada_id = $this->db->insert_id();
 				$xProducto= [];
 				for($i=0;$i<count($productos);$i++){
@@ -407,15 +407,16 @@ class Arixkernel extends CI_Model{
 					$productCompra['pcompra'] = floatval($productos[$i]->txtproductpcompra);
 
 					$this->db->select('cant,cantvirtual');
-					$arrProSuc = $this->db->get_where($tables[3], ['producto_id'=>$producto_id])->row();					
+					$arrProSuc = $this->db->get_where('rest.x_productosucursal', ['producto_id'=>$producto_id,'sucursal_id'=>$sucuId])->row();
+										
 					$xProducto['cant'] = intval($arrProSuc->cant) + (intval($productos[$i]->txtproductcant));
 					$xProducto['cantvirtual'] = intval($arrProSuc->cantvirtual) + (intval($productos[$i]->txtproductcant));
 								
 					$this->db->where(['producto_id'=>$producto_id]);
-					$this->db->update($tables[1], $productCompra);
+					$this->db->update('rest.productos', $productCompra);
 
 					$this->db->where(['producto_id'=>$producto_id,'sucursal_id'=>$sucuId]);
-					$this->db->update($tables[3], $xProducto);
+					$this->db->update('rest.x_productosucursal', $xProducto);
 					if(!$this->db->affected_rows()){
 						throw new Exception('No affected rows');
 					}else{
@@ -426,7 +427,7 @@ class Arixkernel extends CI_Model{
 							'punit'=>$productos[$i]->txtproductpcompra,
 							'expire'=>$productos[$i]->txtproductvenc==""?null:$productos[$i]->txtproductvenc
 						];
-						$this->db->insert($tables[2], $xentradas);
+						$this->db->insert('rest.x_entradas', $xentradas);
 					}
 				}				
 			}catch (PDOException $e){

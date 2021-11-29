@@ -23,10 +23,11 @@
                 </div>
             </div>
             <div class="form-group col-md-3 text-right" id="product-finish-btn">
-                <div class="btn-group" role="group">                           
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-danger btn-cerrarcaja"><i class="fa fa-times" aria-hidden="true"></i></button>                      
                     <button type="button" class="btn btn-primary btn-imprimir" odd=""><i class="fa fa-print" aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-warning btn-cancelar" odd="0"><i class="fa fa-times" aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-success btn-finish" odd="1">Pagar</button>
+                    <button type="button" class="btn btn-warning btn-cancelar"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-success btn-finish">Cobrar</button>
                 </div>
             </div>
         </div>
@@ -38,12 +39,12 @@
                     <tr>
                         <th>Acciones</th>
                         <th class="d-none">id</th>
-                        <th>Venc.</th>
-                        <th>Codigo</th>
-                        <th>Producto</th>
-                        <th class="text-center">Cant</th>
-                        <th class="text-right">P.Compra</th>
-                        <th class="text-right">Importe</th>
+                        <th>CODIGO</th>
+                        <th>DESCRIPCION</th>
+                        <th>CANT.</th>
+                        <th class="text-center">P.UNIT</th>
+                        <th class="text-right">DSCTO</th>
+                        <th class="text-right">IMPORTE</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -71,15 +72,28 @@
             </form>
         </div>
         
+
+        
+
         <table class="table table-sm" id="producto-show-all">
             <tbody>
                 <tr class="text-right">
-                    <td colspan="4">Impuestos S/</td>
-                    <td>0</td>
+                    <td colspan="3">
+                        <div class="form-group col-md-12" style="margin: -5px">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="input-descto" placeholder="Codigo de Descto"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-info" type="button" id="btn-descto-search"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Descuento especial S/</td>
+                    <td>0.00</td>
                 </tr>
                 <tr class="text-right" style="font-size: 2em;">
                     <td colspan="4">Total a pagar S/</td>
-                    <td id="axtotal">0</td>
+                    <td id="axtotal">0.00</td>
                 </tr>
             </tbody>
         </table>
@@ -114,7 +128,7 @@
 
 
 <script type="text/javascript">
-    arixshell_iniciar_llaves_locales("#btn-id-en-productod");
+    arixshell_iniciar_llaves_locales("#btn-id-en-ventas");
     arixshell_cargar_botones_menu('btn-refrescar');
     $(arixshell_cargar_llave_local(0)).on("click", ".btn-refrescar", function() {// 0 = #btn_id_empleados_1; 1 = #con_id_empleados
         //$('#datat-products'').DataTable().clear();
@@ -138,36 +152,41 @@
     $("#btn-product-barcode").click(function () {     
         let request = $("#product-barcode").val(); 
         if (request.length > 5){      
-            let result = false;
-            $("#product-barcode").val("").focus();            
-
-            $("#en-productos-table tr").find('td:eq(3)').each(function(){//esto es es for
-                datatable = $(this).html();
-                if(datatable == request){
-                    result = $(this).parent();
-                }
-            });
-            if(result){
-                    rest_en_calcular_importe(result, $("#product-cant").val());
-                    rest_en_calcular_total($("#en-productos-table tr").find('td:eq(-1)'), "#producto-show-all #axtotal");
-            }else{
-                request = arixshell_upload_datos('restinventario/entradas_productos_get_one', 'txtdata='+request+'&');
-                    //console.log(request);
-                if(request.status == true){
-                    let cant = parseInt($("#product-cant").val());
-                    let importe = parseFloat(request.pcompra) * cant;
-                    importe = importe.toFixed(2);
-                    rest_en_add_row({'1':request.axid,'2':request.barcode,'3':request.producto,'4':cant,'5':request.pcompra,'6':importe},'#en-productos-table tbody');
-                    rest_en_calcular_total($("#en-productos-table tr").find('td:eq(-1)'), "#producto-show-all #axtotal");
+            let htmlResult = false;
+            request = arixshell_upload_datos('restpuntodeventa/ventas_productos_get_one', 'txtdata='+request+'&');
+            if(request.status == true){
+                $("#product-barcode").val("").focus();
+                $("#en-productos-table tr").find('td:eq(2)').each(function(){//busca codigo de barras
+                    if($(this).html() == request.barcode){
+                        htmlResult = $(this).parent();
+                    }
+                });
+                if(htmlResult){//la fila de la tabla
+                   rest_sell_calcular_importe(htmlResult, $("#product-cant").val(),request.dscto);
+                   rest_en_calcular_total($("#en-productos-table tr").find('td:eq(-1)'), "#producto-show-all #axtotal");
                 }else{
-                    arixshell_alert_notification('warning','El código de barras no se encuentra registrado');
+                    let cant = parseInt($("#product-cant").val());
+                    let dscto = parseFloat(request.dscto) * cant;
+                    let importe = parseFloat(request.pventa) * cant;
+
+                    importe = importe.toFixed(2);
+                    dscto = dscto.toFixed(2);
+
+                    importe = importe - dscto;
+                    importe = importe.toFixed(2);
+
+                    rest_sell_add_row({'1':request.axid,'2':request.barcode,'3':request.producto,'4':cant,'5':request.pventa,'6':dscto,'7':importe},'#en-productos-table tbody');
+                    rest_en_calcular_total($("#en-productos-table tr").find('td:eq(-1)'), "#producto-show-all #axtotal");
                 }
+            }else{
+                arixshell_alert_notification('warning','Stock bacio o codigo de barras inválido');
             }
         }else{
             $("#product-barcode").val("").focus();
             arixshell_alert_notification('error','Error! Escriba un codigo de barras válido');
         }
     });
+    
     $('#en-productos-table').on( 'click', '.btn-borrar',function(){
         let fila = $(this).parent().parent().parent().remove();
         rest_en_calcular_total($("#en-productos-table tr").find('td:eq(-1)'), "#producto-show-all #axtotal");
@@ -214,11 +233,14 @@
     $('#product-finish-btn').on( 'click', '.btn-imprimir',function(){
         let axid = $(this).attr('odd');
         if (axid != ""){
-            arixshell_print_get_pdf(/*restinventario*/'en_productos_get_ticket',axid);
+            arixshell_print_get_pdf('en_productos_get_ticket',axid);
         }else{
             return;
         }
     });
+
+
+
     $("#product-list-cat").change(function(){
         request = arixshell_upload_datos('restinventario/productos_get_simple', 'txtdata='+$("#product-list-cat").val()+'&');
         rest_filtrar(request,txtIn.toLowerCase());

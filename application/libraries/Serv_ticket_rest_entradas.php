@@ -6,8 +6,9 @@ class Serv_ticket_rest_entradas extends FPDF{
     protected static $arrData;
     function __construct(&$arrDa) {        
         //parent::__construct('P','mm',array(80,119));
-        $longPage = 105 + ((count($arrDa[1]) -1) * 6);
-        parent::__construct('P','mm',array(80,$longPage));
+        $longPage = 105 + ((count($arrDa[1]) - 1) * 6);$i = 0;
+        foreach($arrDa[1] as $product){if (strlen ($product->producto) >= 32){$i+=1;}}
+        parent::__construct('P','mm',array(80,$longPage + ($i*2) ));
         self::$arrData = $arrDa;
         $this->addFont('bahnschrift');
         //$this->AddFont('bahnschrift','','Bahnschrift.ttf',true);

@@ -169,3 +169,44 @@ const rest_filtrar = (request,text) =>{
         }        
     }
 }
+
+function restpv_lista_card(location,ids,nombre,user,status){
+    user = status == true?user:"Libre";
+    status = status == false ? "bg-success" : "bg-danger";    
+    $(location).append('<div class="col-xl-3 col-md-6">'+
+                            '<div class="card '+status+' text-white mb-4" odd="'+ids+'">'+
+                                '<div class="card-body">'+nombre+'</div>'+
+                                 '<div class="card-footer d-flex align-items-center justify-content-between">'+
+                                    '<a class="small text-white stretched-link" href="javascript:;">'+user+'</a>'+
+                                    '<div class="small text-white"><i class="fas fa-angle-right"></i></div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>');
+}
+
+function rest_sell_add_row(arrData,location){
+    //console.log(arrData);
+    let keys=[];
+    let btns = arixshell_cargar_botones('btn-borrar,btn-agregar,btn-restar');
+    for (let key in arrData) {keys.push(key);}
+    $(location).append('<tr><td>'+btns+'</td><td class="d-none">'+arrData[keys[0]]+'</td><td>'+arrData[keys[1]]+'</td><td>'+arrData[keys[2]]+'</td><td class="text-center">'+arrData[keys[3]]+'</td><td class="text-right">'+arrData[keys[4]]+'</td><td class="text-right">'+arrData[keys[5]]+'</td><td class="text-right">'+arrData[keys[6]]+'</td></tr>');
+}
+
+function rest_sell_calcular_importe(htmlObject, addCant, addDscto){
+    addDscto = parseFloat(addDscto) * parseInt(addCant);//descuento
+    addDscto = addDscto.toFixed(2);    
+
+    addCant = parseInt(htmlObject.find("td:eq(4)").html()) + parseInt(addCant);    
+    addDscto = parseFloat(htmlObject.find("td:eq(6)").html()) + parseFloat(addDscto);
+    
+    addDscto = addDscto.toFixed(2);
+    
+    let pVenta = parseFloat(htmlObject.find("td:eq(5)").html()) * addCant;
+    pVenta = pVenta.toFixed(2);
+    pVenta = parseFloat(pVenta) - parseFloat(addDscto);
+    pVenta = pVenta.toFixed(2);
+
+    htmlObject.find("td:eq(4)").html(addCant);
+    htmlObject.find("td:eq(6)").html(addDscto);
+    htmlObject.find("td:eq(7)").html(pVenta);
+}
