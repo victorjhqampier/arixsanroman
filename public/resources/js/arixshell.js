@@ -699,7 +699,16 @@ function arixshell_get_entities(dni){
     }
 }
 function arixshell_print_get_pdf(url,data){
-    printJS({printable:location.href+'/'+url+'/'+data, type:'pdf', showModal:true});
+   if (/Android/i.test(navigator.userAgent) == true){       
+        let objFra = document.createElement('iframe');
+        objFra.style.visibility = 'hidden';
+        objFra.src = location.href+'/'+url+'/'+data;
+        $("#android-print-asistant").html(objFra);
+        objFra.contentWindow.focus();        
+        objFra.contentWindow.print();
+    }else{
+        printJS({printable:location.href+'/'+url+'/'+data, type:'pdf', showModal:true});
+    }
 }
 
 /*----------------REDESARROLLAR MODULO DE TITULOS---------*/

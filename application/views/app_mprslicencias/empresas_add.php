@@ -142,11 +142,11 @@
         arixshell_hacer_pagina_atras();
     });
    
-    arixshell_cargar_opciones('#form-empr-new-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad');
+    
     mpsr_subir_fechas('#form-empr-new-add #aut-finicio',true);
     mpsr_subir_fechas('#form-empr-new-add #aut-ffinal',6);
     arixshell_cargar_opciones('#form-empr-new-add #aut-tunidad','mpsrlicencias/mpsr_get_tipounidad');
-    
+    arixshell_cargar_opciones('#form-empr-new-add #aut-modalidad','mpsrlicencias/mpsr_get_modalidad');
     $("#form-empr-new-add").validate({
         errorClass: "text-danger",
         rules: {

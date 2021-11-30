@@ -49,31 +49,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <form id="product-edit-form" class="p-1 bg-warning d-none shadow">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <input type="number" class="form-control" id="product-cant-change" style="font-weight: bold;" />
-                    </div>
-                    <div class="form-group col-md-6">
-                        <input type="number" class="form-control" id="product-compra-change" style="font-weight: bold;" step="0.01" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <input type="date" class="form-control" id="product-dateven-change" style="font-weight: bold;" />
-                    </div>
-                    <div class="form-group col-md-6 text-right">
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-secondary" odd="">Cancelar</button>
-                            <button type="button" class="btn btn-success" odd="1">Ok</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        
-
-        
+        </div>       
 
         <table class="table table-sm" id="producto-show-all">
             <tbody>
@@ -231,12 +207,13 @@
         rest_filtrar(request,txtIn.toLowerCase());     
     });
     $('#product-finish-btn').on( 'click', '.btn-imprimir',function(){
-        let axid = $(this).attr('odd');
+        /*let axid = $(this).attr('odd');
         if (axid != ""){
             arixshell_print_get_pdf('en_productos_get_ticket',axid);
         }else{
             return;
-        }
+        }*/
+        alert(/Android/i.test(navigator.userAgent));
     });
 
 

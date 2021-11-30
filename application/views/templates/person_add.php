@@ -46,7 +46,7 @@
                     <div class="form-row">
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-borndate">Fecha de Nacimiento</label>
-                            <input type="text" class="form-control" id="per-borndate" name="txtborndate" placeholder="Día/Mes/Año">
+                            <input type="date" class="form-control" id="per-borndate" name="txtborndate" placeholder="Día/Mes/Año">
                         </div>
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-sexe">Género/sexo</label>
@@ -155,7 +155,7 @@
     }
     mpsr_form_auto_start();*/
     $('#per-form-base #per-dni').mask('99999999999');
-    $('#per-form-base #per-borndate').mask('00/00/0000');    
+    //$('#per-form-base #per-borndate').mask('00/00/0000');    
 
     arixshell_cargar_opciones('#per-form-base #per-departament', 'arixapi/arixapi_get_departamentos').then(function(){
         var dep = $("#per-departament option:eq(20)").attr("selected", "selected").val();

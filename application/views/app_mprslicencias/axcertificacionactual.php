@@ -66,8 +66,8 @@
     $('#certif-href-second').on('click', '#btn-certificaction-byruc', function(){
         let request = $('#certif-href-second #in-certificaction-byruc').val();
         if(request.length==11){
-            request = arixshell_upload_datos('mpsrlicencias/mpsr_get_certification_byruc', 'txtdataruc='+verifyMpsr(request)+'&txtdata=6ACA79F493CEERkpkclNDV2IrejF2VG1BNlJkUmhEZz09');
-            //console.log(request)
+            request = arixshell_upload_datos('mpsrlicencias/mpsr_get_certification_byruc', 'txtdataruc='+arixshell_verify_data(request)+'&txtdata=6ACA79F493CEERkpkclNDV2IrejF2VG1BNlJkUmhEZz09');
+            console.log(request)
             if(request.status ==true){
                 mpsr_vehiadd_basevar=request;//certificados_add_show
                 arixshell_cargar_contenido("mpsrlicencias/certificados_add_show",request.ruc+' - '+request.nombre);

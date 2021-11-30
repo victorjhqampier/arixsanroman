@@ -40,11 +40,11 @@
                     <div class="form-row">
                         <div class="form-group input-group-sm col-md-5">
                             <label for="driver-viginicio">Vigente desde</label>
-                            <input type="text" class="form-control" id="driver-viginicio" name="txtdriverviginicio" placeholder="Día/mes/año">
+                            <input type="date" class="form-control" id="driver-viginicio" name="txtdriverviginicio" placeholder="Día/mes/año">
                         </div>                       
                         <div class="form-group input-group-sm col-md-5">
                             <label for="driver-vigencia">Vigente hasta</label>
-                            <input type="text" class="form-control" id="driver-vigencia" name="txtdrivervigencia" placeholder="Día/mes/año">
+                            <input type="date" class="form-control" id="driver-vigencia" name="txtdrivervigencia" placeholder="Día/mes/año">
                         </div>
                     </div>
                 </form>
@@ -69,8 +69,8 @@
              return;
          }
     }
-    $(thisFormDriver+'#driver-viginicio').mask('99/99/9999');
-    $(thisFormDriver+'#driver-vigencia').mask('99/99/9999');
+    //$(thisFormDriver+'#driver-viginicio').mask('99/99/9999');
+    //$(thisFormDriver+'#driver-vigencia').mask('99/99/9999');
     $(thisFormDriver+'#driver-ownerdoc').mask('99999999');
     $(thisFormDriver+'#driver-licenseid').mask('AAA99999999', {reverse: true});
 

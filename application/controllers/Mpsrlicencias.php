@@ -571,7 +571,7 @@ class Mpsrlicencias extends CI_Controller {
 			$ruc = strrev($this->input->post('txtdataruc'));
 			$year = intval($this->serv_cifrado->cod_decifrar_cadena($this->input->post('txtdata')));
 			$year = $year == 1? date("Y") + 1: date("Y");
-			//$ruc = '20387739417';
+			//$ruc = '20542627795';
 			$sucu = $this->serv_administracion_usuarios->use_obtener_sucursal_id_actual();			
 			$consulta = array(
 				array (
@@ -1440,7 +1440,7 @@ class Mpsrlicencias extends CI_Controller {
 		}else{
 			show_404();
 		}
-	}
+	}	
 	//agregar conductores
 	public function mpsr_post_driveradd(){//OK
 		if($this->input->is_ajax_request() && $this->input->post('txtdriverownerid')){

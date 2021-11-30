@@ -139,6 +139,7 @@
                 </div>
             </div>
         </div>
+        <div id="android-print-asistant" class="d-none"></div>
         <script type="text/javascript" src="public/resources/js/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" src="public/resources/js/all.min.js"></script>
         <script type="text/javascript" src="public/resources/js/bootstrap.bundle.min.js"></script>

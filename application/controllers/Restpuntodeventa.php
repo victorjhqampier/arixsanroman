@@ -43,7 +43,16 @@ class Restpuntodeventa extends CI_Controller {
 				'caj.cuenta_id = cue.cuenta_id'],
 			['NULL',
 				'LEFT']
-		);*/
+		);
+		http://www.fpdf.org/en/script/script94.php
+		<?php
+			require('fpdf_merge.php');
+			$merge = new FPDF_Merge();
+			$merge->add('doc1.pdf');
+			$merge->add('doc2.pdf');
+			$merge->output();
+		?>
+		*/
 		if ($this->input->is_ajax_request()) {
 			$consulta = array(
 				["caj.caja_id axid, concat(caj.num,': ',caj.caja) caja, caj.sesion, concat(per.documento,' - ',per.nombres,', ', per.paterno,' ', per.materno) person"],
