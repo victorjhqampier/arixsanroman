@@ -113,7 +113,7 @@
         </div>
         <div class="modal" id="arixgeneralmodal2"  tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
+                <div class="modal-content text-white bg-primary">
                 <div class="modal-header">
                     <h5 class="modal-title">Modal title</h5> <span aria-hidden="true">&times;</span>
                 </div>
@@ -124,9 +124,9 @@
                 </div>
             </div>
         </div>
-          <div class="modal" id="arixgeneralmodal"  tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+          <div class="modal bg-secondary" id="arixgeneralmodal"  tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
+                <div class="modal-content text-white bg-primary">
                 <div class="modal-header">
                     <h5 class="modal-title">Modal title</h5>
                     <span aria-hidden="true">&times;</span>

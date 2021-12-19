@@ -1,15 +1,15 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="row" id="first-dom-driver">
     <div class="col-xl-12 col-md-12 mt-2">
-        <div class="card mb-1">
+        <div class="card bg-info mb-1">
             <div class="card-body">   
                 <form id="driver-form-base">
-                    <div class="form-row">
+                    <!--div class="form-row">
                         <div class="form-group col-md-5">
                             <label for="driver-driverresol">N° Resolucion de habilitación</label>
                             <input type="text" class="form-control" id="driver-driverresol" name="txtdriverresol" placeholder="Número de Resolución">
                         </div>                        
-                    </div>                   
+                    </div-->                   
                     <div class="form-row">
                         <div class="form-group col-md-5">
                             <label for="driver-licenseid">Número de Licencia (MTC)</label>
@@ -29,8 +29,8 @@
                                     <input type="text" class="form-control" id="driver-ownerdoc" name="txtdriverownerdoc" placeholder="DNI del conductor">
                                     <input type="text" class="form-control d-none" id="driver-ownerdescribe" name="txtdriverownerdescribe" readonly>
                                     <div class="input-group-append">                                        
-                                        <button class="btn btn-outline-secondary" type="button" id="btn-search-driver"><i class="fa fa-search"></i></button>
-                                        <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-driver"><i class="fa fa-times"></i></button>
+                                        <button class="btn btn-secondary" type="button" id="btn-search-driver"><i class="fa fa-search"></i></button>
+                                        <button class="btn btn-secondary d-none" type="button" id="btn-restart-driver"><i class="fa fa-times"></i></button>
                                     </div>
                                     <input type="hidden" class="d-none" id="driver-ownerid" name="txtdriverownerid" readonly>
                                 </div>
@@ -59,7 +59,7 @@
 </div>
 <script type="text/javascript">
     var thisFormDriver = '#driver-form-base ';
-    function driver_autoLoad_data(placa){//en construccion
+    /*function driver_autoLoad_data(placa){//en construccion
          request = arixshell_download_datos('');
          if (request['dni']==placa){
              $(thisFormDriver+"#per-names").val(request.nombres);
@@ -68,9 +68,10 @@
          }else{
              return;
          }
-    }
+    }*/
     //$(thisFormDriver+'#driver-viginicio').mask('99/99/9999');
     //$(thisFormDriver+'#driver-vigencia').mask('99/99/9999');
+    $(thisFormDriver+'#driver-ownerdoc').val($("#form-vehicertif-newadd #certif-driverdoc").val());
     $(thisFormDriver+'#driver-ownerdoc').mask('99999999');
     $(thisFormDriver+'#driver-licenseid').mask('AAA99999999', {reverse: true});
 
@@ -79,11 +80,11 @@
     $(thisFormDriver).validate({
         errorClass: "text-danger",
         rules: {
-            txtdriverresol: {
+            /*txtdriverresol: {
                 required: true,
                 maxlength: 70,
                 minlength: 7
-            },
+            },*/
             txtdriverlicense: {
                 required: true,
                 maxlength: 11,
@@ -124,7 +125,7 @@
              let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_driveradd', $(thisFormDriver).serialize());
              if(request.status==true){
                 let data = $(thisFormDriver+'#driver-licenseid').val()+' - '+$(thisFormDriver+'#driver-catclass option:selected').text()+' '+$(thisFormDriver+' #driver-vigencia').val();
-                $('#first-dom-driver').html('<div class="col-xl-12 col-md-12"><table class="table table-striped"> <tbody> <tr> <th scope="row">Licencia</th><td>'+data+'</td></tr><tr> <th scope="row">Conductor</th> <td>'+$(thisFormDriver+'#driver-ownerdescribe').val()+'</td></tr></tbody></table></div>');
+                $('#first-dom-driver').html('<div class="col-xl-12 col-md-12 text-white bg-info"><table class="table table-striped"> <tbody> <tr> <th scope="row">Licencia</th><td>'+data+'</td></tr><tr> <th scope="row">Conductor</th> <td>'+$(thisFormDriver+'#driver-ownerdescribe').val()+'</td></tr></tbody></table></div>');
                 arixshell_write_cache_serial("mpsr0x005477newDriver",request.id,data);//Pide 1= nombre clave de identificacion 2: (id)= alguna informacion y 3:(data) alguna descripcion
              }else{
                 //alert('todo mal');
@@ -155,7 +156,7 @@
                 $(this).addClass('d-none');
             }else{
                 arixshell_write_cache_serial('e0x005477arixNewUser',temp);//clave y dato
-                arixshell_abrir_modalbase('AGREGAR NUEVO PERSONA','arixapi/arixapi_get_form_person','btn-modalNewUser-forDriver');
+                arixshell_abrir_modalbase('AGREGAR NUEVO CONDUCTOR','arixapi/arixapi_get_form_person','btn-modalNewUser-forDriver');
             }
         }else{
             return;
@@ -164,6 +165,7 @@
     //(2)PARA EL MODAL DE AGREGAR conductor
     $(document).on('click', '#btn-modalNewUser-forDriver', function(){
         let request = arixshell_read_cache_serial('e0x005477arixNewUser');
+        
         if(request!==null){
             $(thisFormDriver+'#driver-ownerdescribe').val(request['data']).removeClass('d-none');                
             $(thisFormDriver+'#driver-ownerid').val(request['id']);

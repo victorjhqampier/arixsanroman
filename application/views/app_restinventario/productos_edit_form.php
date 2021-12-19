@@ -247,7 +247,7 @@
                 $(this).addClass('d-none');
             }else {
                 arixshell_write_cache_serial('e0x005477arixNewUser',temp);//clave y dato
-                arixshell_abrir_modalbase('Agregar Nuevo Proveedor','restinventario/proveedores_form_add','btn-modalNewUser-forprovvedor');
+                arixshell_abrir_modalbase('Agregar nuevo Proveedor','restinventario/proveedores_form_add','btn-modalNewUser-forprovvedor');
             }
         }else{
             return;

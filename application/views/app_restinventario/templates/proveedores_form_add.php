@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="row" id="per-form-first">
     <div class="col-md-10">
-        <div class="card mb-1">
+        <div class="card bg-info mb-1">
             <div class="card-body">                
                 <table class="table table-hover d-none" id="per-form-base-result">
                     <thead>
@@ -47,7 +47,7 @@
                     <div class="form-row">
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-borndate">Fecha de Nacimiento</label>
-                            <input type="text" class="form-control" id="per-borndate" name="txtborndate" placeholder="Día/Mes/Año">
+                            <input type="date" class="form-control" id="per-borndate" name="txtborndate" placeholder="Día/Mes/Año">
                         </div>
                         <div class="form-group input-group-sm col-md-4">
                             <label for="per-sexe">Género/sexo</label>
@@ -96,9 +96,9 @@
         </div>    
    </div>
   <div class="col-md-2"><!--mb-2 = margin-->
-    <div class="card-body">
-        <img src="public/images/users/tu39hnri84fheg.png" alt="Victor CAxi" class="img-thumbnail mt-4">
-    </div>
+    
+        <img src="public/images/users/tu39hnri84fheg.png" alt="Victor CAxi" class="img-thumbnail mt-1">
+    
   </div>
     <div class="col-xl-12 col-md-12 mt-2 btn-shown-submit">
         <div class="alert alert-dark text-center" role="alert">
@@ -140,7 +140,7 @@
     });
     
     $('#per-form-base #per-dni').mask('99999999999');
-    $('#per-form-base #per-borndate').mask('00/00/0000');    
+    //$('#per-form-base #per-borndate').mask('00/00/0000');    
     arixshell_cargar_obigeo('#per-form-base #per-departament','#per-form-base #per-province','#per-form-base #per-distrite');
 
     /*arixshell_cargar_opciones('#per-form-base #per-departament', 'arixapi/arixapi_get_departamentos').then(function(){

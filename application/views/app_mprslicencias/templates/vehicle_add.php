@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="row" id="first-dom">
     <div class="col-xl-12 col-md-12 mt-2">
-        <div class="card mb-1">
+        <div class="card bg-info mb-1">
             <div class="card-body">   
                 <form id="vehi-form-base">                    
                     <div class="form-row">
@@ -19,8 +19,8 @@
                                     <input type="text" class="form-control" id="vehi-ownerdoc" name="txtvehiownerdoc" placeholder="DNI del Propietario">
                                     <input type="text" class="form-control d-none" id="vehi-ownerdescribe" name="txtvehiownerdescribe" readonly>
                                     <div class="input-group-append">                                        
-                                        <button class="btn btn-outline-secondary" type="button" id="btn-search-vehicle"><i class="fa fa-search"></i></button>
-                                        <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-vehicle"><i class="fa fa-times"></i></button>
+                                        <button class="btn btn-secondary" type="button" id="btn-search-vehicle"><i class="fa fa-search"></i></button>
+                                        <button class="btn btn-secondary d-none" type="button" id="btn-restart-vehicle"><i class="fa fa-times"></i></button>
                                     </div>
                                     <input type="hidden" class="d-none" id="vehi-ownerid" name="txtvehiownerid" readonly>
                                 </div>
@@ -90,19 +90,6 @@
 </div>
 <script type="text/javascript">
     var thisForm = '#vehi-form-base ';
-    /*function vehicle_autoCache_start(){
-        let infor = arixshell_read_cache_serial('mpsr0x005477newVehicle');       
-            if(infor!=null){
-                infor=infor['id'];
-                if(infor.length==6){
-                    $(thisForm+'#vehi-matreal').val(infor).attr('readonly',true);
-                }else{
-                    return;
-                }
-        }else{
-            return;
-        }
-    }*/
     (function (){
         let infor = arixshell_read_cache_serial('mpsr0x005477newVehicle');       
             if(infor!=null){
@@ -210,10 +197,10 @@
              let request = arixshell_upload_datos('mpsrlicencias/mpsr_post_vehicleadd', $(thisForm).serialize());
              if(request['status']===true){
                 let data = $(thisForm+' #vehi-matreal').val()+' - '+$(thisForm+'#vehi-brand option:selected').text()+' '+$(thisForm+'#vehi-model').val()+' ('+$(thisForm+' #vehi-year').val()+') - '+$(thisForm+'#vehi-color').val();
-                $('#first-dom').html('<div class="col-xl-12 col-md-12"><table class="table table-striped"> <tbody> <tr> <th scope="row">Vehículo</th><td>'+data+'</td></tr><tr> <th scope="row">Propietario</th> <td>'+$(thisForm+'#vehi-ownerdescribe').val()+'</td></tr></tbody></table></div>');
+                $('#first-dom').html('<div class="col-xl-12 col-md-12 text-white bg-info"><table class="table table-striped"> <tbody> <tr> <th scope="row">Vehículo</th><td>'+data+'</td></tr><tr> <th scope="row">Propietario</th> <td>'+$(thisForm+'#vehi-ownerdescribe').val()+'</td></tr></tbody></table></div>');
                 arixshell_write_cache_serial("mpsr0x005477newVehicle",request['id'],data);//Pide 1= nombre clave de identificacion 2: (id)= alguna informacion y 3:(data) alguna descripcion
              }else{
-                console.log('vehicle_add -> mpsr_post_vehicleadd');             
+                console.log('vehicle_add -> mpsr_post_vehicleadd');  
                 $('#first-dom').html('<div class="col-xl-12 col-md-12"><div class="card bg-danger text-white mb-4"><div class="card-body">Error 500<div class="card-footer d-flex align-items-center justify-content-between"><a class="small text-white stretched-link" href="javascript:;"><strong>¡Lo siento! </strong>El servidor a denegado su petición ...</a></div></div></div></div>');
              }
         }else{

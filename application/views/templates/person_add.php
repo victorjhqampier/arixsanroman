@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="row" id="per-form-first">
     <div class="col-md-10">
-        <div class="card mb-1">
+        <div class="card bg-info mb-1">
             <div class="card-body">                
                 <table class="table table-hover d-none" id="per-form-base-result">
                     <thead>
@@ -95,9 +95,9 @@
         </div>    
    </div>
   <div class="col-md-2"><!--mb-2 = margin-->
-    <div class="card-body">
-        <img src="public/images/users/tu39hnri84fheg.png" alt="Victor CAxi" class="img-thumbnail mt-4">
-    </div>
+    
+        <img src="public/images/users/tu39hnri84fheg.png" alt="Victor CAxi" class="img-thumbnail mt-1">
+    
   </div>
     <div class="col-xl-12 col-md-12 mt-2 btn-shown-submit">
         <div class="alert alert-dark text-center" role="alert">

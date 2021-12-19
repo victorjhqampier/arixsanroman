@@ -122,7 +122,7 @@ function mpsr_load_table_activevehicle(ubication,data,long){
     long = Object.keys(request).length - 1 < long?'<div class="alert alert-primary text-right" role="alert"><button class="btn btn-primary" id="btn-add-veh2emp">Agregar</button></div>':'';
     $(ubication).parent().parent().siblings().last().html(long);
     if(request.status==true){   
-        data = arixshell_cargar_botones('btn-borrar,btn-detalles');
+        data = arixshell_cargar_botones('btn-detalles');
         $(ubication+'#dataTable_emp_activos tbody').html('');
         for( i = 0; i<Object.keys(request).length-1; i++){
             $(ubication+' tbody').append('<tr odd="'+

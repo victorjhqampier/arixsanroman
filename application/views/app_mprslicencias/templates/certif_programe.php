@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="col-xl-12 col-md-12">
     <div class="table-responsive-sm">
-        <table class="table table-sm" id="retif-table-vehicledata">
+        <table class="table table-sm table-dark" id="retif-table-vehicledata">
             <tbody>
                 <tr>
                     <th scope="row">Empresa</th>
@@ -13,7 +13,7 @@
     <hr class="my-4" />
 </div>
 <div class="col-xl-12 col-md-12" id="second-content-certif-programe">
-    <div class="card bg-light border-secondary mb-4">
+    <div class="card bg-info border-secondary mb-4">
         <div class="card-body">
             <form id="form-inspect-programe">
                 <input type="hidden" class="d-none" id="inspect-emp-id" name="txtinspectempid" readonly />

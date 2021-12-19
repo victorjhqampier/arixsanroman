@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-xl-12 col-md-12">
         <div class="table-responsive-sm">
-            <table class="table table-sm" id="retif-table-vehicledata">
+            <table class="table table-sm table-dark" id="retif-table-vehicledata">
                 <tbody>
                     <tr>
                         <th scope="row">Vehículo</th>
@@ -13,8 +13,8 @@
         </div>
     </div>
     <div class="col-xl-12 col-md-12" id="second-content-certif-hist">
-        <table class="table table-sm table-striped" id="table-data-empone">
-            <thead class="thead-dark">
+        <table class="table table-sm table-striped table-dark" id="table-data-empone">
+            <thead>
                 <tr>
                     <th scope="col">Fecha</th>
                     <th scope="col">Acción</th>

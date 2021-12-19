@@ -2,7 +2,7 @@
 <div class="col-xl-12 col-md-12">
         
                 <div class="table-responsive-sm">
-                    <table class="table table-sm" id="retif-table-vehicledata">
+                    <table class="table table-sm table-dark" id="retif-table-vehicledata">
                         <tbody>
                             <tr>
                                 <th scope="row">Vehículo</th>
@@ -11,10 +11,9 @@
                         </tbody>
                     </table>
                 </div>
-                <hr class="my-4" />
     </div>
     <div class="col-xl-12 col-md-12" id="second-content-certif-eval">
-        <div class="card bg-light border-secondary mb-4">
+        <div class="card bg-info mb-4">
             <div class="card-header text-center">CERTIFICAR VEHÍULO</div>
             <div class="card-body">               
                 <form id="form-certif-eval">

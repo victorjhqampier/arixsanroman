@@ -1,27 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<!--div class="row">
-    <div class="col-xl-12 col-md-12" id="first-href-vehicle">
-        <div class="row">
-            <div class="form-group col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="in-vehicle-bysearch" placeholder="Placa del vehículo" maxlength="6" />
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="btn-vehicle-bysearch"><i class="fa fa-search"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-9">
-                <div class="alert alert-info p-2" role="alert">
-                    Buscaremos todos los datos relacionada a esta Placa vehicular.
-                </div>
-            </div>
-        </div>
-        <hr class="my-4" />
-    </div>
-    <div class="col-xl-12 col-md-12 mt-2" id="content-vehicle-bysearch"></div>
-</div-->
-
 <div class="row">
     <div class="col-xl-12 col-md-12" id="main-content-vehiadd">
         <div class="row">
@@ -40,12 +17,12 @@
                 </div>
             </div>
         </div>
-        <hr class="my-4" />
+        
     </div>
     <div class="col-xl-12 col-md-12 mt-2 d-none" id="main-content-vehiautoriz">
         <div class="row">
             <div class="col-xl-8 col-md-8">
-                <div class="card bg-light border-light mb-4">
+                <div class="card text-white bg-info mb-4">
                     <div class="card-body">
                         <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Empresa de Transporte</h6>
                         <div class="table-responsive-sm">
@@ -75,7 +52,7 @@
             </div>
 
             <div class="col-xl-4 col-md-4">
-                <div class="card bg-light border-light mb-4">
+                <div class="card text-white bg-warning mb-4">
                     <div class="card-body">
                         <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Datos de la Autorización</h6>
                         <div class="table-responsive-sm">
@@ -107,7 +84,7 @@
     </div>
     <div class="col-xl-12 col-md-12 mt-2 d-none" id="second-content-vehiadd">
         <div class="row">
-            <div class="col-xl-12 col-md-12 mt-2">
+            <div class="col-xl-12 col-md-12 bg-light mt-2">
                 <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Vehículos Asociados</h6>
                 <div class="table-responsive-md">
                     <table class="table table-hover table-sm" id="dataTable_emp_activos">

@@ -3,7 +3,7 @@
     <div class="col-xl-12 col-md-12">
         <form id="form-empr-new-add">
             <div class="card-group">
-                <div class="card">
+                <div class="card text-white bg-info">
                     <div class="card-header text-center"><strong>Datos de la Empresa de Transportes</strong></div>
                     <div class="card-body">
                         <div class="form-row">
@@ -18,8 +18,8 @@
                                     <input type="text" class="form-control d-none" id="temp-people-describe" name="txtpeopledescrive" readonly />
                                     <input type="hidden" class="d-none" id="temp-people-id" name="txtpeopleid" readonly />
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="btn-search-people"><i class="fa fa-search"></i></button>
-                                        <button class="btn btn-outline-secondary d-none" type="button" id="btn-restart-people"><i class="fa fa-times"></i></button>
+                                        <button class="btn btn-secondary" type="button" id="btn-search-people"><i class="fa fa-search"></i></button>
+                                        <button class="btn btn-secondary d-none" type="button" id="btn-restart-people"><i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="card-footer"><small class="text-muted">El ruc se comprobará para evitar duplicidad</small></div>
                 </div>
-                <div class="card">
+                <div class="card text-white bg-secondary">
                     <div class="card-header text-center"><strong>Datos de la Autorización</strong></div>
                     <div class="card-body">
                         <div class="form-row">
@@ -205,7 +205,7 @@
                 $(this).addClass('d-none');
             }else{
                 arixshell_write_cache_serial('e0x005477arixNewUser',temp);//clave y dato
-                arixshell_abrir_modalbase('AGREGAR NUEVA PERSONA','arixapi/arixapi_get_form_person','btn-modalNewUser-forDriver');
+                arixshell_abrir_modalbase('AGREGAR NUEVO ADMINISTRADOR','arixapi/arixapi_get_form_person','btn-modalNewUser-forDriver');
             }
         }else{
             return;
