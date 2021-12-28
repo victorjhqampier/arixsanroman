@@ -95,15 +95,12 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 $db['pdoarixdatabase'] = array(
-	'dsn'	=> 'pgsql:host=ec2-52-72-252-211.compute-1.amazonaws.com;port=5432;dbname=d5oq6be654h13t',
-	//'dsn'	=> 'pgsql:host=34.95.166.228;port=5432;dbname=arixsanroman',
-	'hostname' => '',
-	//'username' => 'arixmee',
-	//'password' => 'b38a333e5537119af65501d33abf69d6',
+	'dsn'	=> '',//'pgsql:host=ec2-52-72-252-211.compute-1.amazonaws.com;port=5432;dbname=d5oq6be654h13t',
+	'hostname' => 'ec2-52-72-252-211.compute-1.amazonaws.com',
 	'username' => 'ljdxibylpqfmcn',
 	'password' => '7220cded97c06c97d8f27baa8addee65ad44d28469533dd48b73f3640e1ebc28',
-	'database' => '',
-	'dbdriver' => 'pdo',
+	'database' => 'd5oq6be654h13t',
+	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => TRUE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
