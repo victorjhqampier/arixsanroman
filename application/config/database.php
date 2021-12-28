@@ -95,6 +95,30 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 $db['pdoarixdatabase'] = array(
+	'dsn'	=> 'pgsql:host=ec2-52-72-252-211.compute-1.amazonaws.com;port=5432;dbname=d5oq6be654h13t',
+	//'dsn'	=> 'pgsql:host=34.95.166.228;port=5432;dbname=arixsanroman',
+	'hostname' => '',
+	//'username' => 'arixmee',
+	//'password' => 'b38a333e5537119af65501d33abf69d6',
+	'username' => 'ljdxibylpqfmcn',
+	'password' => '7220cded97c06c97d8f27baa8addee65ad44d28469533dd48b73f3640e1ebc28',
+	'database' => '',
+	'dbdriver' => 'pdo',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+/*$db['pdoarixdatabase'] = array(
 	'dsn'	=> 'pgsql:host=localhost;port=5432;dbname=arixsanroman',
 	//'dsn'	=> 'pgsql:host=34.95.166.228;port=5432;dbname=arixsanroman',
 	'hostname' => '',
@@ -117,4 +141,4 @@ $db['pdoarixdatabase'] = array(
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE
-);
+);*/
